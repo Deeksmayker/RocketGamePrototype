@@ -79,7 +79,7 @@ namespace Player
         {
             var a = Instantiate(explodeParticles, transform.position, quaternion.identity);
             var b = a.shape;
-            b.radius = explodeRadius;
+            b.radius = explodeRadius - 1;
         }
 
         private void PushObjectsInExplosionRange(Collider2D[] rigidbodiesInArea)

@@ -103,7 +103,7 @@ MonoBehaviour:
   timeForMaxSpeed: 0.4
   maxLifeTime: 5
   explodePower: 50
-  explodeRadius: 3
+  explodeRadius: 4
   explodeParticles: {fileID: 8249380662462926968, guid: 886ab73d0855f0347b1bf2aaffe8b493, type: 3}
 --- !u!50 &3528820262345603604
 Rigidbody2D:

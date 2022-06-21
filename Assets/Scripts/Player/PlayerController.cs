@@ -8,19 +8,26 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
+    [Header("Movement on ground")]
     public float walkTargetSpeed;
-    public float jumpForce;
-    public float fallMultiplier;
-
     [Range(0, 1)] [SerializeField] private float acceleration;
     [Range(0, 1)] [SerializeField] private float deceleration;
+
+    [Header("Jump and air movement")]
+    public float jumpForce;
+    public float fallMultiplier;
     [Range(0, 1)] [SerializeField] private float airAcceleration;
     [Range(0, 1)] [SerializeField] private float airDeceleration;
-    
-    [Range(0, 1)] public float jumpUpDeceleration;
-    [Range(0, 1)] public float rocketJumpDeceleration;
+    [Range(0, 1)] [SerializeField] private float jumpUpDeceleration;
 
+    [Header("Walls")]
+    [SerializeField] private float maxWallSlideDownSpeed;
+    [Range(0, 1)] public float wallSlideUpDeceleration;
+    [Range(0, 1)] public float wallSlideDownAcceleration;
     [SerializeField] private float wallJumpMovementEffectDuration;
+
+    [Header("Rocket jump")]
+    [Range(0, 1)] [SerializeField] private float rocketJumpDeceleration;
 
     [NonSerialized] public bool IsJumping;
     [NonSerialized] public bool InRocketJump;
@@ -52,7 +59,7 @@ public class PlayerController : MonoBehaviour
         {
             if (_collisionDetector.onGround)
                 Jump(new Vector2(0, 1), false);
-            if (_collisionDetector.onWall)
+            else if (_collisionDetector.onWall)
                 WallJump();
         }
 
@@ -63,6 +70,8 @@ public class PlayerController : MonoBehaviour
     {
         Walk();
         CalculateInAirVelocity();
+        if (_collisionDetector.onWall && _input.move.x != 0 && !Mathf.Sign(_collisionDetector.wallSide).Equals(Mathf.Sign(_input.move.x)))
+            CalculateOnWallSlideVelocity();
     }
 
     private void Walk()
@@ -102,6 +111,21 @@ public class PlayerController : MonoBehaviour
         IsWallJumping = true;
         yield return new WaitForSeconds(wallJumpMovementEffectDuration);
         IsWallJumping = false;
+    }
+
+    private void CalculateOnWallSlideVelocity()
+    {
+        if (_rb.velocity.y > 0)
+        {
+            var upVelocity = Mathf.Lerp(_rb.velocity.y, 0, wallSlideUpDeceleration);
+            _rb.velocity = new Vector2(_rb.velocity.x, upVelocity);
+        }
+        
+        else if (_rb.velocity.y <= 0)
+        {
+            var downVelocity = Mathf.Lerp(_rb.velocity.y, -maxWallSlideDownSpeed, wallSlideDownAcceleration);
+            _rb.velocity = new Vector2(_rb.velocity.x, downVelocity);
+        }
     }
 
     private void CalculateInAirVelocity()
