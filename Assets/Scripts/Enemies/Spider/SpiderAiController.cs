@@ -18,7 +18,7 @@ namespace DefaultNamespace.Enemies.Spider
         private void FixedUpdate()
         {
             if (_rb.velocity.x < speed)
-                _rb.AddForce(new Vector2(speed, 0));
+                _rb.velocity = new Vector2(speed, 0);
         }
     }
 }
