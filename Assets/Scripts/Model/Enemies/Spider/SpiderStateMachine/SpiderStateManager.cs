@@ -17,9 +17,11 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
             SetState(SeekingPlaceState);
         }
 
-        private void Update()
+        protected override void Update()
         {
-            CurrentState.Update();
+            
+            
+            base.Update();
         }
     }
 }

@@ -11,5 +11,10 @@ namespace DefaultNamespace.StateMachine
             CurrentState = newState;
             newState.Enter(this);
         }
+
+        protected virtual void Update()
+        {
+            CurrentState.Update();
+        }
     }
 }
