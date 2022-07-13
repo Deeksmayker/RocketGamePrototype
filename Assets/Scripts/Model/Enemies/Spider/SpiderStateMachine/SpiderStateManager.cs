@@ -6,6 +6,16 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
 {
     public class SpiderStateManager : StateManager
     {
+        public enum MoveDirections
+        {
+            Right = 1,
+            Stay = 0,
+            Left = -1
+        }
+
+        [NonSerialized] public MoveDirections CurrentMoveDirection = MoveDirections.Stay;
+        [NonSerialized] public Vector2 CurrentMoveVector = Vector2.zero;
+    
         [Header("Seeking State")]
         [SerializeField] private float seekingStateSpeed;
         public SpiderSeekingPlaceState SeekingPlaceState;
