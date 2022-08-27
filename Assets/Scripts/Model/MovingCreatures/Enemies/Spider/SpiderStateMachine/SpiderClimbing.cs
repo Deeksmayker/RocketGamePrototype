@@ -1,39 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
+using DefaultNamespace.Enemies.Spider.SpiderStateMachine;
 using UnityEngine;
 
 public class SpiderClimbing : MonoBehaviour
 {
-    public enum MoveDirections
-    {
-        Right = 1,
-        Stay = 0,
-        Left = -1
-    }
+    [SerializeField] private float rotationSpeed = 150f;
+    [SerializeField] private float checkWallDistance = 2f;
 
-    [SerializeField] private float speed = 5f;
-    [SerializeField] private float rotationSpeed = 30f;
-
-    [SerializeField] private float checkWallDistance = 3f;
-
-    /*[SerializeField] private Vector2 wallDetectionDistance;
-    private float _wallDetectorSphereRadius = 0.5f;*/
+    private SpiderStateManager _spider;
 
     private Rigidbody2D _rb;
     private Vector2 _velocity;
     private Vector2 _moveVector;
     private bool _clibming;
-    private MoveDirections _moveDirection;
     private Vector2 _upward;
-    //private Quaternion _quaternionToRotate;
     private bool _rotating;
     private float _angleToRotate;
 
     private void Start()
     {
+        _spider = GetComponent<SpiderStateManager>();
         _rb = GetComponent<Rigidbody2D>();
         _velocity = _rb.velocity;
-        _moveDirection = MoveDirections.Right;
         _moveVector = Vector2.right;
         _upward = Vector2.up;
         _angleToRotate = transform.rotation.eulerAngles.z;
@@ -41,42 +28,35 @@ public class SpiderClimbing : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_moveDirection != MoveDirections.Stay)
+        if (_spider.CurrentMoveDirection != SpiderStateManager.MoveDirections.Stay)
         {
             Move();
             CheckChasm();
             CheckWalls();
-            //Debug.Log(_rotating);
-            Debug.Log("M - " + _moveVector);
-            Debug.Log("UP - " + _upward);
-            Debug.Log((int)Vector2.Angle(_moveVector, _upward));
 
             if (CheckRotation())
             {
                 var nextAngle = Quaternion.Euler(0, 0, _angleToRotate);
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, nextAngle, rotationSpeed * Time.deltaTime);
 
-                _moveVector = transform.right * (int)_moveDirection;
-
-                /*if (Mathf.Abs(_moveVector.x) >= 0.9)
-                    _moveVector.x = Mathf.Round(_moveVector.x);
-                if (Mathf.Abs(_moveVector.y) >= 0.9)
-                    _moveVector.y = Mathf.Round(_moveVector.y);
-                Debug.Log(_moveVector);*/
-                //Debug.Log("MoveVector - " + _moveVector);
-                // Debug.Log("Upward - " + _upward);
             }
 
-            
+            _moveVector = transform.right * (int)_spider.CurrentMoveDirection;
         }
 
+        else
+        {
+            _velocity = Vector2.zero;
+        }
+
+        StickToGround();
 
         _rb.velocity = _velocity;
     }
                                                                                                         
     private void Move()
     {
-        var targetSpeed = _moveVector.normalized * speed;
+        var targetSpeed = _moveVector.normalized * _spider.CurrentSpeed;
 
         _velocity = targetSpeed;
     }
@@ -101,7 +81,7 @@ public class SpiderClimbing : MonoBehaviour
         if (_rotating)
             return false;
 
-        var rayPos = (Vector2)transform.position + ((Vector2)transform.right * (int)_moveDirection * GetComponent<CircleCollider2D>().radius);
+        var rayPos = (Vector2)transform.position + ((Vector2)transform.right * (int)_spider.CurrentMoveDirection * GetComponent<CircleCollider2D>().radius);
 
         var ray = new Ray2D(rayPos, -transform.up);
         //Debug.DrawRay(ray.origin, ray.direction);
@@ -131,13 +111,10 @@ public class SpiderClimbing : MonoBehaviour
 
             var angle = 90f;
 
-            //Debug.Log("M " + _moveVector);
-            //Debug.Log("UP " + _upward);
-
             if (CompareVectors(_moveVector, _upward, 0.1f))
                 angle = -angle;
-            //Debug.Log(angle);
-            _angleToRotate += angle * (int)_moveDirection;
+
+            _angleToRotate += angle * (int)_spider.CurrentMoveDirection;
 
             
 
@@ -169,12 +146,12 @@ public class SpiderClimbing : MonoBehaviour
 
     private void StickToGround()
     {
-        _rb.velocity += _upward * 10;
+        _velocity -= _upward;
     }
 
     private Vector2 GetVectorRotated90WithMoveDirection(Vector2 vector)
     {
-        return new Vector2(vector.y, -vector.x) * (int)_moveDirection;
+        return new Vector2(vector.y, -vector.x) * (int)_spider.CurrentMoveDirection;
     }
 
     void OnDrawGizmos()
