@@ -3470,6 +3470,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
+  _rb: {fileID: 0}
 --- !u!58 &1118621780
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -5312,6 +5313,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
+  _rb: {fileID: 0}
 --- !u!50 &1559313456
 Rigidbody2D:
   serializedVersion: 4
@@ -5923,6 +5925,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3ce41e159d753c4dad56bcadf8f7d1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
   rotationSpeed: 150
   checkWallDistance: 2
 --- !u!1 &1684827895

@@ -14,6 +14,7 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
         }
 
         private Rigidbody2D _rb;
+        private SpiderMoving _spiderMoving;
 
         [NonSerialized] public float CurrentSpeed;
         [NonSerialized] public MoveDirections CurrentMoveDirection = MoveDirections.Stay;
@@ -34,7 +35,7 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
             
             SetState(SeekingPlaceState);
 
-            CurrentMoveDirection = MoveDirections.Right;
+            CurrentMoveDirection = MoveDirections.Left;
         }
 
         protected override void Update()
@@ -43,5 +44,11 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
  
             base.Update();
         }
+
+        public Vector2 GetUpwardVector() => _spiderMoving.Upward;
+
+        public bool Climbing() => _spiderMoving.Climbing;
+
+        public bool IsOnChasm() => _spiderMoving.OnChasm;
     }
 }
