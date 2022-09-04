@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
 {
+    [RequireComponent(typeof(SpiderMoving))]
     public class SpiderStateManager : StateManager
     {
         public enum MoveDirections
@@ -30,7 +31,9 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
         {
             _rb = GetComponent<Rigidbody2D>();
             _rb.gravityScale = 0;
-            
+
+            _spiderMoving = GetComponent<SpiderMoving>();
+
             SeekingPlaceState = new SpiderSeekingPlaceState();
             
             SetState(SeekingPlaceState);
@@ -40,8 +43,9 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
 
         protected override void Update()
         {
+            _spiderMoving.CurrentSpeed = CurrentSpeed;
+            _spiderMoving.CurrentMoveDirection = (int)CurrentMoveDirection;
             
- 
             base.Update();
         }
 

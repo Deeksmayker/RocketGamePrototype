@@ -9,13 +9,23 @@ public class SpiderMoving : MonoBehaviour
     [SerializeField] private float rotationSpeed = 150f;
     [SerializeField] private float checkWallDistance = 2f;
 
-    private SpiderStateManager _spider;
-
     private Rigidbody2D _rb;
     private Vector2 _velocity;
     private Vector2 _moveVector;
     private bool _rotating;
     private float _angleToRotate;
+
+    public float CurrentSpeed;
+
+    private int _currentMoveDirection;
+    public int CurrentMoveDirection
+    {
+        get => _currentMoveDirection;
+        set
+        {
+            _currentMoveDirection = Mathf.Clamp(value, -1, 1);
+        }
+    }
 
     public Vector2 Upward { get; private set; }
     public bool Climbing { get; private set; }
@@ -23,7 +33,6 @@ public class SpiderMoving : MonoBehaviour
 
     private void Start()
     {
-        _spider = GetComponent<SpiderStateManager>();
         _rb = GetComponent<Rigidbody2D>();
         _velocity = _rb.velocity;
         _moveVector = Vector2.right;
@@ -33,7 +42,7 @@ public class SpiderMoving : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_spider.CurrentMoveDirection != SpiderStateManager.MoveDirections.Stay)
+        if (CurrentMoveDirection != 0)
         {
             Move();
             OnChasm = CheckChasm();
@@ -46,7 +55,7 @@ public class SpiderMoving : MonoBehaviour
 
             }
 
-            _moveVector = transform.right * (int)_spider.CurrentMoveDirection;
+            _moveVector = transform.right * (int)CurrentMoveDirection;
         }
 
         else
@@ -62,7 +71,7 @@ public class SpiderMoving : MonoBehaviour
                                                                                                         
     private void Move()
     {
-        var targetSpeed = _moveVector.normalized * _spider.CurrentSpeed;
+        var targetSpeed = _moveVector.normalized * CurrentSpeed;
 
         _velocity = targetSpeed;
     }
@@ -86,7 +95,7 @@ public class SpiderMoving : MonoBehaviour
         if (_rotating)
             return false;
 
-        var rayPos = (Vector2)transform.position + ((Vector2)transform.right * (int)_spider.CurrentMoveDirection * GetComponent<CircleCollider2D>().radius);
+        var rayPos = (Vector2)transform.position + ((Vector2)transform.right * CurrentMoveDirection * GetComponent<CircleCollider2D>().radius);
 
         var ray = new Ray2D(rayPos, -transform.up);
         //Debug.DrawRay(ray.origin, ray.direction);
@@ -119,7 +128,7 @@ public class SpiderMoving : MonoBehaviour
             if (CompareVectors(_moveVector, Upward, 0.1f))
                 angle = -angle;
 
-            _angleToRotate += angle * (int)_spider.CurrentMoveDirection;
+            _angleToRotate += angle * CurrentMoveDirection;
 
             
 
@@ -200,7 +209,7 @@ public class SpiderMoving : MonoBehaviour
 
     private Vector2 GetVectorRotated90WithMoveDirection(Vector2 vector)
     {
-        return new Vector2(vector.y, -vector.x) * (int)_spider.CurrentMoveDirection;
+        return new Vector2(vector.y, -vector.x) * CurrentMoveDirection;
     }
 
     void OnDrawGizmos()
