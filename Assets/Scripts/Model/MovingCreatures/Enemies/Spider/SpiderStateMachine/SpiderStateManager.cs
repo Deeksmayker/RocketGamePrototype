@@ -1,6 +1,9 @@
 using DefaultNamespace.StateMachine;
 using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
 {
@@ -21,11 +24,13 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
         [NonSerialized] public MoveDirections CurrentMoveDirection = MoveDirections.Stay;
 
         [Header("Moving")]
-        [SerializeField] private LayerMask _groundLayer;
+        public float maxJumpDistance = 10f;
+        public float jumpForce = 20f;
     
         [Header("Seeking State")]
         public float SeekingStateSpeed;
         public SpiderSeekingPlaceState SeekingPlaceState;
+
 
         private void Start()
         {
@@ -37,8 +42,6 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
             SeekingPlaceState = new SpiderSeekingPlaceState();
             
             SetState(SeekingPlaceState);
-
-            CurrentMoveDirection = MoveDirections.Left;
         }
 
         protected override void Update()
@@ -47,6 +50,17 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
             _spiderMoving.CurrentMoveDirection = (int)CurrentMoveDirection;
             
             base.Update();
+        }
+
+        public void JumpAndMakeWebRunner(Vector2 direction, float forse) => StartCoroutine(JumpAndMakeWeb(direction, forse));
+
+        private IEnumerator JumpAndMakeWeb(Vector2 direction, float force)
+        {
+            CurrentMoveDirection = MoveDirections.Stay;
+            yield return new WaitForSeconds(0.001f);
+            _spiderMoving.Jump(direction, force);
+            yield return new WaitForSeconds(2);
+            CurrentMoveDirection = MoveDirections.Right;
         }
 
         public Vector2 GetUpwardVector() => _spiderMoving.Upward;
