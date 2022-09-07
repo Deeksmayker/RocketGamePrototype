@@ -1,5 +1,4 @@
 ﻿using DefaultNamespace.StateMachine;
-using System.Collections;
 using UnityEngine;
 
 namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
@@ -16,28 +15,42 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
         private RaycastHit2D _upRayHit;
         private RaycastHit2D _downRayHit;
 
-        private bool _jumping;
+        private Vector2 _lastPlatformNormal;
+        private float _timeToForgetLastPlatform = 5f;
+        private float _timePassedFromJump;
+        private bool _isSetUpMoveDirection;
 
         public void Enter(StateManager manager)
         {
-            _spider = (SpiderStateManager) manager;
+            _spider = (SpiderStateManager)manager;
             _rb = _spider.GetComponent<Rigidbody2D>();
-            _spider.CurrentSpeed = _spider.SeekingStateSpeed;
-            _jumping = false;
 
+            _spider.SetSpeed(_spider.SeekingStateSpeed);
+
+            _timePassedFromJump = _timeToForgetLastPlatform;
+
+            _spider.SetMoveDirection((SpiderStateManager.MoveDirections)GetClosestWallDirection());
+            _isSetUpMoveDirection = true;
         }
-        
+
         public void Update()
         {
-            UpdateDirectionsRayHits();
-
-            if (!_jumping)
+            if (_spider.Jumping())
             {
-                _spider.CurrentMoveDirection = (SpiderStateManager.MoveDirections)GetClosestWallDirection();
-
-                CheckJumpPossibility();
-
+                _timePassedFromJump = 0;
+                _isSetUpMoveDirection = false;
+                return;
             }
+            _timePassedFromJump += Time.deltaTime;
+
+            if (!_isSetUpMoveDirection && _timePassedFromJump >= 1)
+            {
+                _spider.SetMoveDirection((SpiderStateManager.MoveDirections)GetClosestWallDirection());
+                _isSetUpMoveDirection = true;
+            }
+
+            UpdateDirectionsRayHits();
+            CalculateJumpPossibility();
         }
 
         private void UpdateDirectionsRayHits()
@@ -47,32 +60,53 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
             _upRayHit = Physics2D.Raycast(_spider.transform.position, Vector2.up, 100f);
             _downRayHit = Physics2D.Raycast(_spider.transform.position, Vector2.down, 100f);
         }
-        
+
         private int GetClosestWallDirection()
         {
-            if (_rightRayHit.distance <= _leftRayHit.distance)
+            var notOnRightWall = _rightRayHit.normal != _spider.GetUpwardVector();
+            var notOnLeftWall = _leftRayHit.normal != _spider.GetUpwardVector();
+
+            if (_rightRayHit.distance <= _leftRayHit.distance && notOnRightWall || _leftRayHit.normal == _spider.GetUpwardVector())
                 return 1;
             else
                 return -1;
         }
 
-        private bool CheckJumpPossibility()
+        private void CalculateJumpPossibility()
         {
-            if (WallInRange(_rightRayHit, Vector2.up))
+            CheckWallAndJumpIfNeed(_rightRayHit, new[] { Vector2.up, Vector2.down }, Vector2.right + Vector2.up);
+            CheckWallAndJumpIfNeed(_leftRayHit, new[] { Vector2.up, Vector2.down }, Vector2.left + Vector2.up);
+            CheckWallAndJumpIfNeed(_upRayHit, new[] {Vector2.right, Vector2.left} , Vector2.up);
+            CheckWallAndJumpIfNeed(_downRayHit, new[] { Vector2.right, Vector2.left }, Vector2.down);
+        }
+
+        private bool CheckWallAndJumpIfNeed(RaycastHit2D hit, Vector2[] upwardsForThisDirection, Vector2 jumpVector)
+        {
+            if (WallAvailableForJump(hit, upwardsForThisDirection))
             {
-                _jumping = true;
-                _spider.JumpAndMakeWebRunner(Vector2.right + Vector2.up, _spider.jumpForce);
+                _lastPlatformNormal = _spider.GetUpwardVector();
+
+                _spider.JumpAndMakeWebRunner(jumpVector, _spider.jumpForce);
                 return true;
             }
 
             return false;
         }
 
-        private bool WallInRange(RaycastHit2D hit, Vector2 upward)
+        private bool WallAvailableForJump(RaycastHit2D hit, Vector2[] upwardsForThisDirection)
         {
+            var spiderNormalNotPerpendicularToWall = _spider.GetUpwardVector() != upwardsForThisDirection[0]
+                && _spider.GetUpwardVector() != upwardsForThisDirection[1];
+
+            var wallNotSameHeJumpedFrom = hit.normal != _lastPlatformNormal
+                || _timePassedFromJump >= _timeToForgetLastPlatform;
+
             return hit.distance <= _spider.maxJumpDistance
-                && (_spider.GetUpwardVector() != upward);
+                && spiderNormalNotPerpendicularToWall
+                && wallNotSameHeJumpedFrom
+                && hit.normal != _spider.GetUpwardVector();
         }
+
 
         /*private int GetClosestWallDistance()
         {

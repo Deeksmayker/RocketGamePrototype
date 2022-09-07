@@ -1,23 +1,29 @@
 using DefaultNamespace.Enemies.Spider.SpiderStateMachine;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UIElements;
 
 public class SpiderMoving : MonoBehaviour
 {
+    [Header("Moving")]
+    public float speed;
     [SerializeField] private LayerMask groundLayer;
     [Space]
     [SerializeField] private float rotationSpeed = 150f;
     [SerializeField] private float checkWallDistance = 2f;
+
+    [Space]
+    [Header("Events")]
+    public UnityEvent onSpiderJumped = new();
+    public UnityEvent onSpiderLanded = new();
 
     private Rigidbody2D _rb;
     private Vector2 _velocity;
     private Vector2 _moveVector;
     private bool _rotating;
     private float _angleToRotate;
-    private bool _jumping;
 
-    public float CurrentSpeed;
 
     private int _currentMoveDirection;
     public int CurrentMoveDirection
@@ -32,6 +38,8 @@ public class SpiderMoving : MonoBehaviour
     public Vector2 Upward { get; private set; }
     public bool Climbing { get; private set; }
     public bool OnChasm { get; private set; }
+    public bool Jumping { get; private set; }
+
 
     private void Start()
     {
@@ -44,7 +52,7 @@ public class SpiderMoving : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (CurrentMoveDirection != 0 && !_jumping)
+        if (CurrentMoveDirection != 0 && !Jumping)
         {
             Move();
             OnChasm = CheckChasm();
@@ -53,7 +61,7 @@ public class SpiderMoving : MonoBehaviour
 
         else
         {
-            if (!_jumping)
+            if (!Jumping)
                 _velocity = Vector2.zero;
         }
 
@@ -67,16 +75,16 @@ public class SpiderMoving : MonoBehaviour
 
         _moveVector = transform.right * (int)CurrentMoveDirection;
 
-        if (!_jumping)
+        if (!Jumping)
             StickToGround();
 
         else
             MakeGravity();
 
-        Debug.Log("Up - " + Upward);
+        /*Debug.Log("Up - " + Upward);
         Debug.Log("right - " + transform.right);
         Debug.Log("rotating - " + _rotating);
-        Debug.Log("Angle to rotate - " + _angleToRotate);
+        Debug.Log("Angle to rotate - " + _angleToRotate);*/
 
         Climbing = CheckClimbing();
 
@@ -85,17 +93,17 @@ public class SpiderMoving : MonoBehaviour
                                                                                                         
     private void Move()
     {
-        var targetSpeed = _moveVector.normalized * CurrentSpeed;
+        var targetSpeed = _moveVector.normalized * speed;
 
         _velocity = targetSpeed;
     }
 
     public void Jump(Vector2 direction, float force)
     {
-
         Upward = -direction;
         _velocity = direction * force;
-        _jumping = true;
+        Jumping = true;
+        onSpiderJumped.Invoke();
     }
 
     private bool CheckWalls()
@@ -149,10 +157,11 @@ public class SpiderMoving : MonoBehaviour
     
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (_jumping)
+        if (Jumping)
         {
             Upward = collision.GetContact(0).normal;
-            _jumping = false;
+            Jumping = false;
+            onSpiderLanded.Invoke();
         }
     }
 
@@ -191,6 +200,11 @@ public class SpiderMoving : MonoBehaviour
     private Vector2 GetVectorRotated90(Vector2 vector, int sign)
     {
         return new Vector2(vector.y, -vector.x) * sign;
+    }
+
+    public Vector2 GetLookVector()
+    {
+        return transform.right;
     }
 
     void OnDrawGizmos()
