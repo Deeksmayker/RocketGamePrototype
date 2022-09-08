@@ -8,8 +8,11 @@ namespace Player
 {
     public class Rocket : MonoBehaviour
     {
+        [NonSerialized] public bool Slowing;
+
         [SerializeField] private float maxSpeed;
         [SerializeField] private float timeForMaxSpeed;
+        [SerializeField] private float slowingMultiplier;
 
         [SerializeField] private float maxLifeTime;
 
@@ -18,7 +21,7 @@ namespace Player
 
         [SerializeField] private ParticleSystem explodeParticles;
 
-        public static UnityEvent OnRocketExplosion = new UnityEvent();
+        public static UnityEvent OnRocketExplosion = new();
         //[Range(0, 1)] [SerializeField] private float acceleration;
         private Vector2 _direction;
         private Rigidbody2D _rb;
@@ -28,7 +31,7 @@ namespace Player
         private void Awake()
         {
             _rb = GetComponent<Rigidbody2D>();
-            
+
             Physics2D.IgnoreCollision(GetComponent<BoxCollider2D>(), FindObjectOfType<PlayerController>().gameObject.GetComponent<BoxCollider2D>());
         }
 
@@ -41,6 +44,15 @@ namespace Player
 
         private void FixedUpdate()
         {
+            if (Slowing)
+            {
+                _rb.velocity -= Vector2.right * Mathf.Sign(_rb.velocity.x);
+                _rb.velocity -= Vector2.up * _rb.velocity.magnitude / 1.5f;
+                SetDirection(_rb.velocity);
+                //Debug.Log(_rb.velocity);
+                return;
+            }
+            Debug.Log(1);
             var currentSpeed = CalculateCurrentSpeed();
             _rb.velocity = _direction * currentSpeed;
         }

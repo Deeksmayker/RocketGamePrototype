@@ -91,7 +91,7 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
             {
                 _lastPlatformNormal = _spider.GetUpwardVector();
 
-                _spider.JumpAndMakeWebRunner(jumpVector, force);
+                _spider.JumpAndMakeWeb(jumpVector, force);
                 return true;
             }
 

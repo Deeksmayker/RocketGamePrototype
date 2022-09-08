@@ -55,7 +55,7 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
             base.Update();
         }
 
-        public void JumpAndMakeWebRunner(Vector2 direction, float force)
+        public void JumpAndMakeWeb(Vector2 direction, float force)
         {
             SetMoveDirection(MoveDirections.Stay);
             StartCoroutine(_spiderMoving.JumpAndMakeWeb(direction, force));
