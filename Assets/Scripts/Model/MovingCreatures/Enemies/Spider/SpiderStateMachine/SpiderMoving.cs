@@ -1,8 +1,10 @@
+using Assets.Scripts.Model;
 using DefaultNamespace.Enemies.Spider.SpiderStateMachine;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
+using static DefaultNamespace.Enemies.Spider.SpiderStateMachine.SpiderStateManager;
 
 public class SpiderMoving : MonoBehaviour
 {
@@ -13,6 +15,11 @@ public class SpiderMoving : MonoBehaviour
     [Space]
     [SerializeField] private float rotationSpeed = 150f;
     [SerializeField] private float checkWallDistance = 2f;
+
+    [Space]
+    public GameObject WebObject;
+    [SerializeField] private float webSpawnInterval;
+    private bool _makingWeb;
 
     [Space]
     [Header("Events")]
@@ -82,7 +89,7 @@ public class SpiderMoving : MonoBehaviour
         else
             MakeGravity();
 
-        Debug.Log(Jumping);
+        //Debug.Log(Jumping);
         //Debug.Log("Up - " + Upward);
         //Debug.Log("right - " + transform.right);
         //Debug.Log("rotating - " + _rotating);
@@ -106,6 +113,20 @@ public class SpiderMoving : MonoBehaviour
         _velocity = direction * force;
         Jumping = true;
         onSpiderJumped.Invoke();
+    }
+
+    public IEnumerator JumpAndMakeWeb(Vector2 direction, float force)
+    {
+        yield return new WaitForSeconds(0.001f);
+        Jump(direction, force);
+        _makingWeb = true;
+
+        while (Jumping)
+        {
+            Instantiate(WebObject, (Vector2)transform.position, Quaternion.identity);
+                
+            yield return new WaitForSeconds(webSpawnInterval); 
+        }
     }
 
     private bool CheckWalls()
@@ -161,10 +182,15 @@ public class SpiderMoving : MonoBehaviour
     {
         if (Jumping)
         {
-            Debug.Log("Landed");
             Upward = collision.GetContact(0).normal;
             Jumping = false;
             onSpiderLanded.Invoke();
+
+            if (_makingWeb)
+            {
+                Instantiate(WebObject, transform.position, Quaternion.identity);
+                _makingWeb = false;
+            }
         }
     }
 

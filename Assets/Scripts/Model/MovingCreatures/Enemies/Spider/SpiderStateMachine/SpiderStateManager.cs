@@ -1,3 +1,4 @@
+using Assets.Scripts.Model;
 using DefaultNamespace.StateMachine;
 using System;
 using System.Collections;
@@ -29,11 +30,11 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
         public float maxJumpDistance = 10f;
         public float jumpForce = 20f;
     
-        [Header("Seeking State")]
-        public float SeekingStateSpeed;
-        public SpiderSeekingPlaceState SeekingPlaceState;
+        [Header("Web making state")]
+        private SpiderWebMakingState _webMakingState;
+        public float WebMakingStateSpeed;
         [Range(0, 1)] public float chanceToJump;
-        [Range(0, 1)] public float chanceToMakeWeb;
+        
 
 
         private void Start()
@@ -42,9 +43,9 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
             _rb.gravityScale = 0;
             _spiderMoving = GetComponent<SpiderMoving>();
             GroundLayer = _spiderMoving.GroundLayer;
-            SeekingPlaceState = new SpiderSeekingPlaceState();
+            _webMakingState = new SpiderWebMakingState();
             
-            SetState(SeekingPlaceState);
+            SetState(_webMakingState);
         }
 
         protected override void Update()
@@ -54,14 +55,11 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
             base.Update();
         }
 
-        public void JumpAndMakeWebRunner(Vector2 direction, float forse) => StartCoroutine(JumpAndMakeWeb(direction, forse));
-
-        private IEnumerator JumpAndMakeWeb(Vector2 direction, float force)
+        public void JumpAndMakeWebRunner(Vector2 direction, float force)
         {
             SetMoveDirection(MoveDirections.Stay);
-            yield return new WaitForSeconds(0.001f);
-            _spiderMoving.Jump(direction, force);
-        }
+            StartCoroutine(_spiderMoving.JumpAndMakeWeb(direction, force));
+        } 
 
         public void SetSpeed(float value)
         {

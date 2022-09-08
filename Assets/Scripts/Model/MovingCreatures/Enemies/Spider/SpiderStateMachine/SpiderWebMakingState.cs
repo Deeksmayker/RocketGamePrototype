@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
 {
-    public class SpiderSeekingPlaceState : IState
+    public class SpiderWebMakingState : IState
     {
         private SpiderStateManager _spider;
 
@@ -21,7 +21,7 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
         {
             _spider = (SpiderStateManager)manager;
 
-            _spider.SetSpeed(_spider.SeekingStateSpeed);
+            _spider.SetSpeed(_spider.WebMakingStateSpeed);
 
             _timePassedFromJump = _timeToForgetLastPlatform;
 
@@ -79,19 +79,19 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
 
         private void CalculateJumpPossibility()
         {
-            CheckWallAndJumpIfNeed(_rightRayHit, new[] { Vector2.up, Vector2.down }, Vector2.right + Vector2.up);
-            CheckWallAndJumpIfNeed(_leftRayHit, new[] { Vector2.up, Vector2.down }, Vector2.left + Vector2.up);
-            CheckWallAndJumpIfNeed(_upRayHit, new[] {Vector2.right, Vector2.left} , Vector2.up);
-            CheckWallAndJumpIfNeed(_downRayHit, new[] { Vector2.right, Vector2.left }, Vector2.down);
+            CheckWallAndJumpIfNeed(_rightRayHit, new[] { Vector2.up, Vector2.down }, Vector2.right + Vector2.up, _spider.jumpForce);
+            CheckWallAndJumpIfNeed(_leftRayHit, new[] { Vector2.up, Vector2.down }, Vector2.left + Vector2.up, _spider.jumpForce);
+            CheckWallAndJumpIfNeed(_upRayHit, new[] {Vector2.right, Vector2.left} , Vector2.up, _spider.jumpForce * 3);
+            CheckWallAndJumpIfNeed(_downRayHit, new[] { Vector2.right, Vector2.left }, Vector2.down, _spider.jumpForce);
         }
 
-        private bool CheckWallAndJumpIfNeed(RaycastHit2D hit, Vector2[] upwardsForThisDirection, Vector2 jumpVector)
+        private bool CheckWallAndJumpIfNeed(RaycastHit2D hit, Vector2[] upwardsForThisDirection, Vector2 jumpVector, float force)
         {
             if (WallAvailableForJump(hit, upwardsForThisDirection))
             {
                 _lastPlatformNormal = _spider.GetUpwardVector();
 
-                _spider.JumpAndMakeWebRunner(jumpVector, _spider.jumpForce);
+                _spider.JumpAndMakeWebRunner(jumpVector, force);
                 return true;
             }
 
