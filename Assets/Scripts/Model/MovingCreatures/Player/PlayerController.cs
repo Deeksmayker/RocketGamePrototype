@@ -15,9 +15,10 @@ public class PlayerController : MonoBehaviour
     [Header("Jump and air movement")]
     public float jumpForce;
     public float fallMultiplier;
-    [Range(0, 1)] [SerializeField] private float airAcceleration;
-    [Range(0, 1)] [SerializeField] private float airDeceleration;
-    [Range(0, 1)] [SerializeField] private float jumpUpDeceleration;
+    [Range(0, 1)][SerializeField] private float airAcceleration;
+    [Range(0, 1)][SerializeField] private float airDeceleration;
+    [Range(0, 1)][SerializeField] private float jumpUpDeceleration;
+    [Range(0, 1)][SerializeField] private float airOverSpeedDeceleration;
 
     [Header("Walls")]
     [SerializeField] private float maxWallSlideDownSpeed;
@@ -82,6 +83,9 @@ public class PlayerController : MonoBehaviour
 
         if (IsWallJumping)
             accelRate /= 3;
+
+        if (Mathf.Abs(_rb.velocity.x) > walkTargetSpeed && !_collisionDetector.onGround)
+            accelRate = airOverSpeedDeceleration;
 
         var horizontalVelocity = Mathf.Lerp(_rb.velocity.x, targetSpeed, accelRate);
 
