@@ -8,7 +8,8 @@ public class SpiderMoving : MonoBehaviour
 {
     [Header("Moving")]
     public float speed;
-    [SerializeField] private LayerMask groundLayer;
+    public LayerMask GroundLayer;
+
     [Space]
     [SerializeField] private float rotationSpeed = 150f;
     [SerializeField] private float checkWallDistance = 2f;
@@ -81,10 +82,11 @@ public class SpiderMoving : MonoBehaviour
         else
             MakeGravity();
 
-        /*Debug.Log("Up - " + Upward);
-        Debug.Log("right - " + transform.right);
-        Debug.Log("rotating - " + _rotating);
-        Debug.Log("Angle to rotate - " + _angleToRotate);*/
+        Debug.Log(Jumping);
+        //Debug.Log("Up - " + Upward);
+        //Debug.Log("right - " + transform.right);
+        //Debug.Log("rotating - " + _rotating);
+        //Debug.Log("Angle to rotate - " + _angleToRotate);
 
         Climbing = CheckClimbing();
 
@@ -109,7 +111,7 @@ public class SpiderMoving : MonoBehaviour
     private bool CheckWalls()
     {
         var ray = new Ray2D((Vector2)transform.position, _moveVector.normalized);
-        var hit = Physics2D.Raycast(ray.origin, ray.direction, checkWallDistance, groundLayer);
+        var hit = Physics2D.Raycast(ray.origin, ray.direction, checkWallDistance, GroundLayer);
 
         if (hit)
         {
@@ -129,7 +131,7 @@ public class SpiderMoving : MonoBehaviour
 
         var ray = new Ray2D(rayPos, -transform.up);
         //Debug.DrawRay(ray.origin, ray.direction);
-        var hit = Physics2D.Raycast(ray.origin, ray.direction, 3f, groundLayer);
+        var hit = Physics2D.Raycast(ray.origin, ray.direction, 3f, GroundLayer);
 
         if (hit)
             return false;
@@ -159,6 +161,7 @@ public class SpiderMoving : MonoBehaviour
     {
         if (Jumping)
         {
+            Debug.Log("Landed");
             Upward = collision.GetContact(0).normal;
             Jumping = false;
             onSpiderLanded.Invoke();

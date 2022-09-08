@@ -23,6 +23,8 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
         private float _currentSpeed;
         private MoveDirections _currentMoveDirection = MoveDirections.Stay;
 
+        public LayerMask GroundLayer { get; private set; }
+
         [Header("Moving")]
         public float maxJumpDistance = 10f;
         public float jumpForce = 20f;
@@ -39,6 +41,7 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
             _rb = GetComponent<Rigidbody2D>();
             _rb.gravityScale = 0;
             _spiderMoving = GetComponent<SpiderMoving>();
+            GroundLayer = _spiderMoving.GroundLayer;
             SeekingPlaceState = new SpiderSeekingPlaceState();
             
             SetState(SeekingPlaceState);

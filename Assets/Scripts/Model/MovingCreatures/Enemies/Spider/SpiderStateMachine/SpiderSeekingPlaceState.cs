@@ -6,9 +6,6 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
     public class SpiderSeekingPlaceState : IState
     {
         private SpiderStateManager _spider;
-        private Rigidbody2D _rb;
-
-        private float _speed;
 
         private RaycastHit2D _rightRayHit;
         private RaycastHit2D _leftRayHit;
@@ -23,7 +20,6 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
         public void Enter(StateManager manager)
         {
             _spider = (SpiderStateManager)manager;
-            _rb = _spider.GetComponent<Rigidbody2D>();
 
             _spider.SetSpeed(_spider.SeekingStateSpeed);
 
@@ -43,30 +39,39 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
             }
             _timePassedFromJump += Time.deltaTime;
 
-            if (!_isSetUpMoveDirection && _timePassedFromJump >= 1)
+            UpdateDirectionRayHits();
+
+            if (!_isSetUpMoveDirection)
             {
-                _spider.SetMoveDirection((SpiderStateManager.MoveDirections)GetClosestWallDirection());
-                _isSetUpMoveDirection = true;
+                if (_timePassedFromJump >= 1)
+                {
+                    _spider.SetMoveDirection((SpiderStateManager.MoveDirections)GetClosestWallDirection());
+                    _isSetUpMoveDirection = true;
+                }
+
+                return;
             }
 
-            UpdateDirectionsRayHits();
-            CalculateJumpPossibility();
+            if (_timePassedFromJump >= 2)
+            {
+                CalculateJumpPossibility();
+            }
         }
 
-        private void UpdateDirectionsRayHits()
+        private void UpdateDirectionRayHits()
         {
-            _rightRayHit = Physics2D.Raycast(_spider.transform.position, Vector2.right, 100f);
-            _leftRayHit = Physics2D.Raycast(_spider.transform.position, Vector2.left, 100f);
-            _upRayHit = Physics2D.Raycast(_spider.transform.position, Vector2.up, 100f);
-            _downRayHit = Physics2D.Raycast(_spider.transform.position, Vector2.down, 100f);
+            _rightRayHit = Physics2D.Raycast(_spider.transform.position, Vector2.right, 100f, _spider.GroundLayer);
+            _leftRayHit = Physics2D.Raycast(_spider.transform.position, Vector2.left, 100f, _spider.GroundLayer);
+            _upRayHit = Physics2D.Raycast(_spider.transform.position, Vector2.up, 100f, _spider.GroundLayer);
+            _downRayHit = Physics2D.Raycast(_spider.transform.position, Vector2.down, 100f, _spider.GroundLayer);
         }
 
         private int GetClosestWallDirection()
         {
-            var notOnRightWall = _rightRayHit.normal != _spider.GetUpwardVector();
-            var notOnLeftWall = _leftRayHit.normal != _spider.GetUpwardVector();
+            var onRightWall = _rightRayHit.normal == _spider.GetUpwardVector();
+            var onLeftWall = _leftRayHit.normal == _spider.GetUpwardVector();
 
-            if (_rightRayHit.distance <= _leftRayHit.distance && notOnRightWall || _leftRayHit.normal == _spider.GetUpwardVector())
+            if (_rightRayHit.distance <= _leftRayHit.distance && !onRightWall || onLeftWall)
                 return 1;
             else
                 return -1;
@@ -106,17 +111,6 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
                 && wallNotSameHeJumpedFrom
                 && hit.normal != _spider.GetUpwardVector();
         }
-
-
-        /*private int GetClosestWallDistance()
-        {
-            return (int)Mathf.Min(_distanceToRightWall, _distanceToLeftWall);
-        }
-
-        private int GetFarestWallDistance()
-        {
-            return (int)Mathf.Max(_distanceToRightWall, _distanceToLeftWall);
-        }*/
 
         public void Exit()
         {
