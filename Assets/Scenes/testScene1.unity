@@ -1529,5 +1529,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6341571826258908373, guid: 19fd15163ca92154fb00fba3ae894495, type: 3}
+      propertyPath: webSpawnInterval
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6341571826258908373, guid: 19fd15163ca92154fb00fba3ae894495, type: 3}
+      propertyPath: PointOfSupportWeb
+      value: 
+      objectReference: {fileID: 4821729543381044485, guid: 19d0fc15928a5814b8cf3dd7ebad97bc, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 19fd15163ca92154fb00fba3ae894495, type: 3}

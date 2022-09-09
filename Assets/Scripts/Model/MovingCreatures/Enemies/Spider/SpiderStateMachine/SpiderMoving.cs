@@ -1,6 +1,7 @@
 using Assets.Scripts.Model;
 using DefaultNamespace.Enemies.Spider.SpiderStateMachine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
@@ -18,8 +19,10 @@ public class SpiderMoving : MonoBehaviour
 
     [Space]
     public GameObject WebObject;
+    public GameObject PointOfSupportWeb;
     [SerializeField] private float webSpawnInterval;
     private bool _makingWeb;
+    private GameObject _startPointOfSupport;
 
     [Space]
     [Header("Events")]
@@ -120,10 +123,12 @@ public class SpiderMoving : MonoBehaviour
         yield return new WaitForSeconds(0.001f);
         Jump(direction, force);
         _makingWeb = true;
+        _startPointOfSupport = Instantiate(PointOfSupportWeb, (Vector2)transform.position + Upward / 2, Quaternion.identity);
 
         while (Jumping)
         {
-            Instantiate(WebObject, (Vector2)transform.position, Quaternion.identity);
+            var web = Instantiate(WebObject, (Vector2)transform.position, Quaternion.identity);
+            _startPointOfSupport.GetComponent<PointOfSupportWeb>().ConnectedWebs.Add(web);
                 
             yield return new WaitForSeconds(webSpawnInterval); 
         }
@@ -188,10 +193,31 @@ public class SpiderMoving : MonoBehaviour
 
             if (_makingWeb)
             {
-                Instantiate(WebObject, transform.position, Quaternion.identity);
+                var endSupportPoint = Instantiate(PointOfSupportWeb, (Vector2)transform.position, Quaternion.identity);
+                var web = Instantiate(WebObject, transform.position, Quaternion.identity);
+
+                _startPointOfSupport.GetComponent<PointOfSupportWeb>().ConnectedWebs.Add(web);
+                _startPointOfSupport.GetComponent<PointOfSupportWeb>().ConnectedWebs.Add(endSupportPoint);
+                
+                endSupportPoint.GetComponent<PointOfSupportWeb>().ConnectedWebs = GetReversedWebListVersion();
+
                 _makingWeb = false;
             }
         }
+    }
+
+    private List<GameObject> GetReversedWebListVersion()
+    {
+        var webListCopy = new List<GameObject>();
+        foreach(var web in _startPointOfSupport.GetComponent<PointOfSupportWeb>().ConnectedWebs)
+        {
+            webListCopy.Add(web);
+        }
+        webListCopy.Reverse();
+        webListCopy.RemoveAt(0);
+        webListCopy.Add(_startPointOfSupport);
+
+        return webListCopy;
     }
 
 

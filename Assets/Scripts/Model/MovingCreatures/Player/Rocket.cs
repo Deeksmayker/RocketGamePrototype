@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Model;
+using System;
 using System.Collections;
 using Unity.Mathematics;
 using UnityEngine;
@@ -99,10 +100,12 @@ namespace Player
             b.radius = explodeRadius - 1;
         }
 
-        private void PushObjectsInExplosionRange(Collider2D[] rigidbodiesInArea)
+        private void PushObjectsInExplosionRange(Collider2D[] collidersInArea)
         {
-            foreach (var body in rigidbodiesInArea)
+            foreach (var body in collidersInArea)
             {
+                DestructBodyIfNeed(body.gameObject);
+
                 if (body.GetComponent<Rigidbody2D>() == null)
                     continue;
 
@@ -118,6 +121,18 @@ namespace Player
             }
         }
 
+        private void DestructBodyIfNeed(GameObject body)
+        {
+            var bodyScripts = body.GetComponents<MonoBehaviour>();
+            foreach (var script in bodyScripts)
+            {
+                if (script is IDestructable destructable)
+                {
+                    destructable.TakeDamage();
+                }
+            }
+        }
+
         public void SetLifeTime(float value)
         {
             _lifetime = value;
@@ -127,9 +142,9 @@ namespace Player
         {
             OnRocketExplosion.Invoke();
             ChangeParticleRadius();
-            var rigidbodiesInArea = Physics2D.OverlapCircleAll(transform.position, explodeRadius);
+            var collidersInArea = Physics2D.OverlapCircleAll(transform.position, explodeRadius);
 
-            PushObjectsInExplosionRange(rigidbodiesInArea);
+            PushObjectsInExplosionRange(collidersInArea);
         }
     }
 }
