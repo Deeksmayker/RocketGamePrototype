@@ -51,7 +51,7 @@ namespace Player
                 _rb.velocity -= Vector2.up * _rb.velocity.magnitude * ySlowingMultiplier;
                 if (_rb.velocity.y <= 0)
                 {
-                    _rb.velocity = new Vector2(_rb.velocity.x, -10);
+                    _rb.velocity = new Vector2(_rb.velocity.x, -5);
                 }
                 SetDirection(_rb.velocity);
                 //Debug.Log(_rb.velocity);

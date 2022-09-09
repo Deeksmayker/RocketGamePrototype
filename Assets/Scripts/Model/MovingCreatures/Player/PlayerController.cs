@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
     [Range(0, 1)][SerializeField] private float airDeceleration;
     [Range(0, 1)][SerializeField] private float jumpUpDeceleration;
     [Range(0, 1)][SerializeField] private float airOverSpeedDeceleration;
+    [Space]
+    [Range(0, 1)][SerializeField] private float inWebVelocityDeceleration;
 
     [Header("Walls")]
     [SerializeField] private float maxWallSlideDownSpeed;
@@ -33,6 +35,7 @@ public class PlayerController : MonoBehaviour
     [NonSerialized] public bool InRocketJump;
     [NonSerialized] public bool IsWallJumping;
     [NonSerialized] public bool IsWallGrab;
+    [NonSerialized] public bool InSpiderWeb;
 
     private GameInputManager _input;
     private Rigidbody2D _rb;
@@ -68,6 +71,11 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (InSpiderWeb)
+        {
+            _rb.velocity = Vector2.Lerp(_rb.velocity, Vector2.zero, inWebVelocityDeceleration);
+        }
+
         Walk();
         CalculateInAirVelocity();
         if (_collisionDetector.onWall && _input.move.x != 0 && !Mathf.Sign(_collisionDetector.wallSide).Equals(Mathf.Sign(_input.move.x)))

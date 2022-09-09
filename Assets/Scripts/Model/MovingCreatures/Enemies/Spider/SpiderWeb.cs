@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SpiderWeb : MonoBehaviour
 {
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.GetComponent<SpiderMoving>() != null)
             return;
@@ -14,6 +14,12 @@ public class SpiderWeb : MonoBehaviour
         if (rocket != null)
         {
             rocket.Slowing = true;
+        }
+
+        var player = collision.GetComponent<PlayerController>();
+        if (player != null)
+        {
+            player.InSpiderWeb = true;
         }
     }
 
@@ -27,6 +33,12 @@ public class SpiderWeb : MonoBehaviour
         {
             rocket.Slowing = false;
             rocket.SetLifeTime(0);
+        }
+
+        var player = collision.GetComponent<PlayerController>();
+        if (player != null)
+        {
+            player.InSpiderWeb = false;
         }
     }
 }
