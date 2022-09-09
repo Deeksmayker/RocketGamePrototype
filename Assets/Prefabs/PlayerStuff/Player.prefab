@@ -308,6 +308,7 @@ MonoBehaviour:
   airDeceleration: 0.1
   jumpUpDeceleration: 0.13
   airOverSpeedDeceleration: 0.05
+  inWebVelocityDeceleration: 0.5
   maxWallSlideDownSpeed: 0
   wallSlideUpDeceleration: 0
   wallSlideDownAcceleration: 0.2

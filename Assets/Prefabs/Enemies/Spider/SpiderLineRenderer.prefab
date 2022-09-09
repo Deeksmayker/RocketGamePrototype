@@ -458,7 +458,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxJumpDistance: 10
   jumpForce: 15
-  SeekingStateSpeed: 5
+  WebMakingStateSpeed: 5
+  chanceToJump: 0.5
 --- !u!114 &6341571826258908373
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -471,12 +472,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3ce41e159d753c4dad56bcadf8f7d1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundLayer:
+  speed: 0
+  GroundLayer:
     serializedVersion: 2
     m_Bits: 64
   rotationSpeed: 150
   checkWallDistance: 2
-  CurrentSpeed: 0
+  WebObject: {fileID: 1024475874497964459, guid: 76a6dff6d8c438f4fa68225d9fbd19d6, type: 3}
+  webSpawnInterval: 0.1
+  onSpiderJumped:
+    m_PersistentCalls:
+      m_Calls: []
+  onSpiderLanded:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &6341571826328700537
 GameObject:
   m_ObjectHideFlags: 0
