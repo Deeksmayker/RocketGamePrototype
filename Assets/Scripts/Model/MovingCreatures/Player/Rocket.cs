@@ -12,7 +12,8 @@ namespace Player
 
         [SerializeField] private float maxSpeed;
         [SerializeField] private float timeForMaxSpeed;
-        [SerializeField] private float slowingMultiplier;
+        [SerializeField][Range(0, 1)] private float ySlowingMultiplier;
+        [SerializeField][Range(0, 1)] private float xSlowingMultiplier;
 
         [SerializeField] private float maxLifeTime;
 
@@ -46,13 +47,17 @@ namespace Player
         {
             if (Slowing)
             {
-                _rb.velocity -= Vector2.right * Mathf.Sign(_rb.velocity.x);
-                _rb.velocity -= Vector2.up * _rb.velocity.magnitude / 1.5f;
+                _rb.velocity -= Vector2.right * Mathf.Sign(_rb.velocity.x) * _rb.velocity.magnitude * xSlowingMultiplier;
+                _rb.velocity -= Vector2.up * _rb.velocity.magnitude * ySlowingMultiplier;
+                if (_rb.velocity.y <= 0)
+                {
+                    _rb.velocity = new Vector2(_rb.velocity.x, -10);
+                }
                 SetDirection(_rb.velocity);
                 //Debug.Log(_rb.velocity);
                 return;
             }
-            Debug.Log(1);
+
             var currentSpeed = CalculateCurrentSpeed();
             _rb.velocity = _direction * currentSpeed;
         }
@@ -111,6 +116,11 @@ namespace Player
                 }
                 body.GetComponent<Rigidbody2D>().AddForce(direction.normalized * explodePower * 5);
             }
+        }
+
+        public void SetLifeTime(float value)
+        {
+            _lifetime = value;
         }
 
         private void OnDestroy()

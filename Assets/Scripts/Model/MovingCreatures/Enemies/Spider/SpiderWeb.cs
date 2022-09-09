@@ -26,6 +26,7 @@ public class SpiderWeb : MonoBehaviour
         if (rocket != null)
         {
             rocket.Slowing = false;
+            rocket.SetLifeTime(0);
         }
     }
 }
