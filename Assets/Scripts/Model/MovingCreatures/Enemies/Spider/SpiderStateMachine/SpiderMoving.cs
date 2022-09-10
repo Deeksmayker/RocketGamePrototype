@@ -120,13 +120,15 @@ public class SpiderMoving : MonoBehaviour
 
     public IEnumerator JumpAndMakeWeb(Vector2 direction, float force)
     {
-        yield return new WaitForSeconds(0.001f);
         Jump(direction, force);
         _makingWeb = true;
         _startPointOfSupport = Instantiate(PointOfSupportWeb, (Vector2)transform.position + Upward / 2, Quaternion.identity);
 
         while (Jumping)
         {
+            if (_startPointOfSupport == null || _startPointOfSupport.GetComponent<PointOfSupportWeb>().Destroyed)
+                yield break;
+
             var web = Instantiate(WebObject, (Vector2)transform.position, Quaternion.identity);
             _startPointOfSupport.GetComponent<PointOfSupportWeb>().ConnectedWebs.Add(web);
                 
@@ -193,13 +195,16 @@ public class SpiderMoving : MonoBehaviour
 
             if (_makingWeb)
             {
-                var endSupportPoint = Instantiate(PointOfSupportWeb, (Vector2)transform.position, Quaternion.identity);
-                var web = Instantiate(WebObject, transform.position, Quaternion.identity);
+                if (_startPointOfSupport != null && !_startPointOfSupport.GetComponent<PointOfSupportWeb>().Destroyed)
+                {
+                    var endSupportPoint = Instantiate(PointOfSupportWeb, (Vector2)transform.position, Quaternion.identity);
+                    var web = Instantiate(WebObject, transform.position, Quaternion.identity);
 
-                _startPointOfSupport.GetComponent<PointOfSupportWeb>().ConnectedWebs.Add(web);
-                _startPointOfSupport.GetComponent<PointOfSupportWeb>().ConnectedWebs.Add(endSupportPoint);
-                
-                endSupportPoint.GetComponent<PointOfSupportWeb>().ConnectedWebs = GetReversedWebListVersion();
+                    _startPointOfSupport.GetComponent<PointOfSupportWeb>().ConnectedWebs.Add(web);
+                    _startPointOfSupport.GetComponent<PointOfSupportWeb>().ConnectedWebs.Add(endSupportPoint);
+
+                    endSupportPoint.GetComponent<PointOfSupportWeb>().ConnectedWebs = GetReversedWebListVersion();
+                }
 
                 _makingWeb = false;
             }

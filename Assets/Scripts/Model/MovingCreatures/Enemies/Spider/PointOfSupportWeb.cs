@@ -7,6 +7,8 @@ public class PointOfSupportWeb : MonoBehaviour, IDestructable
 {
     public List<GameObject> ConnectedWebs = new();
 
+    public bool Destroyed { get; private set; }
+
     [SerializeField] private LayerMask groundLayer;
 
     private void Start()
@@ -16,6 +18,7 @@ public class PointOfSupportWeb : MonoBehaviour, IDestructable
 
     public void TakeDamage()
     {
+        Destroyed = true;
         StartCoroutine(DestroyWebs());
     }
 
@@ -35,10 +38,10 @@ public class PointOfSupportWeb : MonoBehaviour, IDestructable
 
     private IEnumerator DestroyWebs()
     {
-        Debug.Log(ConnectedWebs.Count);
-        foreach (var web in ConnectedWebs)
+        for (var i = 0; i < ConnectedWebs.Count; i++)
         {
-            Destroy(web);
+            if (ConnectedWebs[i] != null)
+                Destroy(ConnectedWebs[i]);
             yield return new WaitForSeconds(0.1f);
         }
 
