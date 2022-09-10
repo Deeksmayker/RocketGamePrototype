@@ -164,7 +164,7 @@ public class SpiderMoving : MonoBehaviour
         if (hit)
             return false;
 
-        Upward = GetVectorRotated90(Upward, CurrentMoveDirection);
+        Upward = Utils.GetVectorRotated90(Upward, CurrentMoveDirection);
         return true;
     }
 
@@ -172,13 +172,13 @@ public class SpiderMoving : MonoBehaviour
     {
         var directionModifier = CurrentMoveDirection == 0 ? 1 : CurrentMoveDirection;
 
-        var turnedInRightAngle = CompareNumsApproximately(Vector2.Angle(transform.right, GetVectorRotated90(Upward, 1)), 0, 2);
+        bool turnedInRightAngle = Utils.CompareNumsApproximately(Vector2.Angle(transform.right, Utils.GetVectorRotated90(Upward, 1)), 0, 2);
         if (turnedInRightAngle)
         {
             return false;
         }
 
-        _angleToRotate = Vector2.SignedAngle(Vector2.right, GetVectorRotated90(Upward, directionModifier));
+        _angleToRotate = Vector2.SignedAngle(Vector2.right, Utils.GetVectorRotated90(Upward, directionModifier));
         
          return true;
     }
@@ -225,28 +225,6 @@ public class SpiderMoving : MonoBehaviour
         return webListCopy;
     }
 
-
-    public bool CompareVectors(Vector2 me, Vector2 other, float allowedDifference = 0.01f)
-    {
-        var dx = me.x - other.x;
-        if (Mathf.Abs(dx) > allowedDifference)
-            return false;
-
-        var dy = me.y - other.y;
-        if (Mathf.Abs(dy) > allowedDifference)
-            return false;
-
-
-        return true;
-    }
-
-    public bool CompareNumsApproximately(float first, float second, float allowedDifference)
-    {
-        var d = first - second;
-
-        return Mathf.Abs(d) < allowedDifference;
-    }
-
     private void StickToGround()
     {
         _velocity -= Upward;
@@ -255,11 +233,6 @@ public class SpiderMoving : MonoBehaviour
     private void MakeGravity()
     {
         _velocity -= Vector2.up;
-    }
-
-    private Vector2 GetVectorRotated90(Vector2 vector, int sign)
-    {
-        return new Vector2(vector.y, -vector.x) * sign;
     }
 
     public Vector2 GetLookVector()
