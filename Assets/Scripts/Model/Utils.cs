@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Model
@@ -11,9 +6,9 @@ namespace Assets.Scripts.Model
     public static class Utils
     {
 
-        public static bool CheckRandom(float chance)
+        public static bool CheckChance(float chance)
         {
-            return Random.Range(0, 1) <= chance;
+            return Random.Range(0f, 1f) <= chance;
         }
 
         public static Vector2 GetRandomVector2()
