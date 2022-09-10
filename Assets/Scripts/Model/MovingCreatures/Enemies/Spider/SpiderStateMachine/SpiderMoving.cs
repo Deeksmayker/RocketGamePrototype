@@ -93,7 +93,8 @@ public class SpiderMoving : MonoBehaviour
         //Debug.Log("Up - " + Upward);
         //Debug.Log("right - " + transform.right);
         //Debug.Log("rotating - " + _rotating);
-        Debug.Log("Angle to rotate - " + _angleToRotate);
+        //Debug.Log("Angle to rotate - " + _angleToRotate);
+        //Debug.Log(_velocity);
 
         Climbing = CheckClimbing();
 
@@ -224,7 +225,8 @@ public class SpiderMoving : MonoBehaviour
 
     private void StickToGround()
     {
-        _velocity -= Upward;
+        if (!_rotating)
+            _velocity -= Upward;
     }
 
     private void MakeGravity()

@@ -93,10 +93,6 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
             {
                 _lastPlatformNormal = _spider.GetUpwardVector();
 
-
-                _spider.JumpAndMakeWeb(jumpVector, force);
-                return true;
-
                 if (Utils.CheckChance(_spider.chanceToJump))
                 {
                     _spider.JumpAndMakeWeb(jumpVector, force);
@@ -120,7 +116,8 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
             return hit.distance <= _spider.maxJumpDistance
                 && spiderNormalNotPerpendicularToWall
                 && wallNotSameHeJumpedFrom
-                && hit.normal != _spider.GetUpwardVector();
+                && hit.normal != _spider.GetUpwardVector()
+                && !_spider.Jumping();
         }
 
         public void Exit()
