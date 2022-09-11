@@ -63,7 +63,7 @@ public class SpiderMoving : MonoBehaviour
     {
         if (CurrentMoveDirection != 0 && !Jumping)
         {
-            Move();
+            Walk();
             OnChasm = CheckChasm();
             CheckWalls();
         }
@@ -102,7 +102,7 @@ public class SpiderMoving : MonoBehaviour
         _rb.velocity = _velocity;
     }
                                                                                                         
-    private void Move()
+    private void Walk()
     {
         var targetSpeed = _moveVector.normalized * speed;
 
