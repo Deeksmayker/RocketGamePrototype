@@ -1,13 +1,12 @@
 ﻿using Assets.Scripts.Model;
 using System;
-using System.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Player
 {
-    public class Rocket : MonoBehaviour
+    public class Rocket : MonoBehaviour, IDestructable
     {
         [NonSerialized] public bool Slowing;
 
@@ -55,7 +54,7 @@ namespace Player
                     _rb.velocity = new Vector2(_rb.velocity.x, -5);
                 }
                 SetDirection(_rb.velocity);
-                //Debug.Log(_rb.velocity);
+                SetLifeTime(0);
                 return;
             }
 
@@ -131,6 +130,11 @@ namespace Player
                     destructable.TakeDamage();
                 }
             }
+        }
+
+        public void TakeDamage()
+        {
+            Destroy(gameObject);
         }
 
         public void SetLifeTime(float value)

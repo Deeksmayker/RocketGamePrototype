@@ -1,4 +1,5 @@
-﻿using DefaultNamespace.StateMachine;
+﻿using Assets.Scripts.Model;
+using DefaultNamespace.StateMachine;
 using UnityEngine;
 
 namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
@@ -24,7 +25,8 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
             _spider.SetSpeed(_spider.WebMakingStateSpeed);
 
             _timePassedFromJump = _timeToForgetLastPlatform;
-
+            
+            UpdateDirectionRayHits();
             _spider.SetMoveDirection((SpiderStateManager.MoveDirections)GetClosestWallDirection());
             _isSetUpMoveDirection = true;
         }
@@ -91,8 +93,13 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
             {
                 _lastPlatformNormal = _spider.GetUpwardVector();
 
-                _spider.JumpAndMakeWeb(jumpVector, force);
-                return true;
+                if (Utils.CheckChance(_spider.chanceToJump))
+                {
+                    _spider.JumpAndMakeWeb(jumpVector, force);
+                    return true;
+                }
+                _timePassedFromJump = 0;
+                return false;
             }
 
             return false;
@@ -109,7 +116,8 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
             return hit.distance <= _spider.maxJumpDistance
                 && spiderNormalNotPerpendicularToWall
                 && wallNotSameHeJumpedFrom
-                && hit.normal != _spider.GetUpwardVector();
+                && hit.normal != _spider.GetUpwardVector()
+                && !_spider.Jumping();
         }
 
         public void Exit()
