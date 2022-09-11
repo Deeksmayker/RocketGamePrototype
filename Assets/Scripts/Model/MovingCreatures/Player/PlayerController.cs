@@ -2,6 +2,7 @@ using Player;
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(GameInputManager))]
 [RequireComponent(typeof(Rigidbody2D))]
@@ -40,6 +41,10 @@ public class PlayerController : MonoBehaviour
     private GameInputManager _input;
     private Rigidbody2D _rb;
     private CollisionDetector _collisionDetector;
+
+    public UnityEvent onJump = new(); 
+    public UnityEvent onWallJump = new();
+    public UnityEvent onRocketJump = new();
 
 
     private void Awake()
@@ -103,12 +108,14 @@ public class PlayerController : MonoBehaviour
     
     private void Jump(Vector2 dir, bool onWall)
     {
+        onJump.Invoke();
         IsJumping = true;
         _rb.velocity = new Vector2(_rb.velocity.x, 0) + dir * jumpForce;
     }
 
     private void WallJump()
     {
+        onWallJump.Invoke();
         Vector2 wallDir = _collisionDetector.onRightWall ? Vector2.left : Vector2.right;
 
         Jump((Vector2.up / 1.5f + wallDir / 1.5f), true);
@@ -154,5 +161,21 @@ public class PlayerController : MonoBehaviour
             velocity = new Vector2(velocity.x, Mathf.Lerp(velocity.y, 0, decelerationMultiplier));
             _rb.velocity = velocity;
         }
+    }
+
+    public void RocketJump()
+    {
+        onRocketJump.Invoke();
+        InRocketJump = true;
+    }
+
+    public bool IsWalking()
+    {
+        return Mathf.Abs(_rb.velocity.x) > 0 && _collisionDetector.onGround;
+    }
+
+    public int GetMoveDirection()
+    {
+        return (int)Mathf.Sign(_rb.velocity.x);
     }
 }

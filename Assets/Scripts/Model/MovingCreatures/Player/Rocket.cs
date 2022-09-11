@@ -113,7 +113,7 @@ namespace Player
                 if (body.GetComponent<PlayerController>() != null)
                 {
                     body.GetComponent<Rigidbody2D>().velocity = direction.normalized * explodePower;
-                    body.GetComponent<PlayerController>().InRocketJump = true;
+                    body.GetComponent<PlayerController>().RocketJump();
                     continue;
                 }
                 body.GetComponent<Rigidbody2D>().AddForce(direction.normalized * explodePower * 5);

@@ -479,6 +479,7 @@ MonoBehaviour:
   rotationSpeed: 150
   checkWallDistance: 2
   WebObject: {fileID: 1024475874497964459, guid: 76a6dff6d8c438f4fa68225d9fbd19d6, type: 3}
+  PointOfSupportWeb: {fileID: 4821729543381044485, guid: 19d0fc15928a5814b8cf3dd7ebad97bc, type: 3}
   webSpawnInterval: 0.1
   onSpiderJumped:
     m_PersistentCalls:

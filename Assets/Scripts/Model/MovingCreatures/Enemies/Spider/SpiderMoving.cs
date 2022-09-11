@@ -25,6 +25,7 @@ public class SpiderMoving : MonoBehaviour
     [Header("Events")]
     public UnityEvent onSpiderJumped = new();
     public UnityEvent onSpiderLanded = new();
+    public UnityEvent onSpiderStartMakingWeb = new();
 
     private Rigidbody2D _rb;
     private Vector2 _velocity;
@@ -119,6 +120,7 @@ public class SpiderMoving : MonoBehaviour
     public IEnumerator JumpAndMakeWeb(Vector2 direction, float force)
     {
         Jump(direction, force);
+        onSpiderStartMakingWeb.Invoke();
         _makingWeb = true;
         _startPointOfSupport = Instantiate(PointOfSupportWeb, (Vector2)transform.position + Upward / 2, Quaternion.identity);
 
