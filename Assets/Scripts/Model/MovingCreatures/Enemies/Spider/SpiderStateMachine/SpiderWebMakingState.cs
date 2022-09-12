@@ -27,7 +27,7 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
             _timePassedFromJump = _timeToForgetLastPlatform;
             
             UpdateDirectionRayHits();
-            _spider.SetMoveDirection((SpiderStateManager.MoveDirections)GetClosestWallDirection());
+            _spider.SetMoveDirection((StateManager.MoveDirections)GetClosestWallDirection());
             _isSetUpMoveDirection = true;
         }
 

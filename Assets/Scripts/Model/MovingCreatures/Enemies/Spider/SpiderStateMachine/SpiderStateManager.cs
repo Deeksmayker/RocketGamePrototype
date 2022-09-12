@@ -7,14 +7,6 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
     [RequireComponent(typeof(SpiderMoving))]
     public class SpiderStateManager : StateManager
     {
-        public enum MoveDirections
-        {
-            Right = 1,
-            Stay = 0,
-            Left = -1
-        }
-
-        private Rigidbody2D _rb;
         private SpiderMoving _spiderMoving;
 
         private float _currentSpeed;
@@ -35,8 +27,6 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
 
         private void Start()
         {
-            _rb = GetComponent<Rigidbody2D>();
-            _rb.gravityScale = 0;
             _spiderMoving = GetComponent<SpiderMoving>();
             GroundLayer = _spiderMoving.GroundLayer;
             _webMakingState = new SpiderWebMakingState();

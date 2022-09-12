@@ -487,6 +487,9 @@ MonoBehaviour:
   onSpiderLanded:
     m_PersistentCalls:
       m_Calls: []
+  onSpiderStartMakingWeb:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &6341571826328700537
 GameObject:
   m_ObjectHideFlags: 0
