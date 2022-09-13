@@ -46,15 +46,15 @@ public class LizardMoving : MonoBehaviour
             Walk();
         }
 
+
         if (_turningAround)
         {
             var requiredQuaternion = Quaternion.Euler(0, _yAngleToRotate, 0);
-            transform.rotation = transform.rotation = Quaternion.RotateTowards(transform.rotation, requiredQuaternion, rotationSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, requiredQuaternion, rotationSpeed * Time.deltaTime);
         }
 
         OnChasm = CheckChasm();
         TurnInRightSide();
-        Debug.Log(_rb.velocity.x);
     }
 
     private void Walk()
