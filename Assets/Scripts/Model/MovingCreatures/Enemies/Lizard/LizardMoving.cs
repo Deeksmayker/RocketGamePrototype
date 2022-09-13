@@ -54,9 +54,7 @@ public class LizardMoving : MonoBehaviour
 
         OnChasm = CheckChasm();
         TurnInRightSide();
-
-        Debug.Log(CurrentMoveDirection);
-        Debug.Log(Jumping);
+        Debug.Log(_rb.velocity.x);
     }
 
     private void Walk()
@@ -76,7 +74,7 @@ public class LizardMoving : MonoBehaviour
     {
         if (Jumping)
         {
-            if (collision.GetContact(0).normal != Vector2.up && _rb.velocity.y > -5)
+            if (collision.GetContact(0).normal != Vector2.up && _rb.velocity.y > -5 && collision.GetContact(0).normal != Vector2.down)
             {
                 Jump(collision.GetContact(0).normal + Vector2.up, 20);
             }
@@ -84,6 +82,18 @@ public class LizardMoving : MonoBehaviour
             else
             {
                 Jumping = false;
+            }
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (Jumping)
+        {
+            if (collision.GetContact(0).normal == Vector2.up)
+            {
+                Jumping = true;
+                return;
             }
         }
     }

@@ -14,8 +14,8 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
 
         private RaycastHit2D _rightRayHit;
         private RaycastHit2D _leftRayHit;
-        private RaycastHit2D _rightUpRayHit;
-        private RaycastHit2D _leftUpRayHit;
+        private RaycastHit2D _rightRightUpRayHit;
+        private RaycastHit2D _leftLeftUpRayHit;
 
         private Vector2 _vectorToPlayer;
         private float _timeAfterJump;
@@ -57,8 +57,8 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
         {
             _rightRayHit = Physics2D.Raycast(_lizard.transform.position, Vector2.right, 100f, _lizard.groundLayer);
             _leftRayHit = Physics2D.Raycast(_lizard.transform.position, Vector2.left, 100f, _lizard.groundLayer);
-            _rightUpRayHit = Physics2D.Raycast(_lizard.transform.position, Vector2.up + Vector2.right, 100f, _lizard.groundLayer);
-            _leftUpRayHit = Physics2D.Raycast(_lizard.transform.position, Vector2.up + Vector2.left, 100f, _lizard.groundLayer);
+            _rightRightUpRayHit = Physics2D.Raycast(_lizard.transform.position, Vector2.up + Vector2.right * 2, 100f, _lizard.groundLayer);
+            _leftLeftUpRayHit = Physics2D.Raycast(_lizard.transform.position, Vector2.up + Vector2.left * 2, 100f, _lizard.groundLayer);
         }
 
         private void SetMoveDirection()
@@ -143,8 +143,8 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
         {
             if (_vectorToPlayer.y > 0)
             {
-                var rightLedgeAvaliable = _rightUpRayHit.normal == Vector2.left && _rightUpRayHit.distance <= _lizard.maxJumpDistance;
-                var leftLedgeAvaliable = _leftUpRayHit.normal == Vector2.right && _leftUpRayHit.distance <= _lizard.maxJumpDistance;
+                var rightLedgeAvaliable = _rightRightUpRayHit.normal == Vector2.left && _rightRightUpRayHit.distance <= _lizard.maxJumpDistance;
+                var leftLedgeAvaliable = _leftLeftUpRayHit.normal == Vector2.right && _leftLeftUpRayHit.distance <= _lizard.maxJumpDistance;
 
                 if (rightLedgeAvaliable || leftLedgeAvaliable)
                 {
