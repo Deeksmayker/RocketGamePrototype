@@ -1,5 +1,7 @@
+using Assets.Scripts.Model;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 
 public class LizardMoving : MonoBehaviour
@@ -9,9 +11,12 @@ public class LizardMoving : MonoBehaviour
     public float checkFloorDistance;
     public LayerMask groundLayer;
     [SerializeField] private Transform chasmCheckPoint;
+    [SerializeField] private float rotationSpeed = 150f;
+    [SerializeField, Range(0f, 1f)] private float accelRate;
 
     public bool Jumping { get; private set; }
     public bool OnChasm { get; private set; }
+    public bool Rotating { get; private set; }
 
     private int _currentMoveDirection;
     public int CurrentMoveDirection
@@ -25,6 +30,9 @@ public class LizardMoving : MonoBehaviour
 
     private Rigidbody2D _rb;
 
+    private bool _turningAround;
+    private float _yAngleToRotate;
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -33,20 +41,29 @@ public class LizardMoving : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!Jumping && OnGround())
+        if (!Jumping)
         {
             Walk();
-            OnChasm = CheckChasm();
         }
 
+        if (_turningAround)
+        {
+            var requiredQuaternion = Quaternion.Euler(0, _yAngleToRotate, 0);
+            transform.rotation = transform.rotation = Quaternion.RotateTowards(transform.rotation, requiredQuaternion, rotationSpeed * Time.deltaTime);
+        }
+
+        OnChasm = CheckChasm();
         TurnInRightSide();
+
+        Debug.Log(CurrentMoveDirection);
+        Debug.Log(Jumping);
     }
 
     private void Walk()
     {
         var targetSpeed = CurrentMoveDirection * speed;
-
-        _rb.velocity = new Vector2(targetSpeed, _rb.velocity.y);
+        var horizontalVelocity = Mathf.Lerp(_rb.velocity.x, targetSpeed, accelRate);
+        _rb.velocity = new Vector2(horizontalVelocity, _rb.velocity.y);
     }
 
     public void Jump(Vector2 direction, float force)
@@ -59,7 +76,7 @@ public class LizardMoving : MonoBehaviour
     {
         if (Jumping)
         {
-            if (collision.GetContact(0).normal != Vector2.up)
+            if (collision.GetContact(0).normal != Vector2.up && _rb.velocity.y > -5)
             {
                 Jump(collision.GetContact(0).normal + Vector2.up, 20);
             }
@@ -73,7 +90,7 @@ public class LizardMoving : MonoBehaviour
 
     private bool CheckChasm()
     {
-        var hit = Physics2D.Raycast(chasmCheckPoint.position, Vector2.down, transform.localScale.x, groundLayer);
+        var hit = Physics2D.Raycast(chasmCheckPoint.position, Vector2.down, 5, groundLayer);
 
         if (hit)
             return false;
@@ -85,10 +102,19 @@ public class LizardMoving : MonoBehaviour
         if (_rb.velocity.x == 0)
             return;
 
-        if (Mathf.Sign(transform.localScale.x) != Mathf.Sign(_rb.velocity.x))
-            transform.localScale *= new Vector2(-1, 1);
+        var requiredAngle = Mathf.Sign(_rb.velocity.y) == 1 ? 0 : 180;
+        if (!Utils.CompareNumsApproximately(transform.rotation.eulerAngles.y, requiredAngle, 3) && !_turningAround)
+        {
+            _yAngleToRotate = requiredAngle;
+            _turningAround = true;
+        }
+
+        else if (Utils.CompareNumsApproximately(transform.rotation.eulerAngles.y, requiredAngle, 3))
+        {
+            _turningAround = false;
+        }
     }
 
 
-    public bool OnGround() => _rb.velocity.y == 0;
+    public bool OnGround() => Utils.CompareNumsApproximately(_rb.velocity.y, 0, 3);
 }

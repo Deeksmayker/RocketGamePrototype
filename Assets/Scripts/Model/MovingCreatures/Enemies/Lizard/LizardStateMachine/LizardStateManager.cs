@@ -13,8 +13,9 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
 
         [Header("Moving")]
         public LayerMask groundLayer;
-        [SerializeField] private float maxJumpDistance;
+        public float maxJumpDistance;
         public float jumpForce;
+        public float jumpCooldown;
 
         [Header("PlayerChasingState")]
         private LizardPlayerChasingState _playerChasingState;
@@ -24,7 +25,7 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
         private void Start()
         {
             _lizardMoving = GetComponent<LizardMoving>();
-            _currentMoveDirection = (MoveDirections)Random.Range(-1, 1);
+            SetMoveDirection((MoveDirections)Random.Range(-1, 1));
 
             _playerChasingState = new LizardPlayerChasingState();
             SetState(_playerChasingState);
