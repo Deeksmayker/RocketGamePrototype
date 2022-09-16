@@ -90,7 +90,7 @@ namespace Player
 
             Destroy(gameObject);
         }
-        
+
 
         private void ChangeParticleRadius()
         {

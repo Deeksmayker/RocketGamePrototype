@@ -16,9 +16,16 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
         private RaycastHit2D _leftRayHit;
         private RaycastHit2D _rightRightUpRayHit;
         private RaycastHit2D _leftLeftUpRayHit;
+        private RaycastHit2D _rightUpRayHit;
+        private RaycastHit2D _leftUpRayHit;
+        private RaycastHit2D _rightUpUpRayHit;
+        private RaycastHit2D _leftUpUpRayHit;
 
         private Vector2 _vectorToPlayer;
+        private Vector2 _vectorToFly;
+        private Vector2 _vectorToChase;
         private float _timeAfterJump;
+        private float _timeAfterSetDirection;
 
         public void Enter(StateManager manager)
         {
@@ -30,51 +37,118 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
             if (_lizard.Jumping())
             {
                 _timeAfterJump = 0;
+                _timeAfterSetDirection = 0;
                 return;
             }
             _timeAfterJump += Time.deltaTime;
 
-            UpdatePlayerPosition();
+            UpdateChaseVector();
             UpdateDirectionRayHits();
 
             if (!_lizard.OnGround())
                 return;
 
-            SetMoveDirection();
-
-            
             JumpIfNeed();
+
+            if (_timeAfterSetDirection == 0 || _timeAfterSetDirection >= _lizard.timeToChooseDirection)
+            {
+                SetMoveDirection();
+                _timeAfterSetDirection = 0;
+            }
+
+            _timeAfterSetDirection += Time.deltaTime;
         }
 
-        private void UpdatePlayerPosition()
+        private void UpdateChaseVector()
         {
             var playerInRadius = Physics2D.OverlapCircle(_lizard.transform.position, _lizard.detectingPlayerRadius, _lizard.playerLayer);
+            var flyInRadius = Physics2D.OverlapCircle(_lizard.transform.position, _lizard.detectingPlayerRadius, _lizard.flyLayer);
+            if (_lizard.IsMech || flyInRadius == null)
+            {
+                _vectorToPlayer = playerInRadius.transform.position - _lizard.transform.position;
+                _vectorToChase = _vectorToPlayer;
+                return;
+            }
 
-            _vectorToPlayer = playerInRadius != null ? playerInRadius.transform.position - _lizard.transform.position : Vector2.zero;
+            _vectorToFly = flyInRadius.transform.position - _lizard.transform.position;
+            _vectorToPlayer = playerInRadius.transform.position - _lizard.transform.position;
+
+            _vectorToChase = _vectorToFly.magnitude <= _vectorToChase.magnitude ? _vectorToFly : _vectorToPlayer;
         }
 
         private void UpdateDirectionRayHits()
         {
             _rightRayHit = Physics2D.Raycast(_lizard.transform.position, Vector2.right, 100f, _lizard.groundLayer);
             _leftRayHit = Physics2D.Raycast(_lizard.transform.position, Vector2.left, 100f, _lizard.groundLayer);
-            _rightRightUpRayHit = Physics2D.Raycast(_lizard.transform.position, Vector2.up + Vector2.right * 2, 100f, _lizard.groundLayer);
-            _leftLeftUpRayHit = Physics2D.Raycast(_lizard.transform.position, Vector2.up + Vector2.left * 2, 100f, _lizard.groundLayer);
+            _rightRightUpRayHit = Physics2D.Raycast(_lizard.transform.position, new Vector2(1, 0.5f), 100f, _lizard.groundLayer);
+            _leftLeftUpRayHit = Physics2D.Raycast(_lizard.transform.position, new Vector2(-1, 0.5f), 100f, _lizard.groundLayer);
+            _rightUpRayHit = Physics2D.Raycast(_lizard.transform.position, new Vector2(1, 1), 100f, _lizard.groundLayer);
+            _leftUpRayHit = Physics2D.Raycast(_lizard.transform.position, new Vector2(-1, 1), 100f, _lizard.groundLayer);
+            _rightUpUpRayHit = Physics2D.Raycast(_lizard.transform.position, new Vector2(0.5f, 1), 100f, _lizard.groundLayer);
+            _leftUpUpRayHit = Physics2D.Raycast(_lizard.transform.position, new Vector2(-0.5f, 1), 100f, _lizard.groundLayer);
         }
 
         private void SetMoveDirection()
         {
-            if (_vectorToPlayer == Vector2.zero)
-            {
+            if (CheckBelowAndSetDirection())
                 return;
-            }
+
+            if (CheckUpOnAndSetDirection())
+                return;
+        }
+
+        #region DirectionChecks
             
-            if ((Mathf.Abs(_vectorToPlayer.x) < 10 || Mathf.Abs(_vectorToPlayer.y) > 20) && _lizard.GetMoveDirection() != 0)
+        private void SetDirection(int dir)
+        {
+            _lizard.SetMoveDirection((StateManager.MoveDirections)dir);
+        }
+
+        private bool CheckBelowAndSetDirection()
+        {
+            if (_vectorToChase.y <= 0)
             {
-                return;
+                SetDirection((int)Mathf.Sign(_vectorToChase.x));
+                return true;
+            }
+            return false;
+        }
+
+        private bool CheckUpOnAndSetDirection()
+        {
+            if (_vectorToChase.y > 0)
+            { 
+                if (_vectorToChase.x >= 0)
+                {
+                    if (_rightRayHit.distance >= 30)
+                    {
+                        SetDirection(1);
+                        return true;
+                    }
+
+                    var upHitFromWall = Physics2D.Raycast(_rightRayHit.point - Vector2.right, Vector2.up, 10, _lizard.groundLayer);
+                    SetDirection(upHitFromWall ? -1 : 1);
+                    return true;
+                }
+
+                else
+                {
+                    if (_leftRayHit.distance >= 30)
+                    {
+                        SetDirection(-1);
+                        return true;
+                    }
+
+                    var upHitFromWall = Physics2D.Raycast(_leftRayHit.point - Vector2.left, Vector2.up, 10, _lizard.groundLayer);
+                    SetDirection(upHitFromWall ? 1 : -11);
+                    return true;
+                }
             }
 
-            _lizard.SetMoveDirection((StateManager.MoveDirections)(int)Mathf.Sign(_vectorToPlayer.x));
+            return false;
         }
+
+        #endregion
 
         private void JumpIfNeed()
         {
@@ -98,12 +172,12 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
 
         private bool CheckAndJumpOnPlayer()
         {
-            if (_vectorToPlayer.magnitude <= _lizard.maxJumpDistance)
+            if (_vectorToChase.magnitude <= _lizard.maxJumpDistance)
             {
-                var hitToWall = Physics2D.Raycast(_lizard.transform.position, _vectorToPlayer.normalized, _vectorToPlayer.magnitude, _lizard.groundLayer);
+                var hitToWall = Physics2D.Raycast(_lizard.transform.position, _vectorToChase.normalized, _vectorToChase.magnitude, _lizard.groundLayer);
                 if (!hitToWall)
                 {
-                    _lizard.Jump(_vectorToPlayer.normalized, _lizard.jumpForce);
+                    _lizard.Jump(_vectorToChase.normalized, _lizard.jumpForce);
                     return true;
                 }
             }
@@ -113,9 +187,9 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
 
         private bool CheckChasmAndJump()
         {
-            if (_lizard.OnChasm() && _vectorToPlayer.y > 0)
+            if (_lizard.OnChasm() && _vectorToChase.y > 0)
             {
-                var jumpDirection = (Vector2.right * _lizard.GetMoveDirection() + Vector2.up * 2).normalized;
+                var jumpDirection = new Vector2(_lizard.GetMoveDirection(), 2).normalized;
                 _lizard.Jump(jumpDirection, _lizard.jumpForce);
                 return true;
             }
@@ -125,15 +199,23 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
 
         private bool CheckWallsAndJump()
         {
-            if (_vectorToPlayer.y > 0)
+            if (_vectorToChase.y > 0)
             {
                 if (_rightRayHit.distance <= _lizard.maxJumpDistance || _leftRayHit.distance <= _lizard.maxJumpDistance)
                 {
-                    var jumpDirection = (Vector2.right * _lizard.GetMoveDirection() + Vector2.up * 2).normalized;
+                    var jumpDirection = new Vector2(_lizard.GetMoveDirection(), 2).normalized;
                     _lizard.Jump(jumpDirection, _lizard.jumpForce);
                     return true;
                 }
 
+                var rightWallUpOnAvaliable = _rightUpUpRayHit.distance <= _lizard.maxJumpDistance / 2 && Utils.CompareVectors(_rightUpUpRayHit.normal, Vector2.left);
+                var leftWallUpOnAvaliable = _leftUpUpRayHit.distance <= _lizard.maxJumpDistance / 2 && Utils.CompareVectors(_leftUpUpRayHit.normal, Vector2.right);
+
+                if (rightWallUpOnAvaliable || leftWallUpOnAvaliable)
+                {
+                    var jumpDirection = new Vector2(_lizard.GetMoveDirection(), 3).normalized;
+                    _lizard.Jump(jumpDirection, _lizard.jumpForce);
+                }
             }
 
             return false;
@@ -141,14 +223,14 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
 
         private bool CheckTopLedges()
         {
-            if (_vectorToPlayer.y > 0)
+            if (_vectorToChase.y > 0)
             {
-                var rightLedgeAvaliable = _rightRightUpRayHit.normal == Vector2.left && _rightRightUpRayHit.distance <= _lizard.maxJumpDistance;
-                var leftLedgeAvaliable = _leftLeftUpRayHit.normal == Vector2.right && _leftLeftUpRayHit.distance <= _lizard.maxJumpDistance;
+                var rightLedgeAvaliable = Utils.CompareVectors(_rightRightUpRayHit.normal, Vector2.left) && _rightRightUpRayHit.distance <= _lizard.maxJumpDistance;
+                var leftLedgeAvaliable = Utils.CompareVectors(_leftLeftUpRayHit.normal, Vector2.right) && _leftLeftUpRayHit.distance <= _lizard.maxJumpDistance;
 
                 if (rightLedgeAvaliable || leftLedgeAvaliable)
                 {
-                    var jumpDirection = (Vector2.right * _lizard.GetMoveDirection() + Vector2.up * 2).normalized;
+                    var jumpDirection = new Vector2(_lizard.GetMoveDirection(), 2).normalized;
                     _lizard.Jump(jumpDirection, _lizard.jumpForce);
                     return true;
                 }

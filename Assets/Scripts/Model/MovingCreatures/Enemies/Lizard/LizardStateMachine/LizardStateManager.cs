@@ -11,6 +11,8 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
         private float _currentSpeed;
         private MoveDirections _currentMoveDirection;
 
+        public bool IsMech { get; private set; }
+
         [Header("Moving")]
         public LayerMask groundLayer;
         public float maxJumpDistance;
@@ -20,12 +22,14 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
         [Header("PlayerChasingState")]
         private LizardPlayerChasingState _playerChasingState;
         public LayerMask playerLayer;
+        public LayerMask flyLayer;
         public float detectingPlayerRadius;
+        public float timeToChooseDirection;
 
         private void Start()
         {
             _lizardMoving = GetComponent<LizardMoving>();
-            SetMoveDirection((MoveDirections)Random.Range(-1, 1));
+            SetJumpForce(jumpForce);
 
             _playerChasingState = new LizardPlayerChasingState();
             SetState(_playerChasingState);
@@ -54,9 +58,19 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
             _lizardMoving.speed = value;
         }
 
+        public void SetJumpForce(float value)
+        {
+            _lizardMoving.JumpForce = value;
+        }
+
+        public void SetMech(bool value)
+        {
+            IsMech = value;
+        }
+
         public int GetMoveDirection() => (int)_currentMoveDirection;
         public bool Jumping() => _lizardMoving.Jumping;
         public bool OnChasm() => _lizardMoving.OnChasm;
-        public bool OnGround() => _lizardMoving.OnGround();
+        public bool OnGround() => _lizardMoving.Grounded;
     }
 }

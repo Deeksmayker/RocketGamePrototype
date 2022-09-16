@@ -12,7 +12,9 @@ public class LizardMoving : MonoBehaviour
     public LayerMask groundLayer;
     [SerializeField] private Transform chasmCheckPoint;
     [SerializeField] private float rotationSpeed = 150f;
+    [SerializeField] private float fallMultiplier;
     [SerializeField, Range(0f, 1f)] private float accelRate;
+    public float JumpForce;
 
     public bool Jumping { get; private set; }
     public bool OnChasm { get; private set; }
@@ -28,6 +30,8 @@ public class LizardMoving : MonoBehaviour
         }
     }
 
+    public bool Grounded { get; private set; }
+
     private Rigidbody2D _rb;
 
     private bool _turningAround;
@@ -41,6 +45,11 @@ public class LizardMoving : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!Utils.CompareNumsApproximately(_rb.velocity.y, 0, 1))
+        {
+            Grounded = false;
+        }
+
         if (!Jumping)
         {
             Walk();
@@ -53,6 +62,7 @@ public class LizardMoving : MonoBehaviour
             transform.rotation = Quaternion.RotateTowards(transform.rotation, requiredQuaternion, rotationSpeed * Time.deltaTime);
         }
 
+        CalculateInAirVelocity();
         OnChasm = CheckChasm();
         TurnInRightSide();
     }
@@ -72,14 +82,21 @@ public class LizardMoving : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        foreach (var col in collision.contacts)
+        {
+            if (col.normal == Vector2.up)
+                Grounded = true;
+        }
+
         if (Jumping)
         {
-            if (collision.GetContact(0).normal != Vector2.up && _rb.velocity.y > -5 && collision.GetContact(0).normal != Vector2.down)
+            if (collision.GetContact(0).normal != Vector2.up && _rb.velocity.y > -10 && collision.GetContact(0).normal != Vector2.down)
             {
-                Jump(collision.GetContact(0).normal + Vector2.up, 20);
+                Jumping = false;
+                Jump(collision.GetContact(0).normal + Vector2.up, JumpForce);
             }
 
-            else
+            else if (collision.GetContact(0).normal == Vector2.up)
             {
                 Jumping = false;
             }
@@ -88,12 +105,21 @@ public class LizardMoving : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
+        foreach (var col in collision.contacts)
+        {
+            if (col.normal == Vector2.up)
+                Grounded = true;
+        }
+
         if (Jumping)
         {
-            if (collision.GetContact(0).normal == Vector2.up)
+            foreach (var col in collision.contacts)
             {
-                Jumping = true;
-                return;
+                if (col.normal == Vector2.up)
+                {
+                    Jumping = false;
+                    return;
+                }
             }
         }
     }
@@ -109,22 +135,32 @@ public class LizardMoving : MonoBehaviour
 
     private void TurnInRightSide()
     {
-        if (_rb.velocity.x == 0)
-            return;
-
-        var requiredAngle = Mathf.Sign(_rb.velocity.y) == 1 ? 0 : 180;
+        var requiredAngle = Mathf.Sign(_rb.velocity.x) == 1 ? 0 : 180;
         if (!Utils.CompareNumsApproximately(transform.rotation.eulerAngles.y, requiredAngle, 3) && !_turningAround)
         {
             _yAngleToRotate = requiredAngle;
             _turningAround = true;
         }
 
-        else if (Utils.CompareNumsApproximately(transform.rotation.eulerAngles.y, requiredAngle, 3))
+        if (!Utils.CompareNumsApproximately(transform.rotation.eulerAngles.z, 0, 3) && Grounded)
+        {
+            _turningAround = true;
+        }
+
+        if (Utils.CompareNumsApproximately(transform.rotation.eulerAngles.y, requiredAngle, 3)
+            && Utils.CompareNumsApproximately(transform.rotation.eulerAngles.z, 0, 3))
         {
             _turningAround = false;
         }
+
+
     }
 
-
-    public bool OnGround() => Utils.CompareNumsApproximately(_rb.velocity.y, 0, 3);
+    private void CalculateInAirVelocity()
+    {
+        if (_rb.velocity.y < 0)
+        {
+            _rb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+        }
+    }
 }

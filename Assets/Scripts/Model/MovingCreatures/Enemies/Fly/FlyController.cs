@@ -14,6 +14,7 @@ public class FlyController : MonoBehaviour
     private Vector2 _currentJerkVector;
     private float _currentJerkDistance;
     private Vector2 _newPostiion;
+    [SerializeField] private LayerMask groundLayer;
 
     [Header("Staying")]
     [SerializeField] private float stayMoveDiff;
@@ -71,15 +72,15 @@ public class FlyController : MonoBehaviour
         _currentJerkVector = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
         _currentJerkDistance = Random.Range(minJerkDistance, maxJerkDistance);
 
-        var hit = Physics2D.Raycast(transform.position, _currentJerkVector, _currentJerkDistance);
+        var hit = Physics2D.Raycast(transform.position, _currentJerkVector, _currentJerkDistance, groundLayer);
         while (hit.distance != 0)
         {
             _currentJerkVector = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
             _currentJerkDistance = Random.Range(minJerkDistance, maxJerkDistance);
-            hit = Physics2D.Raycast(transform.position, _currentJerkVector, _currentJerkDistance);
+            hit = Physics2D.Raycast(transform.position, _currentJerkVector, _currentJerkDistance, groundLayer);
             yield return null;
         }
-
+        
         _newPostiion = (Vector2)transform.position + _currentJerkVector * _currentJerkDistance;
         _calculatingJerkDirection = false;
         _jerking = true;

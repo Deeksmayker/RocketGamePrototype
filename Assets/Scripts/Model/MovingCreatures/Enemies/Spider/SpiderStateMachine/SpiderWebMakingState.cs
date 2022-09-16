@@ -81,10 +81,10 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
 
         private void CalculateJumpPossibility()
         {
-            CheckWallAndJumpIfNeed(_rightRayHit, new[] { Vector2.up, Vector2.down }, Vector2.right + Vector2.up, _spider.jumpForce);
-            CheckWallAndJumpIfNeed(_leftRayHit, new[] { Vector2.up, Vector2.down }, Vector2.left + Vector2.up, _spider.jumpForce);
-            CheckWallAndJumpIfNeed(_upRayHit, new[] {Vector2.right, Vector2.left} , Vector2.up, _spider.jumpForce * 3);
-            CheckWallAndJumpIfNeed(_downRayHit, new[] { Vector2.right, Vector2.left }, Vector2.down, _spider.jumpForce);
+            CheckWallAndJumpIfNeed(_rightRayHit, new[] { Vector2.up, Vector2.down }, new Vector2(1, 1), _spider.jumpForce);
+            CheckWallAndJumpIfNeed(_leftRayHit, new[] { Vector2.up, Vector2.down }, new Vector2(-1, 1), _spider.jumpForce);
+            CheckWallAndJumpIfNeed(_upRayHit, new[] {Vector2.right, Vector2.left} , new Vector2(0, 1), _spider.jumpForce * 3);
+            CheckWallAndJumpIfNeed(_downRayHit, new[] { Vector2.right, Vector2.left }, new Vector2(0, -1), _spider.jumpForce / 3);
         }
 
         private bool CheckWallAndJumpIfNeed(RaycastHit2D hit, Vector2[] upwardsForThisDirection, Vector2 jumpVector, float force)
@@ -107,8 +107,8 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
 
         private bool WallAvailableForJump(RaycastHit2D hit, Vector2[] upwardsForThisDirection)
         {
-            var spiderNormalNotPerpendicularToWall = _spider.GetUpwardVector() != upwardsForThisDirection[0]
-                && _spider.GetUpwardVector() != upwardsForThisDirection[1];
+            var spiderNormalNotPerpendicularToWall = !Utils.CompareVectors(_spider.GetUpwardVector(), upwardsForThisDirection[0])
+                && !Utils.CompareVectors(_spider.GetUpwardVector(), upwardsForThisDirection[1]);
 
             var wallNotSameHeJumpedFrom = hit.normal != _lastPlatformNormal
                 || _timePassedFromJump >= _timeToForgetLastPlatform;
@@ -116,7 +116,7 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
             return hit.distance <= _spider.maxJumpDistance
                 && spiderNormalNotPerpendicularToWall
                 && wallNotSameHeJumpedFrom
-                && hit.normal != _spider.GetUpwardVector()
+                && !Utils.CompareVectors(hit.normal, _spider.GetUpwardVector())
                 && !_spider.Jumping();
         }
 
