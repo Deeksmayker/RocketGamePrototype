@@ -10,7 +10,6 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
         private SpiderMoving _spiderMoving;
 
         private float _currentSpeed;
-        private MoveDirections _currentMoveDirection = MoveDirections.Stay;
 
         public LayerMask GroundLayer { get; private set; }
 
@@ -23,7 +22,6 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
         public float WebMakingStateSpeed;
         [Range(0, 1)] public float chanceToJump;
         
-
 
         private void Start()
         {
@@ -43,7 +41,7 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
 
         public void JumpAndMakeWeb(Vector2 direction, float force)
         {
-            SetMoveDirection(MoveDirections.Stay);
+            SetMoveDirection(0);
             StartCoroutine(_spiderMoving.JumpAndMakeWeb(direction, force));
         } 
 
@@ -53,10 +51,9 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
             _spiderMoving.speed = _currentSpeed;
         }
 
-        public void SetMoveDirection(MoveDirections newDirection)
+        public void SetMoveDirection(int newDirection)
         {
-            _currentMoveDirection = newDirection;
-            _spiderMoving.CurrentMoveDirection = (int)_currentMoveDirection;
+            _spiderMoving.CurrentMoveDirection = newDirection;
         }
 
         public Vector2 GetUpwardVector() => _spiderMoving.Upward;

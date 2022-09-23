@@ -1,4 +1,5 @@
 ﻿using DefaultNamespace.StateMachine;
+using System.Collections;
 using UnityEngine;
 
 namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
@@ -9,8 +10,8 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
         private LizardMoving _lizardMoving;
 
         private float _currentSpeed;
-        private MoveDirections _currentMoveDirection;
 
+        public bool JumpAvaliable { get; private set; } = true;
         public bool IsMech { get; private set; }
 
         [Header("Moving")]
@@ -47,10 +48,17 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
             _lizardMoving.Jump(direction, force);
         }
 
-        public void SetMoveDirection(MoveDirections newDirection)
+        public void JumpAvaliableDisabler() => StartCoroutine(DisableJumpAvaliableWhileOnThisPlatform());
+        private IEnumerator DisableJumpAvaliableWhileOnThisPlatform()
         {
-            _currentMoveDirection = newDirection;
-            _lizardMoving.CurrentMoveDirection = (int)_currentMoveDirection;
+            JumpAvaliable = false;
+            yield return new WaitWhile(OnGround);
+            JumpAvaliable = true;
+        }
+
+        public void SetMoveDirection(int newDirection)
+        {
+            _lizardMoving.CurrentMoveDirection = newDirection;
         }
 
         public void SetSpeed(float value)
@@ -68,7 +76,7 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
             IsMech = value;
         }
 
-        public int GetMoveDirection() => (int)_currentMoveDirection;
+        public int GetMoveDirection() => _lizardMoving.CurrentMoveDirection;
         public bool Jumping() => _lizardMoving.Jumping;
         public bool OnChasm() => _lizardMoving.OnChasm;
         public bool OnGround() => _lizardMoving.Grounded;
