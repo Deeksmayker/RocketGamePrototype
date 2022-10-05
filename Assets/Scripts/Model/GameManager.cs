@@ -1,6 +1,8 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using UnityEngine.Tilemaps;
+using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,12 +14,15 @@ public class GameManager : MonoBehaviour
     {
         public int time;
         public GameObject map;
+        public TilemapRenderer renderer;
     }
+
     public Platforms[] platforms;
     public float GameTime { get; private set; }
 
     private int _currentNumOfPlatform;
     private float _startTime;
+    bool _isCoroutineStarted;
     private float _finishTime;
 
     private void Start()
@@ -26,19 +31,22 @@ public class GameManager : MonoBehaviour
         _currentNumOfPlatform = 0;
         SetStartAndFinishTimeForPlatform();
     }
-
+    
     private void Update()
     {
         UpdateGameTime();
-
-        if (_finishTime - _startTime <= 5)
+        Debug.Log(_finishTime - _startTime);
+        if (_finishTime - GameTime <= 5 && !_isCoroutineStarted)
         {
-            MakePlatformBlick();
+            _isCoroutineStarted = true;
+            StartCoroutine(MakePlatformBlick());
+            StopCoroutine(MakePlatformBlick());
         }
-        else if (_finishTime - _startTime <= 0)
+        else if (_finishTime - GameTime <= 0)
         {
             ChangePlatforms();
             SetStartAndFinishTimeForPlatform();
+            _isCoroutineStarted = false;
         }
     }
 
@@ -60,23 +68,22 @@ public class GameManager : MonoBehaviour
 
     public void MakePlatformDarker()
     {
-        //platforms[_currentNumOfPlatform].map.GetComponent<Material>() = matBlink;
+        platforms[_currentNumOfPlatform].renderer.material = matBlink;
     }
 
     public void MakePlatformDefault()
     {
-        //platforms[_currentNumOfPlatform].map = matDefault;
+        platforms[_currentNumOfPlatform].renderer.material = matDefault;
     }
 
-    public void MakePlatformBlick()
+    public IEnumerator MakePlatformBlick()
     {
-        if (_finishTime - _startTime / 2 == 0)
+        for (int i = 0; i < 5; i++)
         {
             MakePlatformDarker();
-        }
-        else
-        {
+            yield return new WaitForSeconds(0.5f);
             MakePlatformDefault();
+            yield return new WaitForSeconds(0.5f);
         }
     }
 
@@ -84,6 +91,6 @@ public class GameManager : MonoBehaviour
     {
         platforms[_currentNumOfPlatform].map.SetActive(false);
         ChangeNumOfCurrentPlatform();
-        //platforms[_currentNumOfPlatform].map.SetActive(true);
+        platforms[_currentNumOfPlatform].map.SetActive(true);
     }
 }
