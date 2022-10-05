@@ -137,6 +137,7 @@ GameObject:
   - component: {fileID: 249186128}
   - component: {fileID: 249186132}
   - component: {fileID: 249186131}
+  - component: {fileID: 249186133}
   m_Layer: 6
   m_Name: ForeGround
   m_TagString: Untagged
@@ -10955,6 +10956,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &249186133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 249186126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec52e73b46eab564b996041e29f860f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &337668005
 GameObject:
   m_ObjectHideFlags: 0
