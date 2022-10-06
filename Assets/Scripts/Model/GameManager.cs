@@ -6,47 +6,44 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private Material matBlink;
-    [SerializeField] private Material matDefault;
-
-    [Serializable]
-    public struct Platforms
-    {
-        public int time;
-        public GameObject map;
-        public TilemapRenderer renderer;
-    }
-
-    public Platforms[] platforms;
+    public List<TimeChangingObjects> _timeChangingObjects;
     public float GameTime { get; private set; }
 
+    [SerializeField] private Material blinkMaterial;
+    [Serializable]
+    public struct TimeChangingObjects
+    {
+        public int timeToAppear;
+        public List<Tilemap> tilemapsToAppear;
+    }
+
     private int _currentNumOfPlatform;
-    private float _startTime;
-    bool _isCoroutineStarted;
-    private float _finishTime;
+    private float _platformCreationTime;
+    private bool _isPlatformBlinking;
+    private float _platformRemovalTime;
+    private Material _defaultMaterial;
 
     private void Start()
     {
-        matDefault = platforms[_currentNumOfPlatform].map.GetComponent<Material>();
+        _defaultMaterial = _timeChangingObjects[_currentNumOfPlatform].tilemapsToAppear[_currentNumOfPlatform].GetComponent<Material>();
         _currentNumOfPlatform = 0;
-        SetStartAndFinishTimeForPlatform();
+        SetPlatformLifetime();
     }
-    
+
     private void Update()
     {
         UpdateGameTime();
-        Debug.Log(_finishTime - _startTime);
-        if (_finishTime - GameTime <= 5 && !_isCoroutineStarted)
+        if (_platformRemovalTime - GameTime <= 5 && !_isPlatformBlinking)
         {
-            _isCoroutineStarted = true;
+            _isPlatformBlinking = true;
             StartCoroutine(MakePlatformBlick());
             StopCoroutine(MakePlatformBlick());
         }
-        else if (_finishTime - GameTime <= 0)
+        else if (_platformRemovalTime - GameTime <= 0)
         {
             ChangePlatforms();
-            SetStartAndFinishTimeForPlatform();
-            _isCoroutineStarted = false;
+            SetPlatformLifetime();
+            _isPlatformBlinking = false;
         }
     }
 
@@ -55,42 +52,42 @@ public class GameManager : MonoBehaviour
         GameTime += Time.deltaTime;
     }
 
-    public void SetStartAndFinishTimeForPlatform()
+    public void SetPlatformLifetime()
     {
-        _startTime = GameTime;
-        _finishTime = _startTime + platforms[_currentNumOfPlatform].time;
+        _platformCreationTime = GameTime;
+        _platformRemovalTime = _platformCreationTime + _timeChangingObjects[_currentNumOfPlatform].timeToAppear;
     }
 
-    public void ChangeNumOfCurrentPlatform()
+    public void RemoveCurrentPlatform()
     {
-        _currentNumOfPlatform++;
+        _timeChangingObjects[0].tilemapsToAppear.RemoveAt(0);
     }
 
-    public void MakePlatformDarker()
+    public void ChangeMaterial(Material material)
     {
-        platforms[_currentNumOfPlatform].renderer.material = matBlink;
-    }
 
-    public void MakePlatformDefault()
-    {
-        platforms[_currentNumOfPlatform].renderer.material = matDefault;
+        _timeChangingObjects[_currentNumOfPlatform].tilemapsToAppear[_currentNumOfPlatform].GetComponent<TilemapRenderer>().material = material;
     }
 
     public IEnumerator MakePlatformBlick()
     {
         for (int i = 0; i < 5; i++)
         {
-            MakePlatformDarker();
+            ChangeMaterial(blinkMaterial);
             yield return new WaitForSeconds(0.5f);
-            MakePlatformDefault();
+            ChangeMaterial(_defaultMaterial);
             yield return new WaitForSeconds(0.5f);
         }
     }
 
     public void ChangePlatforms()
     {
-        platforms[_currentNumOfPlatform].map.SetActive(false);
-        ChangeNumOfCurrentPlatform();
-        platforms[_currentNumOfPlatform].map.SetActive(true);
+        RemoveCurrentPlatform();
+        CreateNewPlatform();
+    }
+
+    public void CreateNewPlatform()
+    {
+        Instantiate(_timeChangingObjects[0].tilemapsToAppear[0]);
     }
 }
