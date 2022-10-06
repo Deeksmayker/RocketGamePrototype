@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
 {
     [RequireComponent(typeof(LizardMoving))]
-    public class LizardStateManager : StateManager, ISpawnable
+    public class LizardStateManager : StateManager, ISpawnable, IDestructable
     {
         private LizardMoving _lizardMoving;
 
@@ -85,5 +85,10 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
         public bool Jumping() => _lizardMoving.Jumping;
         public bool OnChasm() => _lizardMoving.OnChasm;
         public bool OnGround() => _lizardMoving.Grounded;
+
+        public void TakeDamage()
+        {
+            Destroy(gameObject);
+        }
     }
 }

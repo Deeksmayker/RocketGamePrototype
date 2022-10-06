@@ -1,3 +1,4 @@
+using Assets.Scripts.Model;
 using DefaultNamespace.StateMachine;
 using System;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine;
 namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
 {
     [RequireComponent(typeof(SpiderMoving))]
-    public class SpiderStateManager : StateManager
+    public class SpiderStateManager : StateManager, IDestructable
     {
         private SpiderMoving _spiderMoving;
 
@@ -63,5 +64,10 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
         public bool IsOnChasm() => _spiderMoving.OnChasm;
 
         public bool Jumping() => _spiderMoving.Jumping;
+
+        public void TakeDamage()
+        {
+            Destroy(gameObject);
+        }
     }
 }

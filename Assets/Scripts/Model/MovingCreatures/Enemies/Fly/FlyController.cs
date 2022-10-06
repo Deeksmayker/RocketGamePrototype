@@ -3,7 +3,7 @@ using Assets.Scripts.Model.MovingCreatures.Enemies;
 using System.Collections;
 using UnityEngine;
 
-public class FlyController : MonoBehaviour, ISpawnable
+public class FlyController : MonoBehaviour, ISpawnable, IDestructable
 {
     [Header("Jerking")]
     [SerializeField] private float minTimeBeforeJerk;
@@ -99,5 +99,10 @@ public class FlyController : MonoBehaviour, ISpawnable
         var diffVector = new Vector2(Random.Range(-stayMoveDiff, stayMoveDiff), Random.Range(-stayMoveDiff, stayMoveDiff));
         var newPosition = Vector2.Lerp(transform.position, (Vector2)transform.position + diffVector, stayJerkingSpeedMultiplier);
         _rb.MovePosition(newPosition);
+    }
+
+    public void TakeDamage()
+    {
+        Destroy(gameObject);
     }
 }
