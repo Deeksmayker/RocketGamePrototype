@@ -1,8 +1,9 @@
 using Assets.Scripts.Model;
+using Assets.Scripts.Model.MovingCreatures.Enemies;
 using System.Collections;
 using UnityEngine;
 
-public class FlyController : MonoBehaviour
+public class FlyController : MonoBehaviour, ISpawnable
 {
     [Header("Jerking")]
     [SerializeField] private float minTimeBeforeJerk;
@@ -51,8 +52,15 @@ public class FlyController : MonoBehaviour
         MoveOnStay();
     }
 
+    public void Spawn(float startSpeed, Vector2 up)
+    {
+        StartCoroutine(CalculateJerkDirection());
+        Jerk();
+    }
+
     private void Jerk()
     {
+        _jerking = true;
         var directionWithDistance = _newPostiion - (Vector2)transform.position;
         _rb.MovePosition((Vector2)transform.position + jerkSpeed * Time.deltaTime * directionWithDistance);
 
@@ -83,7 +91,7 @@ public class FlyController : MonoBehaviour
         
         _newPostiion = (Vector2)transform.position + _currentJerkVector * _currentJerkDistance;
         _calculatingJerkDirection = false;
-        _jerking = true;
+        Jerk();
     }
 
     private void MoveOnStay()

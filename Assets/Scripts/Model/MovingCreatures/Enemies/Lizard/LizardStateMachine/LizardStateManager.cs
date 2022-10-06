@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
 {
     [RequireComponent(typeof(LizardMoving))]
-    public class LizardStateManager : StateManager
+    public class LizardStateManager : StateManager, ISpawnable
     {
         private LizardMoving _lizardMoving;
 
@@ -27,7 +27,7 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
         public float detectingPlayerRadius;
         public float timeToChooseDirection;
 
-        private void Start()
+        private void Awake()
         {
             _lizardMoving = GetComponent<LizardMoving>();
             SetJumpForce(jumpForce);
@@ -41,6 +41,11 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
 
 
             base.Update();
+        }
+
+        public void Spawn(float startSpeed, Vector2 up)
+        {
+            Jump(up, startSpeed);
         }
 
         public void Jump(Vector2 direction, float force)

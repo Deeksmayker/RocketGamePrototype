@@ -243,7 +243,7 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
                 {
                     var jumpDirection = new Vector2(_lizard.GetMoveDirection(), 2).normalized;
                     _lizard.Jump(jumpDirection, _lizard.jumpForce);
-                   Debug.Log("LedgeJump");
+                    Debug.Log("LedgeJump");
                     return true;
                 }
             }

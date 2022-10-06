@@ -307,13 +307,22 @@ MonoBehaviour:
   airAcceleration: 0.1
   airDeceleration: 0.1
   jumpUpDeceleration: 0.13
-  airOverSpeedDeceleration: 0.05
+  airOverSpeedDeceleration: 0.03
   inWebVelocityDeceleration: 0.5
   maxWallSlideDownSpeed: 0
   wallSlideUpDeceleration: 0
   wallSlideDownAcceleration: 0.2
   wallJumpMovementEffectDuration: 0.4
   rocketJumpDeceleration: 0.05
+  onJump:
+    m_PersistentCalls:
+      m_Calls: []
+  onWallJump:
+    m_PersistentCalls:
+      m_Calls: []
+  onRocketJump:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &890357418586667378
 MonoBehaviour:
   m_ObjectHideFlags: 0
