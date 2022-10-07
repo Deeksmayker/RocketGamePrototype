@@ -11054,6 +11054,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 144474247592439306, guid: cbcfda94b1372154d9363301266b8f77, type: 3}
+      propertyPath: blinkMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: a4a0cb13c9b4b8d48bba6839b8aad0f9, type: 2}
+    - target: {fileID: 144474247592439306, guid: cbcfda94b1372154d9363301266b8f77, type: 3}
       propertyPath: pics.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -11078,6 +11082,10 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 144474247592439306, guid: cbcfda94b1372154d9363301266b8f77, type: 3}
+      propertyPath: _timeChangingObjects.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 144474247592439306, guid: cbcfda94b1372154d9363301266b8f77, type: 3}
       propertyPath: platforms.Array.data[0].renderer
       value: 
       objectReference: {fileID: 249186129}
@@ -11085,6 +11093,22 @@ PrefabInstance:
       propertyPath: platforms.Array.data[1].renderer
       value: 
       objectReference: {fileID: 249186129}
+    - target: {fileID: 144474247592439306, guid: cbcfda94b1372154d9363301266b8f77, type: 3}
+      propertyPath: _timeChangingObjects.Array.data[0].timeToAppear
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 144474247592439306, guid: cbcfda94b1372154d9363301266b8f77, type: 3}
+      propertyPath: _timeChangingObjects.Array.data[0].tilemapsToAppear.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 144474247592439306, guid: cbcfda94b1372154d9363301266b8f77, type: 3}
+      propertyPath: _timeChangingObjects.Array.data[0].tilemapsToAppear.Array.data[0]
+      value: 
+      objectReference: {fileID: 249186130}
+    - target: {fileID: 144474247592439306, guid: cbcfda94b1372154d9363301266b8f77, type: 3}
+      propertyPath: _timeChangingObjects.Array.data[0].tilemapsToAppear.Array.data[1]
+      value: 
+      objectReference: {fileID: 249186130}
     - target: {fileID: 3903502672325617637, guid: cbcfda94b1372154d9363301266b8f77, type: 3}
       propertyPath: m_RootOrder
       value: 0
