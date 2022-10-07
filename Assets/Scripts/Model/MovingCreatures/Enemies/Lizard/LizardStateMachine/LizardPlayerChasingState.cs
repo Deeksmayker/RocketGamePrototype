@@ -179,7 +179,7 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
                 if (!hitToWall)
                 {
                     _lizard.Jump(_vectorToChase.normalized, _lizard.jumpForce);
-                    Debug.Log("OnPlayerJump");
+                    //Debug.Log("OnPlayerJump");
                     return true;
                 }
             }
@@ -193,7 +193,7 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
             {
                 var jumpDirection = new Vector2(_lizard.GetMoveDirection(), 2).normalized;
                 _lizard.Jump(jumpDirection, _lizard.jumpForce);
-                Debug.Log("chasmJ");
+                //Debug.Log("chasmJ");
                 return true;
             }
 
@@ -212,19 +212,19 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
                     var jumpDirection = new Vector2(_lizard.GetMoveDirection(), 2).normalized;
                     _lizard.Jump(jumpDirection, _lizard.jumpForce);
                     //Debug.Log(_lizard.GetMoveDirection());
-                    Debug.Log("SideWallJump");
+                    //Debug.Log("SideWallJump");
                     return true;
                 }
 
                 var rightWallUpOnAvaliable = _rightUpUpRayHit.distance <= _lizard.maxJumpDistance / 2 && Utils.CompareVectors(_rightUpUpRayHit.normal, Vector2.left);
                 var leftWallUpOnAvaliable = _leftUpUpRayHit.distance <= _lizard.maxJumpDistance / 2 && Utils.CompareVectors(_leftUpUpRayHit.normal, Vector2.right);
-                Debug.DrawRay(_lizard.transform.position, new Vector2(0.5f, 1) * _lizard.maxJumpDistance / 2);
+                //Debug.DrawRay(_lizard.transform.position, new Vector2(0.5f, 1) * _lizard.maxJumpDistance / 2);
 
                 if (rightWallUpOnAvaliable || leftWallUpOnAvaliable)
                 {
                     var jumpDirection = new Vector2(_lizard.GetMoveDirection(), 3).normalized;
                     _lizard.Jump(jumpDirection, _lizard.jumpForce);
-                    Debug.Log("UpWallJump");
+                    //Debug.Log("UpWallJump");
                     return true;
                 }
             }
@@ -243,7 +243,7 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
                 {
                     var jumpDirection = new Vector2(_lizard.GetMoveDirection(), 2).normalized;
                     _lizard.Jump(jumpDirection, _lizard.jumpForce);
-                    Debug.Log("LedgeJump");
+                    //Debug.Log("LedgeJump");
                     return true;
                 }
             }

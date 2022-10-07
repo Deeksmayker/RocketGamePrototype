@@ -101,6 +101,14 @@ public class FlyController : MonoBehaviour, ISpawnable, IDestructable
         _rb.MovePosition(newPosition);
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.GetComponent<PlayerController>())
+        {
+            TakeDamage();
+        }
+    }
+
     public void TakeDamage()
     {
         Destroy(gameObject);

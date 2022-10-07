@@ -36,6 +36,7 @@ public class LizardMoving : MonoBehaviour
 
     private bool _turningAround;
     private float _yAngleToRotate;
+    private int _collisionsCount;
 
     private void Awake()
     {
@@ -50,7 +51,7 @@ public class LizardMoving : MonoBehaviour
             Grounded = false;
         }
 
-        if (!Jumping)
+        if (!Jumping && _collisionsCount != 0)
         {
             Walk();
         }
@@ -82,6 +83,8 @@ public class LizardMoving : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        _collisionsCount = 1;
+
         foreach (var col in collision.contacts)
         {
             if (col.normal == Vector2.up)
@@ -105,6 +108,7 @@ public class LizardMoving : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
+        _collisionsCount = collision.contactCount;
         foreach (var col in collision.contacts)
         {
             if (col.normal == Vector2.up)
@@ -122,6 +126,11 @@ public class LizardMoving : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        _collisionsCount = 0;
     }
 
     private bool CheckChasm()
