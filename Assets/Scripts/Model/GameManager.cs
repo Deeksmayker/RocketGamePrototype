@@ -17,7 +17,6 @@ public class GameManager : MonoBehaviour
         public List<Tilemap> tilemapsToAppear;
     }
 
-    private int _currentNumOfPlatform;
     private float _platformCreationTime;
     private bool _isPlatformBlinking;
     private float _platformRemovalTime;
@@ -25,8 +24,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        _defaultMaterial = _timeChangingObjects[_currentNumOfPlatform].tilemapsToAppear[_currentNumOfPlatform].GetComponent<Material>();
-        _currentNumOfPlatform = 0;
+        _defaultMaterial = _timeChangingObjects[0].tilemapsToAppear[0].GetComponent<Material>();
         SetPlatformLifetime();
     }
 
@@ -55,7 +53,7 @@ public class GameManager : MonoBehaviour
     public void SetPlatformLifetime()
     {
         _platformCreationTime = GameTime;
-        _platformRemovalTime = _platformCreationTime + _timeChangingObjects[_currentNumOfPlatform].timeToAppear;
+        _platformRemovalTime = _platformCreationTime + _timeChangingObjects[0].timeToAppear;
     }
 
     public void RemoveCurrentPlatform()
@@ -66,7 +64,7 @@ public class GameManager : MonoBehaviour
     public void ChangeMaterial(Material material)
     {
 
-        _timeChangingObjects[_currentNumOfPlatform].tilemapsToAppear[_currentNumOfPlatform].GetComponent<TilemapRenderer>().material = material;
+        _timeChangingObjects[0].tilemapsToAppear[0].GetComponent<TilemapRenderer>().material = material;
     }
 
     public IEnumerator MakePlatformBlick()
