@@ -5,53 +5,76 @@ namespace DefaultNamespace.Enemies.Spider
 {
     public class SpiderProceduralAnimationRef : MonoBehaviour
     {
-        public Transform[] legTargets;
-        public float stepSize = 0.15f;
-        public int smoothness = 8;
-        public float stepHeight = 0.15f;
-        public bool bodyOrientation = true;
+        public Transform[] legTargets; // то, куда нога должна переместиться.
+        public float stepSize = 0.15f; // длина шага
+        public int smoothness = 8; // кол-во шагав за один цикл ходьбы
+        public float stepHeight = 0.15f; // высота подъема ног
+        public bool bodyOrientation = true; // бесполезно
 
-        public float raycastRange = 1.5f;
-        private Vector2[] defaultLegPositions;
-        private Vector2[] lastLegPositions;
-        private Vector2 lastBodyUp;
-        private bool[] legMoving;
-        private int nbLegs;
+        public float raycastRange = 1.5f; 
+        private Vector2[] defaultLegPositions; // положение ног по дефолту
+        private Vector2[] lastLegPositions; // храним прошлые позиции ног
+        private Vector2 lastBodyUp; // последняя позиция по Y
+        private bool[] legMoving; // храним какие ноги двигаются
+        private int countLegs; // кол-во ног
     
-        private Vector2 velocity;
-        private Vector2 lastVelocity;
-        private Vector2 lastBodyPos;
+        private Vector2 velocity; // ускорение
+        private Vector2 lastVelocity; // прошлое ускорение
+        private Vector2 lastBodyPos; // прошлое положение тела
 
         private float velocityMultiplier = 7f;
-
+        
         Vector2[] MatchToSurfaceFromAbove(Vector2 point, float halfRange, Vector2 up)
         {
             Vector2[] res = new Vector2[2];
             res[1] = Vector3.zero;
             RaycastHit2D hit;
-            hit = Physics2D.Raycast(point + halfRange * up / 2f, -up, 2f * halfRange);
-            Debug.DrawRay(point + halfRange * up / 2f, - up * 2f * halfRange, Color.red, smoothness * Time.deltaTime);
-            if (hit.collider)
-            {
-                res[0] = hit.point;
-                res[1] = hit.normal;
-            }
+            hit = Physics2D.Raycast(point , -up, 2f * halfRange);
+
+            Debug.DrawRay(point , - up * 2f * halfRange, Color.red, smoothness * Time.deltaTime);
+
+            if (!hit.collider)
+                res[0] = GetClosestPointOnCollider((point));
             else
-            {
-                res[0] = point;
-            }
+                res[0] = hit.point;
+            
+            res[1] = hit.normal;
+
             return res;
         }
+        
+        private Vector2 GetClosestPointOnCollider(Vector2 currentLegTransform)
+        {
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(currentLegTransform, raycastRange); 
+            float closestSqrDistance = Mathf.Infinity;
+            Vector2 closestPoint = Vector2.zero;
+        
+            foreach (var col in colliders)
+            {
+                Vector3 pos = col.ClosestPoint(currentLegTransform);
+                float sqrDist = (pos - transform.position).magnitude;
+
+                if (sqrDist < closestSqrDistance)
+                {
+                    closestSqrDistance = sqrDist;
+                    closestPoint = pos;
+                }
+            }
+
+            var dist = Vector2.Distance(closestPoint, currentLegTransform);
+            return dist < 0.3f ? currentLegTransform : closestPoint;
+        }
+
     
         void Start()
         {
             lastBodyUp = transform.up;
-
-            nbLegs = legTargets.Length;
-            defaultLegPositions = new Vector2[nbLegs];
-            lastLegPositions = new Vector2[nbLegs];
-            legMoving = new bool[nbLegs];
-            for (int i = 0; i < nbLegs; ++i)
+            
+            countLegs = legTargets.Length;
+            defaultLegPositions = new Vector2[countLegs];
+            lastLegPositions = new Vector2[countLegs];
+            legMoving = new bool[countLegs];
+            for (int i = 0; i < countLegs; ++i)
             {
                 defaultLegPositions[i] = legTargets[i].localPosition;
                 lastLegPositions[i] = legTargets[i].position;
@@ -73,8 +96,7 @@ namespace DefaultNamespace.Enemies.Spider
             lastLegPositions[index] = legTargets[index].position;
             legMoving[0] = false;
         }
-
-
+        
         void FixedUpdate()
         {
             velocity = (Vector2)transform.position - lastBodyPos;
@@ -84,12 +106,11 @@ namespace DefaultNamespace.Enemies.Spider
                 velocity = lastVelocity;
             else
                 lastVelocity = velocity;
-        
-        
-            Vector2[] desiredPositions = new Vector2[nbLegs];
+            
+            Vector2[] desiredPositions = new Vector2[countLegs];
             int indexToMove = -1;
             float maxDistance = stepSize;
-            for (int i = 0; i < nbLegs; ++i)
+            for (int i = 0; i < countLegs; ++i)
             {
                 desiredPositions[i] = transform.TransformPoint(defaultLegPositions[i]);
 
@@ -100,14 +121,13 @@ namespace DefaultNamespace.Enemies.Spider
                     indexToMove = i;
                 }
             }
-            for (int i = 0; i < nbLegs; ++i)
+            for (int i = 0; i < countLegs; ++i)
                 if (i != indexToMove)
                     legTargets[i].position = lastLegPositions[i];
 
             if (indexToMove != -1 && !legMoving[0])
             {
-                Vector2 targetPoint = desiredPositions[indexToMove] + Mathf.Clamp(velocity.magnitude * velocityMultiplier, 0.0f, 1.5f) * (desiredPositions[indexToMove] - 
-                    (Vector2)legTargets[indexToMove].position) + velocity * velocityMultiplier;
+                Vector2 targetPoint = desiredPositions[indexToMove];
 
                 Vector2[] positionAndNormalFwd = MatchToSurfaceFromAbove(targetPoint + velocity * velocityMultiplier, raycastRange, 
                     ((Vector2)transform.parent.up - velocity * 10).normalized);
@@ -117,6 +137,7 @@ namespace DefaultNamespace.Enemies.Spider
             
                 legMoving[0] = true;
             
+                
                 if (positionAndNormalFwd[1] == Vector2.zero)
                 {
                     StartCoroutine(PerformStep(indexToMove, positionAndNormalBwd[0]));
@@ -128,7 +149,7 @@ namespace DefaultNamespace.Enemies.Spider
             }
 
             lastBodyPos = transform.position;
-            if (nbLegs > 1 && bodyOrientation)
+            if (countLegs > 1 && bodyOrientation)
             {
                 Vector2 v1 = (legTargets[1].position - legTargets[0].position).normalized;
             
@@ -143,12 +164,10 @@ namespace DefaultNamespace.Enemies.Spider
 
         private void OnDrawGizmosSelected()
         {
-            for (int i = 0; i < nbLegs; ++i)
+            for (int i = 0; i < countLegs; ++i)
             {
-                Gizmos.color = Color.red;
-                Gizmos.DrawWireSphere(legTargets[i].position, 0.05f);
                 Gizmos.color = Color.green;
-                Gizmos.DrawWireSphere(transform.TransformPoint(defaultLegPositions[i]), stepSize);
+                Gizmos.DrawWireSphere(transform.TransformPoint(defaultLegPositions[i]), 0.2f);
             }
         }
     }
