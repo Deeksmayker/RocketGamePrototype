@@ -11349,6 +11349,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6341571826258908200, guid: 19fd15163ca92154fb00fba3ae894495, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: 5bddf82bdbb7fd84aa3da542af0fba75, type: 2}
     - target: {fileID: 6341571826258908204, guid: 19fd15163ca92154fb00fba3ae894495, type: 3}
       propertyPath: m_Name
       value: SpiderLineRenderer
@@ -11396,6 +11400,14 @@ PrefabInstance:
     - target: {fileID: 6341571826258908205, guid: 19fd15163ca92154fb00fba3ae894495, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6341571826258908374, guid: 19fd15163ca92154fb00fba3ae894495, type: 3}
+      propertyPath: chanceToJump
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6341571827878470745, guid: 19fd15163ca92154fb00fba3ae894495, type: 3}
+      propertyPath: rotationSpeed
+      value: 250
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 19fd15163ca92154fb00fba3ae894495, type: 3}

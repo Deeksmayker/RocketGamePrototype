@@ -91,13 +91,13 @@ public class SpiderMoving : MonoBehaviour
     {
         var targetSpeed = _moveVector.normalized * movingSpeed;
         if (_rotating)
-            targetSpeed /= 2;
+            targetSpeed /= 1.5f;
         _velocity = Vector2.Lerp(_velocity, targetSpeed, Time.deltaTime * accelerationMultiplier);
     }
 
     public void Jump(Vector2 direction, float force)
     {
-        if (Jumping)
+        if (Jumping || !_collisionDetector.contactingWithGround)
             return;
 
         Upward = -direction;
