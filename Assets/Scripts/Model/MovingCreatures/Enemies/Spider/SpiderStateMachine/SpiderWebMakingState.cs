@@ -54,7 +54,7 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
                 return;
             }
 
-            if (_timePassedFromJump >= 2)
+            if (_timePassedFromJump >= 4)
             {
                 CalculateJumpPossibility();
             }
@@ -95,7 +95,7 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
 
                 if (Utils.CheckChance(_spider.chanceToJump))
                 {
-                    _spider.JumpAndMakeWeb(jumpVector, force);
+                    _spider.Jump(jumpVector, force);
                     return true;
                 }
                 _timePassedFromJump = 0;

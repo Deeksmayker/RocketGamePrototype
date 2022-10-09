@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
 {
-    [RequireComponent(typeof(SpiderMoving))]
+    [RequireComponent(typeof(OldSpiderMoving))]
     public class SpiderStateManager : StateManager, IDestructable
     {
         private SpiderMoving _spiderMoving;
@@ -37,7 +37,7 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
         private void Start()
         {
             _spiderMoving = GetComponent<SpiderMoving>();
-            GroundLayer = _spiderMoving.GroundLayer;
+            GroundLayer = _spiderMoving.groundLayer;
             _webMakingState = new SpiderWebMakingState();
             _timeAfterJumpOnEntity = jumpOnEntityCooldown;
             
@@ -61,9 +61,30 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
             var playerInRadius = Physics2D.OverlapCircle(transform.position, 1000f, PlayerLayer);
             var flyInRadius = Physics2D.OverlapCircle(transform.position, 1000f, FlyLayer);
 
-            VectorToPlayer = playerInRadius.transform.position - transform.position;
-            VectorToFly = flyInRadius.transform.position - transform.position;
-            var minVectorByDistance = VectorToFly.magnitude < VectorToPlayer.magnitude ? VectorToFly : VectorToPlayer;
+            if (playerInRadius == null && flyInRadius == null)
+                return;
+
+            Vector2 minVectorByDistance = Vector2.zero;
+
+            if (flyInRadius == null)
+            {
+                VectorToPlayer = playerInRadius.transform.position - transform.position;
+                minVectorByDistance = VectorToPlayer;
+            }
+
+            else if (playerInRadius == null)
+            {
+                VectorToFly = flyInRadius.transform.position - transform.position;
+                minVectorByDistance = VectorToFly;
+            }
+
+            else
+            {
+                VectorToPlayer = playerInRadius.transform.position - transform.position;
+                VectorToFly = flyInRadius.transform.position - transform.position;
+
+                minVectorByDistance = VectorToFly.magnitude < VectorToPlayer.magnitude ? VectorToFly : VectorToPlayer;
+            }
 
             if (minVectorByDistance.magnitude <= maxJumpDistance)
             {
@@ -82,30 +103,24 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
             _spiderMoving.Jump(direction, force);
         }
 
-        public void JumpAndMakeWeb(Vector2 direction, float force)
-        {
-            SetMoveDirection(0);
-            StartCoroutine(_spiderMoving.JumpAndMakeWeb(direction, force));
-        } 
-
         public void SetSpeed(float value)
         {
             _currentSpeed = value;
-            _spiderMoving.speed = _currentSpeed;
+            _spiderMoving.movingSpeed = _currentSpeed;
         }
 
         public void SetMoveDirection(int newDirection)
         {
-            _spiderMoving.CurrentMoveDirection = newDirection;
+            _spiderMoving.MoveDirection = newDirection;
         }
 
         public bool JumpOnEntityAvaliable() => !Jumping() && _timeAfterJumpOnEntity >= jumpOnEntityCooldown;
 
         public Vector2 GetUpwardVector() => _spiderMoving.Upward;
 
-        public bool Climbing() => _spiderMoving.Climbing;
+/*        public bool Climbing() => _spiderMoving.Climbing;
 
-        public bool IsOnChasm() => _spiderMoving.OnChasm;
+        public bool IsOnChasm() => _spiderMoving.OnChasm;*/
 
         public bool Jumping() => _spiderMoving.Jumping;
 
