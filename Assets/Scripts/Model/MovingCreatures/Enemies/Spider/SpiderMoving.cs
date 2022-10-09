@@ -176,6 +176,14 @@ public class SpiderMoving : MonoBehaviour
         }
     }
 
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (!Jumping && _collisionDetector.contactingWithGround && !_rotating)
+        {
+            Upward = collision.GetContact(0).normal;
+        }
+    }
+
     public IEnumerator StopForATime(float time)
     {
         var lastMoveDirection = MoveDirection;

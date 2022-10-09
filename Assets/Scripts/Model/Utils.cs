@@ -11,9 +11,9 @@ namespace Assets.Scripts.Model
             return Random.Range(0f, 1f) <= chance;
         }
 
-        public static Vector2 GetRandomVector2()
+        public static Vector2 GetRandomVector2(float variation = 1)
         {
-            return new Vector2(Random.Range(-1, 1), Random.Range(-1, 1));
+            return new Vector2(Random.Range(-variation, variation), Random.Range(-variation, variation));
         }
 
         public static Vector2 GetVectorRotated90(Vector2 vector, int sign)

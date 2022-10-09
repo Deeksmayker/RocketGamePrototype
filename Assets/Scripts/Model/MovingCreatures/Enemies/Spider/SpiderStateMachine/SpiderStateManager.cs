@@ -92,7 +92,7 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
                 if (!hitToWall)
                 {
                     _timeAfterJumpOnEntity = 0;
-                    Jump(minVectorByDistance, jumpForce/5);
+                    Jump(minVectorByDistance.normalized, jumpForce * 2);
                 }
             }
         }
