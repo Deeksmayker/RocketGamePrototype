@@ -13,13 +13,13 @@ GameObject:
   - component: {fileID: 1373483980098435327}
   - component: {fileID: 1373483980098435312}
   - component: {fileID: 1373483980098435313}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LizardSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1373483980098435325
 Transform:
   m_ObjectHideFlags: 0

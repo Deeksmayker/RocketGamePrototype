@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6341571825918729793}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RightLegEnd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6341571825920268525}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RightSecondLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6341571825981820289}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LeftHip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,7 +107,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6341571826073284956}
   - component: {fileID: 6341571826073284957}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LeftSecondRig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -154,7 +154,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6341571826163470389}
   - component: {fileID: 6341571826163470386}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Hip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -294,7 +294,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6341571826167815299}
   - component: {fileID: 6341571826167815296}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Constraint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -349,7 +349,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6341571826208862437}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LeftSecondLegEnd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -384,7 +384,9 @@ GameObject:
   - component: {fileID: 6341571826258908203}
   - component: {fileID: 6341571826258908374}
   - component: {fileID: 6341571826258908373}
-  m_Layer: 0
+  - component: {fileID: 6341571827878470744}
+  - component: {fileID: 6341571827878470745}
+  m_Layer: 8
   m_Name: SpiderLineRenderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -464,7 +466,8 @@ MonoBehaviour:
     m_Bits: 128
   maxJumpDistance: 10
   jumpForce: 15
-  WebMakingStateSpeed: 5
+  jumpOnEntityCooldown: 5
+  WebMakingStateSpeed: 7
   chanceToJump: 0.5
 --- !u!114 &6341571826258908373
 MonoBehaviour:
@@ -473,7 +476,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6341571826258908204}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b3ce41e159d753c4dad56bcadf8f7d1e, type: 3}
   m_Name: 
@@ -496,6 +499,59 @@ MonoBehaviour:
   onSpiderStartMakingWeb:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6341571827878470744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6341571826258908204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 196fcdbecee3ae04dae5128bac9b3514, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  onGround: 0
+  onWall: 0
+  onRightWall: 0
+  onLeftWall: 0
+  wallSide: 0
+  collisionRadius: 0.7
+  bottomOffset: {x: 0, y: -0.5}
+  rightOffset: {x: 0.6, y: -0.15}
+  leftOffset: {x: -0.6, y: -0.15}
+  onCeiling: 0
+  contactingWithGround: 0
+  upOffset: {x: 0, y: 0.4}
+--- !u!114 &6341571827878470745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6341571826258908204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bce6acb4c687ad43ba53d7e07f7e776, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  movingSpeed: 0
+  accelerationMultiplier: 5
+  rotationSpeed: 200
+  gravityMultuplier: 4
+  checkWallDistance: 2
+  spiderJumped:
+    m_PersistentCalls:
+      m_Calls: []
+  spiderLanded:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &6341571826328700537
 GameObject:
   m_ObjectHideFlags: 0
@@ -505,7 +561,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6341571826328700518}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LeftTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -537,7 +593,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6341571826380978928}
   - component: {fileID: 6341571826380978929}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RightLegRig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -583,7 +639,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6341571826453183603}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LeftSecondLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -617,7 +673,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6341571826465301699}
   - component: {fileID: 6341571826465301696}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Leg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -756,7 +812,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6341571826478773480}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LeftLegEnd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -788,7 +844,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6341571826536447342}
   - component: {fileID: 6341571826536447343}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Leg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -928,7 +984,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6341571826686349064}
   - component: {fileID: 6341571826686349065}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RightLegConstraint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -987,7 +1043,7 @@ GameObject:
   - component: {fileID: 6341571826796418566}
   - component: {fileID: 6341571826796418564}
   - component: {fileID: 6341571826796418565}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SpiderProceduralAnimation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1104,11 +1160,11 @@ MonoBehaviour:
   - {fileID: 6341571827196588156}
   - {fileID: 6341571827707685543}
   - {fileID: 6341571827396973308}
-  stepSize: 0.15
-  smoothness: 8
-  stepHeight: 0.15
+  stepSize: 0.5
+  smoothness: 7
+  stepHeight: 1
   bodyOrientation: 0
-  raycastRange: 1.5
+  raycastRange: 3
 --- !u!1 &6341571826889780216
 GameObject:
   m_ObjectHideFlags: 0
@@ -1119,7 +1175,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6341571826889780217}
   - component: {fileID: 6341571826889780198}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Head (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1203,7 +1259,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6341571826895445643}
   - component: {fileID: 6341571826895445640}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Hip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1343,7 +1399,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6341571827095324674}
   - component: {fileID: 6341571827095324675}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Leg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1483,7 +1539,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6341571827179170787}
   - component: {fileID: 6341571827179170784}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LeftLegRig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1529,7 +1585,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6341571827196588156}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RightTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1561,7 +1617,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6341571827364499025}
   - component: {fileID: 6341571827364499038}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Hip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1700,7 +1756,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6341571827396973308}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RightSecondTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1732,7 +1788,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6341571827425563768}
   - component: {fileID: 6341571827425563769}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Hip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1871,7 +1927,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6341571827546196479}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RightLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1905,7 +1961,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6341571827578470865}
   - component: {fileID: 6341571827578470878}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RightSecondRig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1951,7 +2007,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6341571827691741027}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LeftLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1984,7 +2040,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6341571827707685543}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LeftSecondTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2015,7 +2071,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6341571827716278223}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Hint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2046,7 +2102,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6341571827731518465}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RightSecondLegEnd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2078,7 +2134,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6341571827744998488}
   - component: {fileID: 6341571827744998489}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Constraint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2133,7 +2189,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6341571827755110475}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RightHip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2166,7 +2222,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6341571827809415720}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LeftSecondHip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2200,7 +2256,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6341571827857037519}
   - component: {fileID: 6341571827857037516}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LeftLegConstraint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2256,7 +2312,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6341571827868795537}
   - component: {fileID: 6341571827868795550}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Leg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2395,7 +2451,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6341571828035899276}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RightSecondHip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
