@@ -6,55 +6,58 @@ using UnityEngine;
 [RequireComponent(typeof(SpiderMoving))]
 public class SpiderWebManager : MonoBehaviour
 {
-    [SerializeField] private LineRenderer webline;
+    [SerializeField] private LineRenderer webPrefab;
+    [SerializeField] private float maxWebDistance;
     [SerializeField] private float timeBetweenPlacingWeb;
+    [SerializeField] private int webPointsCount;
 
     private SpiderMoving _spider;
 
-    private void Awake()
+    private void Start()
     {
         _spider = GetComponent<SpiderMoving>();
-        StartCoroutine(MakeWeb(20));
+        StartCoroutine(MakeWeb(webPointsCount));
     }
 
+    private List<Vector2> _points = new();
     public IEnumerator MakeWeb(int pointsCount)
     {
-        var lines = Instantiate(webline, transform.position, Quaternion.identity);
+        _points = new();
+        var lines = Instantiate(webPrefab, transform.position, Quaternion.identity);
         
-        var points = GetAllPointsForWeb(pointsCount);
+        yield return StartCoroutine(GenerateAllPointsForWeb(pointsCount));
         
-        for (var i = 0; i < points.Length; i++)
+        for (var i = 0; i < _points.Count; i++)
         {
-            if (Utils.CompareVectors(points[i], Vector2.zero))
-            {
-                continue;
-            }
-
             lines.positionCount++;
-            lines.SetPosition(lines.positionCount -1, points[i]);
+            lines.SetPosition(lines.positionCount -1, _points[i]);
             yield return new WaitForSeconds(timeBetweenPlacingWeb);
+            if (lines == null)
+                yield break;
         }
     }
 
-    private Vector2[] GetAllPointsForWeb(int pointsCount)
+    private IEnumerator GenerateAllPointsForWeb(int pointsCount)
     {
-        var result = new List<Vector2>();
-        RaycastHit2D lastPoint = Physics2D.Raycast(transform.position, -_spider.Upward + Utils.GetRandomVector2(0.3f), 10, _spider.groundLayer);
-        result.Add(lastPoint.point);
+        RaycastHit2D lastHit = Physics2D.Raycast(transform.position, _spider.Upward + Utils.GetRandomVector2(0.3f), 100, _spider.groundLayer);
+        while(lastHit.distance > maxWebDistance)
+        {
+            Debug.Log(lastHit.distance);
+            lastHit = Physics2D.Raycast(transform.position, _spider.Upward + Utils.GetRandomVector2(0.3f), 100, _spider.groundLayer);
+            yield return null;
+        }
+        _points.Add(lastHit.point);
 
         for (var i = 0; i < pointsCount - 1; i++)
         {
-            Debug.Log(lastPoint.point+lastPoint.normal);
-
-            var newPoint = Physics2D.Raycast(lastPoint.point + lastPoint.normal, lastPoint.normal + Utils.GetRandomVector2(0.3f), 10, _spider.groundLayer);
-            if (Utils.CompareVectors(newPoint.point, Vector2.zero))
+            var newPoint = Physics2D.Raycast(lastHit.point + lastHit.normal, lastHit.normal + Utils.GetRandomVector2(0.3f), 100, _spider.groundLayer);
+            while(newPoint.distance > maxWebDistance)
             {
-                continue;
+                newPoint = Physics2D.Raycast(lastHit.point + lastHit.normal, lastHit.normal + Utils.GetRandomVector2(0.3f), 100, _spider.groundLayer);
+                yield return null;
             }
-            lastPoint = newPoint;
-            result.Add(lastPoint.point);
+            lastHit = newPoint;
+            _points.Add(lastHit.point);
         }
-
-        return result.ToArray();
     }
 }
