@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 1567273128772404767}
   - component: {fileID: 1567273128772404766}
   - component: {fileID: 363972602592952163}
-  - component: {fileID: 4906308307323781391}
   - component: {fileID: 5156214368046035395}
   - component: {fileID: 5410258386385871741}
+  - component: {fileID: 4906308307323781391}
   m_Layer: 0
   m_Name: WebLine
   m_TagString: Untagged
@@ -154,18 +154,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &4906308307323781391
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1567273128772404769}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 534dd6c646a725b468a8721819eebbb4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!60 &5156214368046035395
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -206,5 +194,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dcee4f630e2dec24693f5edc0e46de3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4906308307323781391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1567273128772404769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 534dd6c646a725b468a8721819eebbb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

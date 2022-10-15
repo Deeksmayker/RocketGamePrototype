@@ -54,9 +54,9 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
                 return;
             }
 
-            if (_timePassedFromJump >= 4)
+            if (_timePassedFromJump >= 4 && _spider.CanMakeWeb()) 
             {
-                CalculateJumpPossibility();
+                CalculateJumpAndWebPossibility();
             }
         }
 
@@ -79,19 +79,25 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
                 return -1;
         }
 
-        private void CalculateJumpPossibility()
+        private void CalculateJumpAndWebPossibility()
         {
-            CheckWallAndJumpIfNeed(_rightRayHit, new[] { Vector2.up, Vector2.down }, new Vector2(1, 1), _spider.jumpForce);
-            CheckWallAndJumpIfNeed(_leftRayHit, new[] { Vector2.up, Vector2.down }, new Vector2(-1, 1), _spider.jumpForce);
-            CheckWallAndJumpIfNeed(_upRayHit, new[] {Vector2.right, Vector2.left} , new Vector2(0, 1), _spider.jumpForce * 3);
-            CheckWallAndJumpIfNeed(_downRayHit, new[] { Vector2.right, Vector2.left }, new Vector2(0, -1), _spider.jumpForce / 3);
+            CheckWallAndJumpOrMakeWebIfNeed(_rightRayHit, new[] { Vector2.up, Vector2.down }, new Vector2(1, 1), _spider.jumpForce);
+            CheckWallAndJumpOrMakeWebIfNeed(_leftRayHit, new[] { Vector2.up, Vector2.down }, new Vector2(-1, 1), _spider.jumpForce);
+            CheckWallAndJumpOrMakeWebIfNeed(_upRayHit, new[] {Vector2.right, Vector2.left} , new Vector2(0, 1), _spider.jumpForce * 3);
+            CheckWallAndJumpOrMakeWebIfNeed(_downRayHit, new[] { Vector2.right, Vector2.left }, new Vector2(0, -1), _spider.jumpForce / 3);
         }
 
-        private bool CheckWallAndJumpIfNeed(RaycastHit2D hit, Vector2[] upwardsForThisDirection, Vector2 jumpVector, float force)
+        private bool CheckWallAndJumpOrMakeWebIfNeed(RaycastHit2D hit, Vector2[] upwardsForThisDirection, Vector2 jumpVector, float force)
         {
             if (WallAvailableForJump(hit, upwardsForThisDirection))
             {
                 _lastPlatformNormal = _spider.GetUpwardVector();
+
+                if (Utils.CheckChance(_spider.chanceToMakeWeb))
+                {
+                    _spider.MakeWeb();
+                    return true;
+                }
 
                 if (Utils.CheckChance(_spider.chanceToJump))
                 {

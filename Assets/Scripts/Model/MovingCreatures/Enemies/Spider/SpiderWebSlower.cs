@@ -1,7 +1,7 @@
 using Player;
 using UnityEngine;
 
-public class SpiderWeb : MonoBehaviour
+public class SpiderWebSlower : MonoBehaviour
 {
     private void OnTriggerStay2D(Collider2D collision)
     {

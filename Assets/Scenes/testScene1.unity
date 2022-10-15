@@ -11379,14 +11379,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main Camera
       objectReference: {fileID: 0}
-    - target: {fileID: 2353635228681119199, guid: b47a23af3c22d5d45b64dcf4b60eb550, type: 3}
-      propertyPath: m_BackGroundColor.b
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 2353635228681119199, guid: b47a23af3c22d5d45b64dcf4b60eb550, type: 3}
-      propertyPath: m_BackGroundColor.g
-      value: 0.52156866
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b47a23af3c22d5d45b64dcf4b60eb550, type: 3}
 --- !u!1001 &3869696373328568940
@@ -11457,17 +11449,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 6341571826258908200, guid: 19fd15163ca92154fb00fba3ae894495, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 6200000, guid: 5bddf82bdbb7fd84aa3da542af0fba75, type: 2}
     - target: {fileID: 6341571826258908204, guid: 19fd15163ca92154fb00fba3ae894495, type: 3}
       propertyPath: m_Name
       value: SpiderLineRenderer
-      objectReference: {fileID: 0}
-    - target: {fileID: 6341571826258908204, guid: 19fd15163ca92154fb00fba3ae894495, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6341571826258908205, guid: 19fd15163ca92154fb00fba3ae894495, type: 3}
       propertyPath: m_RootOrder
@@ -11475,11 +11459,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6341571826258908205, guid: 19fd15163ca92154fb00fba3ae894495, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 34
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 6341571826258908205, guid: 19fd15163ca92154fb00fba3ae894495, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 12.17
+      value: 6.01
       objectReference: {fileID: 0}
     - target: {fileID: 6341571826258908205, guid: 19fd15163ca92154fb00fba3ae894495, type: 3}
       propertyPath: m_LocalPosition.z
@@ -11513,42 +11497,5 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6341571826258908374, guid: 19fd15163ca92154fb00fba3ae894495, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6341571826258908374, guid: 19fd15163ca92154fb00fba3ae894495, type: 3}
-      propertyPath: chanceToJump
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6341571826258908374, guid: 19fd15163ca92154fb00fba3ae894495, type: 3}
-      propertyPath: maxJumpDistance
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 6341571827878470745, guid: 19fd15163ca92154fb00fba3ae894495, type: 3}
-      propertyPath: rotationSpeed
-      value: 250
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 19fd15163ca92154fb00fba3ae894495, type: 3}
---- !u!1 &6341571827878470743 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6341571826258908204, guid: 19fd15163ca92154fb00fba3ae894495, type: 3}
-  m_PrefabInstance: {fileID: 6341571827878470742}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &6341571827878470744
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6341571827878470743}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae160cbbd1c823b4fbf6d74d04f06edf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  webPrefab: {fileID: 1567273128772404766, guid: d0d9fd4f1b0c6634bb8db1af68e831d1, type: 3}
-  maxWebDistance: 13
-  timeBetweenPlacingWeb: 0.2
-  webPointsCount: 13

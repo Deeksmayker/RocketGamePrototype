@@ -1,14 +1,16 @@
 using Assets.Scripts.Model;
 using DefaultNamespace.StateMachine;
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
 {
-    [RequireComponent(typeof(OldSpiderMoving))]
+    [RequireComponent(typeof(SpiderMoving), typeof(SpiderWebManager))]
     public class SpiderStateManager : StateManager, IDestructable
     {
         private SpiderMoving _spiderMoving;
+        private SpiderWebManager _spiderWebManager;
 
         public LayerMask GroundLayer { get; private set; }
         public LayerMask PlayerLayer;
@@ -23,6 +25,7 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
         private SpiderWebMakingState _webMakingState;
         public float WebMakingStateSpeed;
         [Range(0, 1)] public float chanceToJump;
+        [Range(0, 1)] public float chanceToMakeWeb;
 
         [Header("Fly chasing state")]
         
@@ -37,6 +40,8 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
         private void Start()
         {
             _spiderMoving = GetComponent<SpiderMoving>();
+            _spiderWebManager = GetComponent<SpiderWebManager>();
+
             GroundLayer = _spiderMoving.groundLayer;
             _webMakingState = new SpiderWebMakingState();
             _timeAfterJumpOnEntity = jumpOnEntityCooldown;
@@ -114,6 +119,21 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
             _spiderMoving.MoveDirection = newDirection;
         }
 
+        private bool _canMakeWeb = true;
+        public void MakeWeb()
+        {
+            StartCoroutine(_spiderWebManager.MakeWeb());
+            _canMakeWeb = false;
+            StartCoroutine(WaitWhileCanWalk());
+        }
+
+        private IEnumerator WaitWhileCanWalk()
+        {
+            yield return StartCoroutine(_spiderMoving.StopForATime(_spiderWebManager.GetMakingWebDuration()));
+            yield return new WaitForSeconds(1);
+            _canMakeWeb = true;
+        }
+
         public bool JumpOnEntityAvaliable() => !Jumping() && _timeAfterJumpOnEntity >= jumpOnEntityCooldown;
 
         public Vector2 GetUpwardVector() => _spiderMoving.Upward;
@@ -123,6 +143,10 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
         public bool IsOnChasm() => _spiderMoving.OnChasm;*/
 
         public bool Jumping() => _spiderMoving.Jumping;
+        public bool CanMakeWeb()
+        {
+            return _canMakeWeb;
+        }
 
         public void TakeDamage()
         {

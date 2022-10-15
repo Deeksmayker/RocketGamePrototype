@@ -383,9 +383,9 @@ GameObject:
   - component: {fileID: 6341571826258908200}
   - component: {fileID: 6341571826258908203}
   - component: {fileID: 6341571826258908374}
-  - component: {fileID: 6341571826258908373}
   - component: {fileID: 6341571827878470744}
   - component: {fileID: 6341571827878470745}
+  - component: {fileID: 4691048682796792573}
   m_Layer: 8
   m_Name: SpiderLineRenderer
   m_TagString: Untagged
@@ -425,7 +425,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 5bddf82bdbb7fd84aa3da542af0fba75, type: 2}
   m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
@@ -464,41 +464,12 @@ MonoBehaviour:
   FlyLayer:
     serializedVersion: 2
     m_Bits: 128
-  maxJumpDistance: 10
+  maxJumpDistance: 13
   jumpForce: 15
   jumpOnEntityCooldown: 5
   WebMakingStateSpeed: 7
   chanceToJump: 0.5
---- !u!114 &6341571826258908373
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6341571826258908204}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3ce41e159d753c4dad56bcadf8f7d1e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 0
-  GroundLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  rotationSpeed: 150
-  checkWallDistance: 2
-  WebObject: {fileID: 1024475874497964459, guid: 76a6dff6d8c438f4fa68225d9fbd19d6, type: 3}
-  PointOfSupportWeb: {fileID: 4821729543381044485, guid: 19d0fc15928a5814b8cf3dd7ebad97bc, type: 3}
-  webSpawnInterval: 0.1
-  onSpiderJumped:
-    m_PersistentCalls:
-      m_Calls: []
-  onSpiderLanded:
-    m_PersistentCalls:
-      m_Calls: []
-  onSpiderStartMakingWeb:
-    m_PersistentCalls:
-      m_Calls: []
+  chanceToMakeWeb: 0.2
 --- !u!114 &6341571827878470744
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -543,7 +514,7 @@ MonoBehaviour:
     m_Bits: 64
   movingSpeed: 0
   accelerationMultiplier: 5
-  rotationSpeed: 200
+  rotationSpeed: 250
   gravityMultuplier: 4
   checkWallDistance: 2
   spiderJumped:
@@ -552,6 +523,22 @@ MonoBehaviour:
   spiderLanded:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &4691048682796792573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6341571826258908204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae160cbbd1c823b4fbf6d74d04f06edf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  webPrefab: {fileID: 1567273128772404766, guid: d0d9fd4f1b0c6634bb8db1af68e831d1, type: 3}
+  maxWebDistance: 13
+  timeBetweenPlacingWeb: 0.2
+  webPointsCount: 13
 --- !u!1 &6341571826328700537
 GameObject:
   m_ObjectHideFlags: 0

@@ -16,16 +16,15 @@ public class SpiderWebManager : MonoBehaviour
     private void Start()
     {
         _spider = GetComponent<SpiderMoving>();
-        StartCoroutine(MakeWeb(webPointsCount));
     }
 
     private List<Vector2> _points = new();
-    public IEnumerator MakeWeb(int pointsCount)
+    public IEnumerator MakeWeb()
     {
         _points = new();
         var lines = Instantiate(webPrefab, transform.position, Quaternion.identity);
         
-        yield return StartCoroutine(GenerateAllPointsForWeb(pointsCount));
+        yield return StartCoroutine(GenerateAllPointsForWeb(webPointsCount));
         
         for (var i = 0; i < _points.Count; i++)
         {
@@ -42,7 +41,6 @@ public class SpiderWebManager : MonoBehaviour
         RaycastHit2D lastHit = Physics2D.Raycast(transform.position, _spider.Upward + Utils.GetRandomVector2(0.3f), 100, _spider.groundLayer);
         while(lastHit.distance > maxWebDistance)
         {
-            Debug.Log(lastHit.distance);
             lastHit = Physics2D.Raycast(transform.position, _spider.Upward + Utils.GetRandomVector2(0.3f), 100, _spider.groundLayer);
             yield return null;
         }
@@ -59,5 +57,10 @@ public class SpiderWebManager : MonoBehaviour
             lastHit = newPoint;
             _points.Add(lastHit.point);
         }
+    }
+
+    public float GetMakingWebDuration()
+    {
+        return webPointsCount * timeBetweenPlacingWeb;
     }
 }

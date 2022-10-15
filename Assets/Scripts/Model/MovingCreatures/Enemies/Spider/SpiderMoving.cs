@@ -21,6 +21,8 @@ public class SpiderMoving : MonoBehaviour
         get => _moveDirection;
         set
         {
+            if (!_canMove)
+                return;
             _moveDirection = Mathf.Clamp(value, -1, 1);
         }
     }
@@ -32,6 +34,7 @@ public class SpiderMoving : MonoBehaviour
     private Vector2 _velocity;
     private float _angleToRotate;
     private bool _rotating;
+    private bool _canMove = true;
 
     private Rigidbody2D _rb;
     private SpiderCollisionDetector _collisionDetector;
@@ -188,13 +191,9 @@ public class SpiderMoving : MonoBehaviour
     {
         var lastMoveDirection = MoveDirection;
         MoveDirection = 0;
-        var timer = 0f;
-        while (timer < time)
-        {
-            MoveDirection = 0;
-            timer += Time.deltaTime;
-            yield return new WaitForEndOfFrame();
-        }
+        _canMove = false;
+        yield return new WaitForSeconds(time);
+        _canMove = true;
 
         MoveDirection = lastMoveDirection;
     }
