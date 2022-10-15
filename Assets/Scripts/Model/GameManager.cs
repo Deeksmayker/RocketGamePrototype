@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public float GameTime { get; private set; }
 
     [SerializeField] private Material blinkMaterial;
+
     [Serializable]
     public struct TimeChangingObjects
     {
@@ -58,12 +59,14 @@ public class GameManager : MonoBehaviour
 
     public void RemoveCurrentPlatform()
     {
-        _timeChangingObjects[0].tilemapsToAppear.RemoveAt(0);
+        if (_timeChangingObjects[0].tilemapsToAppear.Count > 0)
+        {
+            _timeChangingObjects[0].tilemapsToAppear.RemoveAt(0);
+        }
     }
 
     public void ChangeMaterial(Material material)
     {
-
         _timeChangingObjects[0].tilemapsToAppear[0].GetComponent<TilemapRenderer>().material = material;
     }
 
@@ -86,6 +89,9 @@ public class GameManager : MonoBehaviour
 
     public void CreateNewPlatform()
     {
-        Instantiate(_timeChangingObjects[0].tilemapsToAppear[0]);
+        if (_timeChangingObjects[0].tilemapsToAppear.Count > 0)
+        {
+            Instantiate(_timeChangingObjects[0].tilemapsToAppear[0]);
+        }
     }
 }
