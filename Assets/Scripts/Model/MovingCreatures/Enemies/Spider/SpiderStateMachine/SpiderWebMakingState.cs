@@ -8,11 +8,6 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
     {
         private SpiderStateManager _spider;
 
-        private RaycastHit2D _rightRayHit;
-        private RaycastHit2D _leftRayHit;
-        private RaycastHit2D _upRayHit;
-        private RaycastHit2D _downRayHit;
-
         private Vector2 _lastPlatformNormal;
         private float _timeToForgetLastPlatform = 5f;
         private float _timePassedFromJump;
@@ -22,11 +17,10 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
         {
             _spider = (SpiderStateManager)manager;
 
-            _spider.SetSpeed(_spider.WebMakingStateSpeed);
+            _spider.SetSpeed(_spider.webMakingStateSpeed);
 
             _timePassedFromJump = _timeToForgetLastPlatform;
             
-            UpdateDirectionRayHits();
             _spider.SetMoveDirection(GetClosestWallDirection());
             _isSetUpMoveDirection = true;
         }
@@ -40,9 +34,7 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
                 return;
             }
             _timePassedFromJump += Time.deltaTime;
-
-            UpdateDirectionRayHits();
-
+            Debug.Log(1);
             if (!_isSetUpMoveDirection)
             {
                 if (_timePassedFromJump >= 1)
@@ -60,20 +52,12 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
             }
         }
 
-        private void UpdateDirectionRayHits()
-        {
-            _rightRayHit = Physics2D.Raycast(_spider.transform.position, Vector2.right, 100f, _spider.GroundLayer);
-            _leftRayHit = Physics2D.Raycast(_spider.transform.position, Vector2.left, 100f, _spider.GroundLayer);
-            _upRayHit = Physics2D.Raycast(_spider.transform.position, Vector2.up, 100f, _spider.GroundLayer);
-            _downRayHit = Physics2D.Raycast(_spider.transform.position, Vector2.down, 100f, _spider.GroundLayer);
-        }
-
         private int GetClosestWallDirection()
         {
-            var onRightWall = _rightRayHit.normal == _spider.GetUpwardVector();
-            var onLeftWall = _leftRayHit.normal == _spider.GetUpwardVector();
+            var onRightWall = _spider.RightRayHit.normal == _spider.GetUpwardVector();
+            var onLeftWall = _spider.LeftRayHit.normal == _spider.GetUpwardVector();
 
-            if (_rightRayHit.distance <= _leftRayHit.distance && !onRightWall || onLeftWall)
+            if (_spider.RightRayHit.distance <= _spider.LeftRayHit.distance && !onRightWall || onLeftWall)
                 return 1;
             else
                 return -1;
@@ -81,10 +65,10 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
 
         private void CalculateJumpAndWebPossibility()
         {
-            CheckWallAndJumpOrMakeWebIfNeed(_rightRayHit, new[] { Vector2.up, Vector2.down }, new Vector2(1, 1), _spider.jumpForce);
-            CheckWallAndJumpOrMakeWebIfNeed(_leftRayHit, new[] { Vector2.up, Vector2.down }, new Vector2(-1, 1), _spider.jumpForce);
-            CheckWallAndJumpOrMakeWebIfNeed(_upRayHit, new[] {Vector2.right, Vector2.left} , new Vector2(0, 1), _spider.jumpForce * 3);
-            CheckWallAndJumpOrMakeWebIfNeed(_downRayHit, new[] { Vector2.right, Vector2.left }, new Vector2(0, -1), _spider.jumpForce / 3);
+            CheckWallAndJumpOrMakeWebIfNeed(_spider.RightRayHit, new[] { Vector2.up, Vector2.down }, new Vector2(1, 1), _spider.jumpForce);
+            CheckWallAndJumpOrMakeWebIfNeed(_spider.LeftRayHit, new[] { Vector2.up, Vector2.down }, new Vector2(-1, 1), _spider.jumpForce);
+            CheckWallAndJumpOrMakeWebIfNeed(_spider.UpRayHit, new[] {Vector2.right, Vector2.left} , new Vector2(0, 1), _spider.jumpForce * 3);
+            CheckWallAndJumpOrMakeWebIfNeed(_spider.DownRayHit, new[] { Vector2.right, Vector2.left }, new Vector2(0, -1), _spider.jumpForce / 3);
         }
 
         private bool CheckWallAndJumpOrMakeWebIfNeed(RaycastHit2D hit, Vector2[] upwardsForThisDirection, Vector2 jumpVector, float force)
@@ -96,6 +80,7 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
                 if (Utils.CheckChance(_spider.chanceToMakeWeb))
                 {
                     _spider.MakeWeb();
+                    Exit();
                     return true;
                 }
 
@@ -128,7 +113,7 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
 
         public void Exit()
         {
-            
+            _spider.SetState(_spider.FlyChasingState);
         }
     }
 }

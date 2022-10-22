@@ -1,4 +1,5 @@
 using Assets.Scripts.Model;
+using Assets.Scripts.Model.MovingCreatures.Enemies.Spider.SpiderStateMachine;
 using DefaultNamespace.StateMachine;
 using System;
 using System.Collections;
@@ -22,16 +23,18 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
         [SerializeField] private float jumpOnEntityCooldown;
     
         [Header("Web making state")]
-        private SpiderWebMakingState _webMakingState;
-        public float WebMakingStateSpeed;
+        public SpiderWebMakingState WebMakingState;
+        public float webMakingStateSpeed;
         [Range(0, 1)] public float chanceToJump;
         [Range(0, 1)] public float chanceToMakeWeb;
 
         [Header("Fly chasing state")]
-        
+        public SpiderFlyChasingState FlyChasingState;
+        public float flyChasingStateSpeed;
 
         [NonSerialized] public Vector2 VectorToPlayer;
         [NonSerialized] public Vector2 VectorToFly;
+        [NonSerialized] public RaycastHit2D RightRayHit, LeftRayHit, UpRayHit, DownRayHit;
 
         private float _currentSpeed;
         private float _timeAfterJumpOnEntity;
@@ -43,26 +46,33 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
             _spiderWebManager = GetComponent<SpiderWebManager>();
 
             GroundLayer = _spiderMoving.groundLayer;
-            _webMakingState = new SpiderWebMakingState();
+            WebMakingState = new SpiderWebMakingState();
+            FlyChasingState = new SpiderFlyChasingState();
             _timeAfterJumpOnEntity = jumpOnEntityCooldown;
             
-            SetState(_webMakingState);
+            SetState(WebMakingState);
         }
 
         protected override void Update()
         {
             _timeAfterJumpOnEntity += Time.deltaTime;
 
+            UpdateDirectionRayHits();
             UpdateVectorsToChase();
             
             base.Update();
         }
 
+        private void UpdateDirectionRayHits()
+        {
+            RightRayHit = Physics2D.Raycast(transform.position, Vector2.right, 100f, GroundLayer);
+            LeftRayHit = Physics2D.Raycast(transform.position, Vector2.left, 100f, GroundLayer);
+            UpRayHit = Physics2D.Raycast(transform.position, Vector2.up, 100f, GroundLayer);
+            DownRayHit = Physics2D.Raycast(transform.position, Vector2.down, 100f, GroundLayer);
+        }
+
         private void UpdateVectorsToChase()
         {
-            if (!JumpOnEntityAvaliable())
-                return;
-
             var playerInRadius = Physics2D.OverlapCircle(transform.position, 1000f, PlayerLayer);
             var flyInRadius = Physics2D.OverlapCircle(transform.position, 1000f, FlyLayer);
 
@@ -90,6 +100,9 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
 
                 minVectorByDistance = VectorToFly.magnitude < VectorToPlayer.magnitude ? VectorToFly : VectorToPlayer;
             }
+
+            if (!JumpOnEntityAvaliable())
+                return;
 
             if (minVectorByDistance.magnitude <= maxJumpDistance)
             {
