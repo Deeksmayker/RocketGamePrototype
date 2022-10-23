@@ -1,23 +1,26 @@
+using Assets.Scripts.Model.Interfaces;
 using Player;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class SpiderWebSlower : MonoBehaviour
 {
+    public UnityEvent<Vector2> FlyInWeb = new();
+
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.GetComponent<SpiderMoving>() != null)
             return;
 
-        var rocket = collision.GetComponent<Rocket>();
-        if (rocket != null)
+        foreach(var script in collision.GetComponents<MonoBehaviour>().OfType<ISlowable>())
         {
-            rocket.Slowing = true;
+            script.Slow(true);
         }
 
-        var player = collision.GetComponent<PlayerController>();
-        if (player != null)
+        if (collision.TryGetComponent<FlyController>(out var fly))
         {
-            player.InSpiderWeb = true;
+            FlyInWeb.Invoke(fly.transform.position);
         }
     }
 
@@ -26,17 +29,14 @@ public class SpiderWebSlower : MonoBehaviour
         if (collision.GetComponent<SpiderMoving>() != null)
             return;
 
-        var rocket = collision.GetComponent<Rocket>();
-        if (rocket != null)
+        foreach (var script in collision.GetComponents<MonoBehaviour>().OfType<ISlowable>())
         {
-            rocket.Slowing = false;
-            rocket.SetLifeTime(0);
+            script.Slow(false);
         }
 
-        var player = collision.GetComponent<PlayerController>();
-        if (player != null)
+        if (collision.TryGetComponent<FlyController>(out var fly))
         {
-            player.InSpiderWeb = false;
+            FlyInWeb.Invoke(Vector2.zero);
         }
     }
 }

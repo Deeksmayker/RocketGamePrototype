@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Model;
+using Assets.Scripts.Model.Interfaces;
 using System;
 using Unity.Mathematics;
 using UnityEngine;
@@ -6,9 +7,9 @@ using UnityEngine.Events;
 
 namespace Player
 {
-    public class Rocket : MonoBehaviour, IDestructable
+    public class Rocket : MonoBehaviour, IDestructable, ISlowable
     {
-        [NonSerialized] public bool Slowing;
+        private bool _slowing;
 
         [SerializeField] private float maxSpeed;
         [SerializeField] private float timeForMaxSpeed;
@@ -45,7 +46,7 @@ namespace Player
 
         private void FixedUpdate()
         {
-            if (Slowing)
+            if (_slowing)
             {
                 _rb.velocity -= Vector2.right * Mathf.Sign(_rb.velocity.x) * _rb.velocity.magnitude * xSlowingMultiplier;
                 _rb.velocity -= Vector2.up * _rb.velocity.magnitude * ySlowingMultiplier;
@@ -149,6 +150,11 @@ namespace Player
             var collidersInArea = Physics2D.OverlapCircleAll(transform.position, explodeRadius);
 
             PushObjectsInExplosionRange(collidersInArea);
+        }
+
+        public void Slow(bool slow)
+        {
+            _slowing = slow;
         }
     }
 }

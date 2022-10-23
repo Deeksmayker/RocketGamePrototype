@@ -25,12 +25,18 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        if (_timeChangingObjects.Count == 0)
+            return;
+
         _defaultMaterial = _timeChangingObjects[0].tilemapsToAppear[0].GetComponent<Material>();
         SetPlatformLifetime();
     }
 
     private void Update()
     {
+        if (_timeChangingObjects.Count == 0)
+            return;
+
         UpdateGameTime();
         if (_platformRemovalTime - GameTime <= 5 && !_isPlatformBlinking)
         {

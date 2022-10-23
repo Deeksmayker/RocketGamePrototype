@@ -44,4 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee04fa36846ddfc4796bbd78b66c2f23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timerText: {fileID: 0}
+  _timeChangingObjects: []
+  blinkMaterial: {fileID: 0}

@@ -1,7 +1,9 @@
 using Assets.Scripts.Model;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(SpiderMoving))]
 public class SpiderWebManager : MonoBehaviour
@@ -13,6 +15,8 @@ public class SpiderWebManager : MonoBehaviour
 
     private SpiderMoving _spider;
 
+    public UnityEvent<SpiderWebSlower> WebCreated = new();
+
     private void Start()
     {
         _spider = GetComponent<SpiderMoving>();
@@ -23,7 +27,7 @@ public class SpiderWebManager : MonoBehaviour
     {
         _points = new();
         var lines = Instantiate(webPrefab, transform.position, Quaternion.identity);
-        
+        WebCreated.Invoke(lines.GetComponent<SpiderWebSlower>());
         yield return StartCoroutine(GenerateAllPointsForWeb(webPointsCount));
         
         for (var i = 0; i < _points.Count; i++)

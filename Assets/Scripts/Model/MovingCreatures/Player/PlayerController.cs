@@ -1,3 +1,4 @@
+using Assets.Scripts.Model.Interfaces;
 using Player;
 using System;
 using System.Collections;
@@ -6,7 +7,7 @@ using UnityEngine.Events;
 
 [RequireComponent(typeof(GameInputManager))]
 [RequireComponent(typeof(Rigidbody2D))]
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, ISlowable
 {
     [Header("Movement on ground")]
     public float walkTargetSpeed;
@@ -36,7 +37,8 @@ public class PlayerController : MonoBehaviour
     [NonSerialized] public bool InRocketJump;
     [NonSerialized] public bool IsWallJumping;
     [NonSerialized] public bool IsWallGrab;
-    [NonSerialized] public bool InSpiderWeb;
+
+    private bool _inSpiderWeb;
 
     private GameInputManager _input;
     private Rigidbody2D _rb;
@@ -76,7 +78,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (InSpiderWeb)
+        if (_inSpiderWeb)
         {
             _rb.velocity = Vector2.Lerp(_rb.velocity, Vector2.zero, inWebVelocityDeceleration);
         }
@@ -177,5 +179,10 @@ public class PlayerController : MonoBehaviour
     public int GetMoveDirection()
     {
         return (int)Mathf.Sign(_rb.velocity.x);
+    }
+
+    public void Slow(bool isSlow)
+    {
+        _inSpiderWeb = isSlow;
     }
 }

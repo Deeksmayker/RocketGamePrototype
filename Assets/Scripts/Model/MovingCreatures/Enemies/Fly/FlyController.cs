@@ -1,9 +1,10 @@
 using Assets.Scripts.Model;
+using Assets.Scripts.Model.Interfaces;
 using Assets.Scripts.Model.MovingCreatures.Enemies;
 using System.Collections;
 using UnityEngine;
 
-public class FlyController : MonoBehaviour, ISpawnable, IDestructable
+public class FlyController : MonoBehaviour, ISpawnable, IDestructable, ISlowable
 {
     [Header("Jerking")]
     [SerializeField] private float minTimeBeforeJerk;
@@ -23,6 +24,7 @@ public class FlyController : MonoBehaviour, ISpawnable, IDestructable
 
     private Rigidbody2D _rb;
 
+    private bool _needToStop;
     private bool _calculatingJerkDirection;
     private bool _jerking;
 
@@ -35,6 +37,12 @@ public class FlyController : MonoBehaviour, ISpawnable, IDestructable
 
     private void FixedUpdate()
     {
+        if (_needToStop)
+        {
+            _rb.velocity = Vector2.Lerp(_rb.velocity, Vector2.zero, Time.fixedDeltaTime * 2);
+            return;
+        }
+
         if (_jerking)
         {
             Jerk();
@@ -112,5 +120,10 @@ public class FlyController : MonoBehaviour, ISpawnable, IDestructable
     public void TakeDamage()
     {
         Destroy(gameObject);
+    }
+
+    public void Slow(bool slow)
+    {
+        _needToStop = slow;
     }
 }

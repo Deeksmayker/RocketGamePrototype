@@ -31,6 +31,7 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
         [Header("Fly chasing state")]
         public SpiderFlyChasingState FlyChasingState;
         public float flyChasingStateSpeed;
+        public float changeDirectionDelay;
 
         [NonSerialized] public Vector2 VectorToPlayer;
         [NonSerialized] public Vector2 VectorToFly;
@@ -39,11 +40,15 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
         private float _currentSpeed;
         private float _timeAfterJumpOnEntity;
 
+        private bool _canMakeWeb = true;
+        private bool _flyCapturedInWeb;
 
         private void Start()
         {
             _spiderMoving = GetComponent<SpiderMoving>();
             _spiderWebManager = GetComponent<SpiderWebManager>();
+
+            _spiderWebManager.WebCreated.AddListener((web) => web.FlyInWeb.AddListener(OnFlyCapturedInWeb));
 
             GroundLayer = _spiderMoving.groundLayer;
             WebMakingState = new SpiderWebMakingState();
@@ -73,12 +78,13 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
 
         private void UpdateVectorsToChase()
         {
-            var playerInRadius = Physics2D.OverlapCircle(transform.position, 1000f, PlayerLayer);
-            var flyInRadius = Physics2D.OverlapCircle(transform.position, 1000f, FlyLayer);
+            var playerInRadius = Physics2D.OverlapCircle(transform.position, 100f, PlayerLayer);
+            var flyInRadius = Physics2D.OverlapCircle(transform.position, 100f, FlyLayer);
 
             if (playerInRadius == null && flyInRadius == null)
                 return;
 
+            var closestFly = Vector2.zero;
             Vector2 minVectorByDistance = Vector2.zero;
 
             if (flyInRadius == null)
@@ -89,17 +95,20 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
 
             else if (playerInRadius == null)
             {
-                VectorToFly = flyInRadius.transform.position - transform.position;
-                minVectorByDistance = VectorToFly;
+                closestFly = flyInRadius.transform.position - transform.position;
+                minVectorByDistance = closestFly;
             }
 
             else
             {
                 VectorToPlayer = playerInRadius.transform.position - transform.position;
-                VectorToFly = flyInRadius.transform.position - transform.position;
+                closestFly = flyInRadius.transform.position - transform.position;
 
-                minVectorByDistance = VectorToFly.magnitude < VectorToPlayer.magnitude ? VectorToFly : VectorToPlayer;
+                minVectorByDistance = closestFly.magnitude < VectorToPlayer.magnitude ? closestFly : VectorToPlayer;
             }
+
+            if (!_flyCapturedInWeb)
+                VectorToFly = closestFly;
 
             if (!JumpOnEntityAvaliable())
                 return;
@@ -132,7 +141,6 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
             _spiderMoving.MoveDirection = newDirection;
         }
 
-        private bool _canMakeWeb = true;
         public void MakeWeb()
         {
             StartCoroutine(_spiderWebManager.MakeWeb());
@@ -147,13 +155,38 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
             _canMakeWeb = true;
         }
 
+        private void OnFlyCapturedInWeb(Vector2 flyPosition)
+        {
+            if (flyPosition == Vector2.zero)
+            {
+                _flyCapturedInWeb = false;
+                return;
+            }
+
+            VectorToFly = flyPosition - (Vector2)transform.position;
+            _flyCapturedInWeb = true;
+        }
+
+        public int GetMoveDirectionRelatedOnUpward(Vector2 towardsVector)
+        {
+            if (Utils.CompareVectors(GetUpwardVector(), Vector2.left) && towardsVector.y > 0
+                || Utils.CompareVectors(GetUpwardVector(), Vector2.right) && towardsVector.y < 0)
+            {
+                return 1;
+            }
+
+            if (Utils.CompareVectors(GetUpwardVector(), Vector2.left) && towardsVector.y < 0
+                || Utils.CompareVectors(GetUpwardVector(), Vector2.right) && towardsVector.y > 0)
+            {
+                return -1;
+            }
+
+            return (int)Mathf.Sign(towardsVector.x) * (Utils.CompareVectors(GetUpwardVector(), Vector2.up) ? 1 : -1);
+        }
+
         public bool JumpOnEntityAvaliable() => !Jumping() && _timeAfterJumpOnEntity >= jumpOnEntityCooldown;
 
         public Vector2 GetUpwardVector() => _spiderMoving.Upward;
-
-/*        public bool Climbing() => _spiderMoving.Climbing;
-
-        public bool IsOnChasm() => _spiderMoving.OnChasm;*/
 
         public bool Jumping() => _spiderMoving.Jumping;
         public bool CanMakeWeb()

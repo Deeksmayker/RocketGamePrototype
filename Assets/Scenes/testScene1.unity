@@ -11069,14 +11069,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 144474247592439306, guid: cbcfda94b1372154d9363301266b8f77, type: 3}
-      propertyPath: leftUpArenaCorner
-      value: 
-      objectReference: {fileID: 612068071}
-    - target: {fileID: 144474247592439306, guid: cbcfda94b1372154d9363301266b8f77, type: 3}
-      propertyPath: rightDownArenaCorner
-      value: 
-      objectReference: {fileID: 774506475}
     - target: {fileID: 3903502672325617637, guid: cbcfda94b1372154d9363301266b8f77, type: 3}
       propertyPath: m_RootOrder
       value: 9
@@ -11197,7 +11189,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1373483980098435314, guid: 4004ba4d53494b0428ca31a049a44cde, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1373483980098435325, guid: 4004ba4d53494b0428ca31a049a44cde, type: 3}
       propertyPath: m_RootOrder
@@ -11258,7 +11250,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1983095507591722700, guid: d1325e7133fcbe24d875947b51bff1fb, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1983095507591722802, guid: d1325e7133fcbe24d875947b51bff1fb, type: 3}
       propertyPath: m_RootOrder
@@ -11502,7 +11494,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6341571826258908205, guid: 19fd15163ca92154fb00fba3ae894495, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2
+      value: 0.93
       objectReference: {fileID: 0}
     - target: {fileID: 6341571826258908205, guid: 19fd15163ca92154fb00fba3ae894495, type: 3}
       propertyPath: m_LocalPosition.y
@@ -11539,14 +11531,6 @@ PrefabInstance:
     - target: {fileID: 6341571826258908205, guid: 19fd15163ca92154fb00fba3ae894495, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6341571826258908374, guid: 19fd15163ca92154fb00fba3ae894495, type: 3}
-      propertyPath: webMakingStateSpeed
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 6341571826258908374, guid: 19fd15163ca92154fb00fba3ae894495, type: 3}
-      propertyPath: flyChasingStateSpeed
-      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 19fd15163ca92154fb00fba3ae894495, type: 3}

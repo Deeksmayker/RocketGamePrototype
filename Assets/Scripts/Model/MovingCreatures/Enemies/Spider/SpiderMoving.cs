@@ -84,7 +84,6 @@ public class SpiderMoving : MonoBehaviour
             transform.rotation = Quaternion.RotateTowards(transform.rotation, nextAngle, rotationSpeed * Time.deltaTime);
         }
 
-        
         _moveVector = transform.right * MoveDirection;
 
         _rb.velocity = _velocity;

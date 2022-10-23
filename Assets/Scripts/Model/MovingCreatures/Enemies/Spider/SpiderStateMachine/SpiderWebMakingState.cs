@@ -12,6 +12,11 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
         private float _timeToForgetLastPlatform = 5f;
         private float _timePassedFromJump;
         private bool _isSetUpMoveDirection;
+        private bool _needToJumpUp;
+        private bool _needToMakeWeb;
+
+        private float _upJumpDelayTimer;
+        private float _makeWebDelayTimer;
 
         public void Enter(StateManager manager)
         {
@@ -34,7 +39,7 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
                 return;
             }
             _timePassedFromJump += Time.deltaTime;
-            Debug.Log(1);
+
             if (!_isSetUpMoveDirection)
             {
                 if (_timePassedFromJump >= 1)
@@ -49,6 +54,27 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
             if (_timePassedFromJump >= 4 && _spider.CanMakeWeb()) 
             {
                 CalculateJumpAndWebPossibility();
+            }
+
+            if (_needToJumpUp)
+            {
+                _upJumpDelayTimer += Time.deltaTime;
+                if (_upJumpDelayTimer >= 0.3f)
+                {
+                    _spider.Jump(Vector2.up, _spider.jumpForce * 3);
+                    _needToJumpUp = false;
+                }
+            }
+
+            if (_needToMakeWeb)
+            {
+                _makeWebDelayTimer += Time.deltaTime;
+                if (_makeWebDelayTimer >= 0.4f)
+                {
+                    _spider.MakeWeb();
+                    _needToMakeWeb = false;
+                    Exit();
+                }
             }
         }
 
@@ -67,7 +93,7 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
         {
             CheckWallAndJumpOrMakeWebIfNeed(_spider.RightRayHit, new[] { Vector2.up, Vector2.down }, new Vector2(1, 1), _spider.jumpForce);
             CheckWallAndJumpOrMakeWebIfNeed(_spider.LeftRayHit, new[] { Vector2.up, Vector2.down }, new Vector2(-1, 1), _spider.jumpForce);
-            CheckWallAndJumpOrMakeWebIfNeed(_spider.UpRayHit, new[] {Vector2.right, Vector2.left} , new Vector2(0, 1), _spider.jumpForce * 3);
+            _needToJumpUp = CheckWallAndJumpOrMakeWebIfNeed(_spider.UpRayHit, new[] {Vector2.right, Vector2.left} , new Vector2(0, 1), _spider.jumpForce * 3);
             CheckWallAndJumpOrMakeWebIfNeed(_spider.DownRayHit, new[] { Vector2.right, Vector2.left }, new Vector2(0, -1), _spider.jumpForce / 3);
         }
 
@@ -79,17 +105,20 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
 
                 if (Utils.CheckChance(_spider.chanceToMakeWeb))
                 {
-                    _spider.MakeWeb();
-                    Exit();
-                    return true;
+                    _needToMakeWeb = true;
                 }
 
                 if (Utils.CheckChance(_spider.chanceToJump))
                 {
-                    _spider.Jump(jumpVector, force);
+                    if (!Utils.CompareVectors(hit.normal, Vector2.down))
+                    {
+                        _spider.Jump(jumpVector, force);
+                    }
+
                     return true;
                 }
                 _timePassedFromJump = 0;
+
                 return false;
             }
 

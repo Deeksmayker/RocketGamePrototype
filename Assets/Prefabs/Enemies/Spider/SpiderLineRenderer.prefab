@@ -467,9 +467,11 @@ MonoBehaviour:
   maxJumpDistance: 13
   jumpForce: 15
   jumpOnEntityCooldown: 5
-  WebMakingStateSpeed: 7
+  webMakingStateSpeed: 7
   chanceToJump: 0.5
-  chanceToMakeWeb: 0.2
+  chanceToMakeWeb: 0.5
+  flyChasingStateSpeed: 8
+  changeDirectionDelay: 7
 --- !u!114 &6341571827878470744
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -539,6 +541,9 @@ MonoBehaviour:
   maxWebDistance: 13
   timeBetweenPlacingWeb: 0.2
   webPointsCount: 13
+  WebCreated:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &6341571826328700537
 GameObject:
   m_ObjectHideFlags: 0
