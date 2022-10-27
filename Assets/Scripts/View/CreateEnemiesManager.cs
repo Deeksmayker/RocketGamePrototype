@@ -5,10 +5,11 @@ using UnityEngine;
 
 public class CreateEnemiesManager : MonoBehaviour
 {
-    [SerializeField] private GameObject flyPrefab;
     [SerializeField] private GameObject spiderPrefab;
     [SerializeField] private GameObject lizardPrefab;
+    [SerializeField] private GameObject flyPrefab;
 
+    [SerializeField] private SpawnPointsManager spawnPointsManager;
 
     public List<EnemiesCreating> creatingEnemies;
 
@@ -22,8 +23,8 @@ public class CreateEnemiesManager : MonoBehaviour
     public enum Enemies
     {
         spider,
-        fly,
-        lizard
+        lizard,
+        fly
     }
 
     private void Start()
@@ -42,8 +43,10 @@ public class CreateEnemiesManager : MonoBehaviour
     {
         while (true)
         {
-            Instantiate(spiderPrefab);
             yield return new WaitForSeconds(creatingEnemies[0].timeToCreate);
+            spawnPointsManager.isThisFly = false;
+            Vector3 positionOfNewEnemy = spawnPointsManager.GetPointForSpawn(10, 0);
+            Instantiate(spiderPrefab, positionOfNewEnemy, Quaternion.identity);
         }
     }
 
@@ -51,8 +54,10 @@ public class CreateEnemiesManager : MonoBehaviour
     {
         while (true)
         {
-            Instantiate(lizardPrefab);
             yield return new WaitForSeconds(creatingEnemies[1].timeToCreate);
+            spawnPointsManager.isThisFly = false;
+            Vector3 positionOfNewEnemy = spawnPointsManager.GetPointForSpawn(10, 1);
+            Instantiate(lizardPrefab, positionOfNewEnemy, Quaternion.identity);
         }
     }
 
@@ -60,8 +65,10 @@ public class CreateEnemiesManager : MonoBehaviour
     {
         while (true)
         {
-            Instantiate(flyPrefab);
             yield return new WaitForSeconds(creatingEnemies[2].timeToCreate);
+            spawnPointsManager.isThisFly = true;
+            Vector3 positionOfNewEnemy = spawnPointsManager.GetPointForSpawn(10, 2);
+            Instantiate(flyPrefab, positionOfNewEnemy, Quaternion.identity);
         }
     }
 }

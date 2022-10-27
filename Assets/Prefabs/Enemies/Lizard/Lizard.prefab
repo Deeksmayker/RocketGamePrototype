@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3869696372146005207}
   - component: {fileID: 3869696372146005200}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3869696372262826857}
   - component: {fileID: 3869696372262826858}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: leg (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3869696372384733492}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ChasmCheckPoint
   m_TagString: Untagged
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
@@ -209,7 +209,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3869696372974763877}
   - component: {fileID: 3869696372974763878}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: leg (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -293,7 +293,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3869696373292224683}
   - component: {fileID: 3869696373292224676}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: leg (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -376,7 +376,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3869696373608130992}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LizardModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -417,7 +417,7 @@ GameObject:
   - component: {fileID: 3869696373820506135}
   - component: {fileID: 3869696373820506348}
   - component: {fileID: 3869696373820506131}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Lizard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -557,10 +557,15 @@ MonoBehaviour:
     m_Bits: 64
   maxJumpDistance: 15
   jumpForce: 25
+  jumpCooldown: 0
   playerLayer:
     serializedVersion: 2
     m_Bits: 8
+  flyLayer:
+    serializedVersion: 2
+    m_Bits: 0
   detectingPlayerRadius: 100
+  timeToChooseDirection: 0
 --- !u!114 &3869696373820506131
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -580,6 +585,9 @@ MonoBehaviour:
     m_Bits: 64
   chasmCheckPoint: {fileID: 3869696372384733492}
   rotationSpeed: 1000
+  fallMultiplier: 0
+  accelRate: 0
+  JumpForce: 0
 --- !u!1 &3869696373860638347
 GameObject:
   m_ObjectHideFlags: 0
@@ -590,7 +598,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3869696373860638340}
   - component: {fileID: 3869696373860638341}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: leg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
