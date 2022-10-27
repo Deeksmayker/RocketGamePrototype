@@ -79,14 +79,17 @@ public class SpawnPointsManager : MonoBehaviour
     {
         raycastPoints.Sort((a, b) =>
         {
-            Vector2 VectorForA = Physics2D.OverlapCircle(a, 100, currentLayer).transform.position;
+            /*Vector2 VectorForA = Physics2D.OverlapCircle(a, 100, currentLayer).transform.position;
             Vector2 VectorForB = Physics2D.OverlapCircle(a, 100, currentLayer).transform.position;
 
             var vector1 = VectorForA - a;
             var vector2 = VectorForB - b;
 
             var vectorToFirst = new Vector2(vector1.x, vector1.y);
-            var vectorToSecond = new Vector2(vector2.x, vector2.y);
+            var vectorToSecond = new Vector2(vector2.x, vector2.y);*/
+
+            var vectorToFirst = (Vector2)Physics2D.OverlapCircle(a, 100, currentLayer).transform.position - a;
+            var vectorToSecond = (Vector2)Physics2D.OverlapCircle(b, 100, currentLayer).transform.position - b;
 
             return vectorToSecond.magnitude.CompareTo(vectorToFirst.magnitude);
         }
