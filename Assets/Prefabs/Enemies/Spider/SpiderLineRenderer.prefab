@@ -468,6 +468,7 @@ MonoBehaviour:
   jumpForce: 15
   attackRadius: 3
   jumpOnEntityCooldown: 5
+  eggPrefab: {fileID: 7837765771804259886, guid: 09d7d7ccd998afa41992e12bf806c9d7, type: 3}
   webMakingStateSpeed: 7
   chanceToJump: 0.5
   chanceToMakeWeb: 0.5

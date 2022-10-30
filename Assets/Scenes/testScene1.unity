@@ -37806,6 +37806,10 @@ PrefabInstance:
       propertyPath: spawnInterval
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 1373483980098435313, guid: 4004ba4d53494b0428ca31a049a44cde, type: 3}
+      propertyPath: creaturePrefab
+      value: 
+      objectReference: {fileID: 3869696373820506348, guid: 3bf4340135fc1f04a8bcd983a5cbc3ad, type: 3}
     - target: {fileID: 1373483980098435314, guid: 4004ba4d53494b0428ca31a049a44cde, type: 3}
       propertyPath: m_Name
       value: LizardSpawner
