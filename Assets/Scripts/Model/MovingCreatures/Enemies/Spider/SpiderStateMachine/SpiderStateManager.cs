@@ -20,7 +20,9 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
         [Header("Moving")]
         public float maxJumpDistance = 10f;
         public float jumpForce = 20f;
+        [SerializeField] private float attackRadius = 3f;
         [SerializeField] private float jumpOnEntityCooldown;
+        [SerializeField] private SpiderEgg eggPrefab;
     
         [Header("Web making state")]
         public SpiderWebMakingState WebMakingState;
@@ -81,6 +83,8 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
             var playerInRadius = Physics2D.OverlapCircle(transform.position, 100f, PlayerLayer);
             var flyInRadius = Physics2D.OverlapCircle(transform.position, 100f, FlyLayer);
 
+            CheckAttack(flyInRadius, playerInRadius);
+
             if (playerInRadius == null && flyInRadius == null)
                 return;
 
@@ -121,6 +125,16 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
                     _timeAfterJumpOnEntity = 0;
                     Jump(minVectorByDistance.normalized, jumpForce * 2);
                 }
+            }
+        }
+
+        private void CheckAttack(Collider2D fly, Collider2D player)
+        {
+            if (VectorToFly.magnitude <= attackRadius && fly != null && VectorToFly != Vector2.zero)
+            {
+                Destroy(fly.gameObject);
+                Instantiate(eggPrefab, transform.position, Quaternion.identity);
+                SetState(WebMakingState);
             }
         }
 

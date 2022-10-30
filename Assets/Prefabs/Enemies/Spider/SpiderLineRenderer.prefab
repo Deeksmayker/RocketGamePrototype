@@ -466,6 +466,7 @@ MonoBehaviour:
     m_Bits: 128
   maxJumpDistance: 13
   jumpForce: 15
+  attackRadius: 3
   jumpOnEntityCooldown: 5
   webMakingStateSpeed: 7
   chanceToJump: 0.5
