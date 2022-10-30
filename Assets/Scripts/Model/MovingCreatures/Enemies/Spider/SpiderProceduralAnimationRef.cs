@@ -23,6 +23,25 @@ namespace DefaultNamespace.Enemies.Spider
         private Vector2 lastBodyPos; // прошлое положение тела
 
         private float velocityMultiplier = 7f;
+        private bool isBlocked = false;
+
+        public void BlockProceduralAnimation()
+        {
+            isBlocked = true;
+        }
+        
+        public void UnBlockProceduralAnimation()
+        {
+            isBlocked = false;
+        }
+        
+        public void SetDefaultLegPosition()
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                StartCoroutine(PerformStep(i, transform.TransformPoint(defaultLegPositions[i])));
+            }
+        }
         
         Vector2[] MatchToSurfaceFromAbove(Vector2 point, float halfRange, Vector2 up)
         {
@@ -99,6 +118,9 @@ namespace DefaultNamespace.Enemies.Spider
         
         void FixedUpdate()
         {
+            if (isBlocked)
+                return;
+            
             velocity = (Vector2)transform.position - lastBodyPos;
             velocity = (velocity + smoothness * lastVelocity) / (smoothness + 1f);
 

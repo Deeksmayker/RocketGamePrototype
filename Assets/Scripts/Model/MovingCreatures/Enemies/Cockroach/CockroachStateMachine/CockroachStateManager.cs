@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
 {
-    [RequireComponent(typeof(LizardMoving))]
-    public class LizardStateManager : StateManager
+    [RequireComponent(typeof(CockroachMoving))]
+    public class CockroachStateManager : StateManager
     {
-        private LizardMoving _lizardMoving;
+        private CockroachMoving _cockroachMoving;
 
         private float _currentSpeed;
         private MoveDirections _currentMoveDirection;
@@ -20,7 +20,7 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
         public float jumpCooldown;
 
         [Header("PlayerChasingState")]
-        private LizardPlayerChasingState _playerChasingState;
+        private CockroachPlayerChasingState _playerChasingState;
         public LayerMask playerLayer;
         public LayerMask flyLayer;
         public float detectingPlayerRadius;
@@ -28,39 +28,37 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
 
         private void Start()
         {
-            _lizardMoving = GetComponent<LizardMoving>();
+            _cockroachMoving = GetComponent<CockroachMoving>();
             SetJumpForce(jumpForce);
 
-            _playerChasingState = new LizardPlayerChasingState();
+            _playerChasingState = new CockroachPlayerChasingState();
             SetState(_playerChasingState);
         }
 
         protected override void Update()
         {
-
-
             base.Update();
         }
 
         public void Jump(Vector2 direction, float force)
         {
-            _lizardMoving.Jump(direction, force);
+            _cockroachMoving.Jump(direction, force);
         }
 
         public void SetMoveDirection(MoveDirections newDirection)
         {
             _currentMoveDirection = newDirection;
-            _lizardMoving.CurrentMoveDirection = (int)_currentMoveDirection;
+            _cockroachMoving.CurrentMoveDirection = (int)_currentMoveDirection;
         }
 
         public void SetSpeed(float value)
         {
-            _lizardMoving.speed = value;
+            _cockroachMoving.speed = value;
         }
 
         public void SetJumpForce(float value)
         {
-            _lizardMoving.JumpForce = value;
+            _cockroachMoving.JumpForce = value;
         }
 
         public void SetMech(bool value)
@@ -69,8 +67,8 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
         }
 
         public int GetMoveDirection() => (int)_currentMoveDirection;
-        public bool Jumping() => _lizardMoving.Jumping;
-        public bool OnChasm() => _lizardMoving.OnChasm;
-        public bool OnGround() => _lizardMoving.Grounded;
+        public bool Jumping() => _cockroachMoving.Jumping;
+        public bool OnChasm() => _cockroachMoving.OnChasm;
+        public bool OnGround() => _cockroachMoving.Grounded;
     }
 }

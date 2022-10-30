@@ -2,9 +2,11 @@ using Assets.Scripts.Model;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using DefaultNamespace.Enemies.Spider;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-public class LizardMoving : MonoBehaviour
+public class CockroachMoving : MonoBehaviour
 {
     [Header("Moving")]
     public float speed;
@@ -14,7 +16,11 @@ public class LizardMoving : MonoBehaviour
     [SerializeField] private float rotationSpeed = 150f;
     [SerializeField] private float fallMultiplier;
     [SerializeField, Range(0f, 1f)] private float accelRate;
+    
     public float JumpForce;
+    
+    [SerializeField] private SpiderProceduralAnimationRef animationLegs;
+    [SerializeField] private CockroachWingsMoving animationWings;
 
     public bool Jumping { get; private set; }
     public bool OnChasm { get; private set; }
@@ -52,10 +58,19 @@ public class LizardMoving : MonoBehaviour
 
         if (!Jumping)
         {
+            animationLegs.UnBlockProceduralAnimation();
+            animationWings.CloseWings();
             Walk();
         }
 
-
+        if (Jumping)
+        {
+            animationLegs.BlockProceduralAnimation();
+            animationLegs.SetDefaultLegPosition();
+            animationWings.OpenWings();
+            animationWings.StartWingShake();
+        }
+        
         if (_turningAround)
         {
             var requiredQuaternion = Quaternion.Euler(0, _yAngleToRotate, 0);
