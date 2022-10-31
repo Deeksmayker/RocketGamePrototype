@@ -23,8 +23,10 @@ public class GameManager : MonoBehaviour
     private float _platformRemovalTime;
     private Material _defaultMaterial;
 
-    private void Start()
+    private void Awake()
     {
+        Application.targetFrameRate = Screen.currentResolution.refreshRate;
+
         if (_timeChangingObjects.Count == 0)
             return;
 

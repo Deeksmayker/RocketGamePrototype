@@ -14,8 +14,6 @@ namespace Player
         private bool _canShoot;
 
         private GameInputManager _input;
-
-        private Vector2 _currentAimDirection;
         
         private void Awake()
         {
@@ -47,17 +45,14 @@ namespace Player
 
         private void TurnLauncherOnMouse()
         {
-            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(_input.mousePosition);
-            _currentAimDirection = (mousePosition - transform.position).normalized;
-
-            var angle = Mathf.Atan2(_currentAimDirection.y, _currentAimDirection.x) * Mathf.Rad2Deg;
+            var angle = Mathf.Atan2(_input.aimDirection.y, _input.aimDirection.x) * Mathf.Rad2Deg;
             rocketLauncherPivotPoint.transform.eulerAngles = new Vector3(0, 0, angle);
         }
 
         private void Shoot()
         {
             var newRocket = Instantiate(rocket, rocketStartPoint.position, Quaternion.identity);
-            newRocket.GetComponent<Rocket>().SetDirection(_currentAimDirection);
+            newRocket.GetComponent<Rocket>().SetDirection(_input.aimDirection);
         }
     }
 }

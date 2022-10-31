@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using Player;
 
 public class UIManager : MonoBehaviour
 {
@@ -8,14 +9,20 @@ public class UIManager : MonoBehaviour
     private GameManager _gameManager;
     private TimeSpan time;
 
+    [SerializeField] private GameObject leftStick, rightStick;
+
+    private GameInputManager _input;
+
     private void Start()
     {
         _gameManager = FindObjectOfType<GameManager>();
+        _input = FindObjectOfType<GameInputManager>();
     }
 
     private void Update()
     {
-        ChangeTimerText();
+        if (timerText != null)
+            ChangeTimerText();
     }
 
     public void ChangeTimerText()

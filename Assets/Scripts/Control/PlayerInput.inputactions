@@ -24,7 +24,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "MousePosition",
+                    "name": "AimDirection",
                     "type": "Value",
                     "id": "f1c5273c-5ae3-40d1-8560-e79eec748854",
                     "expectedControlType": "Vector2",
@@ -35,7 +35,7 @@
                 {
                     "name": "Shoot",
                     "type": "Button",
-                    "id": "12a01fc2-a48f-4eae-b20a-42cdf800687b",
+                    "id": "990d127c-eec6-4189-ab2d-1b08502b63b7",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -44,7 +44,7 @@
             ],
             "bindings": [
                 {
-                    "name": "WASD",
+                    "name": "Arrows",
                     "id": "410785a7-7792-4d57-a345-5ea66a3a9aa6",
                     "path": "2DVector",
                     "interactions": "",
@@ -57,7 +57,7 @@
                 {
                     "name": "up",
                     "id": "758de76e-df79-41f7-9227-9a79ccf23130",
-                    "path": "<Keyboard>/w",
+                    "path": "<Gamepad>/dpad/up",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -68,7 +68,7 @@
                 {
                     "name": "down",
                     "id": "3d7d0994-8aaf-4602-a850-b6f971c1b79d",
-                    "path": "<Keyboard>/s",
+                    "path": "<Gamepad>/dpad/down",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -79,7 +79,7 @@
                 {
                     "name": "left",
                     "id": "8e9ae0cb-1528-43a2-8367-021f31d325b4",
-                    "path": "<Keyboard>/a",
+                    "path": "<Gamepad>/dpad/left",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -90,7 +90,7 @@
                 {
                     "name": "right",
                     "id": "53d5c9e2-4f7e-4e6e-894d-e079120e1827",
-                    "path": "<Keyboard>/d",
+                    "path": "<Gamepad>/dpad/right",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -100,8 +100,19 @@
                 },
                 {
                     "name": "",
+                    "id": "1096e9cf-cb24-48d8-abdd-e462f5e6629a",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "8b6fadcf-f951-4999-ac5d-e5c6620f4553",
-                    "path": "<Keyboard>/space",
+                    "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -111,20 +122,31 @@
                 },
                 {
                     "name": "",
-                    "id": "6284838d-5d7b-489d-97d1-a36a933e11aa",
-                    "path": "<Mouse>/position",
-                    "interactions": "",
+                    "id": "4d0fb31b-2135-45dc-a637-89ad51b25d48",
+                    "path": "<Gamepad>/leftStickPress",
+                    "interactions": "Tap",
                     "processors": "",
                     "groups": "",
-                    "action": "MousePosition",
+                    "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "0f6c2efb-136c-44bb-bcc1-40e2c690d108",
-                    "path": "<Mouse>/press",
+                    "id": "6284838d-5d7b-489d-97d1-a36a933e11aa",
+                    "path": "<Gamepad>/rightStick",
                     "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AimDirection",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "54398f2f-22d6-4a09-824b-2ad99d0df8df",
+                    "path": "<Gamepad>/rightStickPress",
+                    "interactions": "Tap",
                     "processors": "",
                     "groups": "",
                     "action": "Shoot",
