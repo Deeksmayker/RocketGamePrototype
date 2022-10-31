@@ -29,7 +29,7 @@ public class SpawnPointsManager : MonoBehaviour
             Vector2 positionOfRandomPoint = new Vector2(x, y);
 
             // raycast
-            if (isThisFly == false)
+            if (isThisFly == false) // if a spider or a lizard
             {
                 RaycastHit2D hit = Physics2D.Raycast(positionOfRandomPoint, new Vector2(0, -1), 100, LayerMask.GetMask("Level"));
                 if (hit.collider != null)
@@ -37,9 +37,14 @@ public class SpawnPointsManager : MonoBehaviour
                     raycastPoints.Add(hit.point);
                 }
             }
-            else
+            else // if a fly 
             {
-                raycastPoints.Add(positionOfRandomPoint);
+                RaycastHit2D hit = Physics2D.Raycast(positionOfRandomPoint, new Vector2(0, -1), 1, LayerMask.GetMask("Level"));
+                if (hit.collider == null)
+                {
+                    raycastPoints.Add(positionOfRandomPoint);
+                }
+                //raycastPoints.Add(positionOfRandomPoint);
             }
 
 

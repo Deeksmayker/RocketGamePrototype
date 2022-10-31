@@ -11,7 +11,7 @@ public class CreateEnemiesManager : MonoBehaviour
 
     [SerializeField] private SpawnPointsManager spawnPointsManager;
 
-    public List<EnemiesCreating> creatingEnemies;
+    public List<EnemiesCreating> creatingEnemies = new List<EnemiesCreating>();
 
     [Serializable]
     public struct EnemiesCreating
