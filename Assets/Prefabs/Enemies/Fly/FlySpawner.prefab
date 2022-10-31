@@ -19,7 +19,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2147311408140433431
 Transform:
   m_ObjectHideFlags: 0
@@ -147,6 +147,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   creaturePrefab: {fileID: 1983095507591722800, guid: d1325e7133fcbe24d875947b51bff1fb, type: 3}
-  spawnInterval: 3
+  spawnInterval: 10
   startSpeed: 10
   spawnDirection: {x: 0, y: 1}
