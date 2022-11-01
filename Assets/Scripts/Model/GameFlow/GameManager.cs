@@ -6,7 +6,7 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
-    public List<TimeChangingObjects> _timeChangingObjects;
+    public List<TimeChangingObjects> timeChangingObjects;
     public float GameTime { get; private set; }
 
     [SerializeField] private Material blinkMaterial;
@@ -25,54 +25,55 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        _defaultMaterial = _timeChangingObjects[0].tilemapsToAppear[0].GetComponent<Material>();
+        _defaultMaterial = timeChangingObjects[0].tilemapsToAppear[0].GetComponent<Material>();
         SetPlatformLifetime();
     }
 
     private void Update()
     {
         UpdateGameTime();
-        if (_platformRemovalTime - GameTime <= 5 && !_isPlatformBlinking)
+        switch (_platformRemovalTime - GameTime)
         {
-            _isPlatformBlinking = true;
-            StartCoroutine(MakePlatformBlick());
-            StopCoroutine(MakePlatformBlick());
-        }
-        else if (_platformRemovalTime - GameTime <= 0)
-        {
-            ChangePlatforms();
-            SetPlatformLifetime();
-            _isPlatformBlinking = false;
+            case <= 5 when !_isPlatformBlinking:
+                _isPlatformBlinking = true;
+                StartCoroutine(MakePlatformBlink());
+                StopCoroutine(MakePlatformBlink());
+                break;
+            case <= 0:
+                ChangePlatforms();
+                SetPlatformLifetime();
+                _isPlatformBlinking = false;
+                break;
         }
     }
 
-    public void UpdateGameTime()
+    private void UpdateGameTime()
     {
         GameTime += Time.deltaTime;
     }
 
-    public void SetPlatformLifetime()
+    private void SetPlatformLifetime()
     {
         _platformCreationTime = GameTime;
-        _platformRemovalTime = _platformCreationTime + _timeChangingObjects[0].timeToAppear;
+        _platformRemovalTime = _platformCreationTime + timeChangingObjects[0].timeToAppear;
     }
 
-    public void RemoveCurrentPlatform()
+    private void RemoveCurrentPlatform()
     {
-        if (_timeChangingObjects[0].tilemapsToAppear.Count > 0)
+        if (timeChangingObjects[0].tilemapsToAppear.Count > 0)
         {
-            _timeChangingObjects[0].tilemapsToAppear.RemoveAt(0);
+            timeChangingObjects[0].tilemapsToAppear.RemoveAt(0);
         }
     }
 
-    public void ChangeMaterial(Material material)
+    private void ChangeMaterial(Material material)
     {
-        _timeChangingObjects[0].tilemapsToAppear[0].GetComponent<TilemapRenderer>().material = material;
+        timeChangingObjects[0].tilemapsToAppear[0].GetComponent<TilemapRenderer>().material = material;
     }
 
-    public IEnumerator MakePlatformBlick()
+    private IEnumerator MakePlatformBlink()
     {
-        for (int i = 0; i < 5; i++)
+        for (var i = 0; i < 5; i++)
         {
             ChangeMaterial(blinkMaterial);
             yield return new WaitForSeconds(0.5f);
@@ -81,17 +82,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ChangePlatforms()
+    private void ChangePlatforms()
     {
         RemoveCurrentPlatform();
         CreateNewPlatform();
     }
 
-    public void CreateNewPlatform()
+    private void CreateNewPlatform()
     {
-        if (_timeChangingObjects[0].tilemapsToAppear.Count > 0)
+        if (timeChangingObjects[0].tilemapsToAppear.Count > 0)
         {
-            Instantiate(_timeChangingObjects[0].tilemapsToAppear[0]);
+            Instantiate(timeChangingObjects[0].tilemapsToAppear[0]);
         }
     }
 }
