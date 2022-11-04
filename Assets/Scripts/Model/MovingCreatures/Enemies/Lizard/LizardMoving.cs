@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class LizardMoving : MonoBehaviour
 {
@@ -37,6 +38,10 @@ public class LizardMoving : MonoBehaviour
     private bool _turningAround;
     private float _yAngleToRotate;
     private int _collisionsCount;
+
+    public UnityEvent jumpStarted = new();
+    public UnityEvent landed = new();
+    public UnityEvent wallJumped = new();
 
     private void Awake()
     {
@@ -79,6 +84,7 @@ public class LizardMoving : MonoBehaviour
     {
         _rb.velocity = direction.normalized * force;
         Jumping = true;
+        jumpStarted.Invoke();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -102,6 +108,7 @@ public class LizardMoving : MonoBehaviour
             else if (collision.GetContact(0).normal == Vector2.up)
             {
                 Jumping = false;
+                landed.Invoke();
             }
         }
     }
