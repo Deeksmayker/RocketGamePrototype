@@ -2,9 +2,8 @@ using Assets.Scripts.Model;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
-using DefaultNamespace.Enemies.Spider;
 using UnityEngine;
-using UnityEngine.Serialization;
+using UnityEngine.Events;
 
 public class CockroachMoving : MonoBehaviour
 {
@@ -16,11 +15,7 @@ public class CockroachMoving : MonoBehaviour
     [SerializeField] private float rotationSpeed = 150f;
     [SerializeField] private float fallMultiplier;
     [SerializeField, Range(0f, 1f)] private float accelRate;
-    
     public float JumpForce;
-    
-    [SerializeField] private SpiderProceduralAnimationRef animationLegs;
-    [SerializeField] private CockroachWingsMoving animationWings;
 
     public bool Jumping { get; private set; }
     public bool OnChasm { get; private set; }
@@ -42,6 +37,11 @@ public class CockroachMoving : MonoBehaviour
 
     private bool _turningAround;
     private float _yAngleToRotate;
+    private int _collisionsCount;
+
+    public UnityEvent jumpStarted = new();
+    public UnityEvent landed = new();
+    public UnityEvent wallJumped = new();
 
     private void Awake()
     {
@@ -56,21 +56,12 @@ public class CockroachMoving : MonoBehaviour
             Grounded = false;
         }
 
-        if (!Jumping)
+        if (!Jumping && _collisionsCount != 0)
         {
-            animationLegs.UnBlockProceduralAnimation();
-            animationWings.CloseWings();
             Walk();
         }
 
-        if (Jumping)
-        {
-            animationLegs.BlockProceduralAnimation();
-            animationLegs.SetDefaultLegPosition();
-            animationWings.OpenWings();
-            animationWings.StartWingShake();
-        }
-        
+
         if (_turningAround)
         {
             var requiredQuaternion = Quaternion.Euler(0, _yAngleToRotate, 0);
@@ -93,10 +84,13 @@ public class CockroachMoving : MonoBehaviour
     {
         _rb.velocity = direction.normalized * force;
         Jumping = true;
+        jumpStarted.Invoke();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        _collisionsCount = 1;
+
         foreach (var col in collision.contacts)
         {
             if (col.normal == Vector2.up)
@@ -114,12 +108,14 @@ public class CockroachMoving : MonoBehaviour
             else if (collision.GetContact(0).normal == Vector2.up)
             {
                 Jumping = false;
+                landed.Invoke();
             }
         }
     }
 
     private void OnCollisionStay2D(Collision2D collision)
     {
+        _collisionsCount = collision.contactCount;
         foreach (var col in collision.contacts)
         {
             if (col.normal == Vector2.up)
@@ -137,6 +133,11 @@ public class CockroachMoving : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        _collisionsCount = 0;
     }
 
     private bool CheckChasm()
