@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 public class CockroachMoving : MonoBehaviour
 {
@@ -39,14 +40,13 @@ public class CockroachMoving : MonoBehaviour
     private float _yAngleToRotate;
     private int _collisionsCount;
 
-    public UnityEvent jumpStarted = new();
-    public UnityEvent landed = new();
-    public UnityEvent wallJumped = new();
+    [HideInInspector] public UnityEvent OnJumpStarted = new();
+    [HideInInspector] public UnityEvent OnLanded = new();
+    [HideInInspector] public UnityEvent OnWallJumped = new();
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
-
     }
 
     private void FixedUpdate()
@@ -60,7 +60,6 @@ public class CockroachMoving : MonoBehaviour
         {
             Walk();
         }
-
 
         if (_turningAround)
         {
@@ -84,7 +83,7 @@ public class CockroachMoving : MonoBehaviour
     {
         _rb.velocity = direction.normalized * force;
         Jumping = true;
-        jumpStarted.Invoke();
+        OnJumpStarted.Invoke();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -108,7 +107,7 @@ public class CockroachMoving : MonoBehaviour
             else if (collision.GetContact(0).normal == Vector2.up)
             {
                 Jumping = false;
-                landed.Invoke();
+                OnLanded.Invoke();
             }
         }
     }

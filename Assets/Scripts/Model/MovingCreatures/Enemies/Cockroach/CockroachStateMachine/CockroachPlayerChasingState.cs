@@ -1,16 +1,13 @@
-﻿using DefaultNamespace.StateMachine;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Assets.Scripts.Model;
+using Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine;
+using DefaultNamespace.StateMachine;
 using UnityEngine;
 
-namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
+namespace Model.MovingCreatures.Enemies.Cockroach.CockroachStateMachine
 {
     public class CockroachPlayerChasingState : IState
     {
-        private LizardStateManager _lizard;
+        private CockroachStateManager _cockroach;
 
         private RaycastHit2D _rightRayHit;
         private RaycastHit2D _leftRayHit;
@@ -29,12 +26,12 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
 
         public void Enter(StateManager manager)
         {
-            _lizard = (LizardStateManager)manager;
+            _cockroach = (CockroachStateManager)manager;
         }
 
         public void Update()
         {
-            if (_lizard.Jumping())
+            if (_cockroach.Jumping())
             {
                 _timeAfterJump = 0;
                 _timeAfterSetDirection = 0;
@@ -45,12 +42,12 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
             UpdateChaseVector();
             UpdateDirectionRayHits();
 
-            if (!_lizard.OnGround())
+            if (!_cockroach.OnGround())
                 return;
 
             JumpIfNeed();
 
-            if (_timeAfterSetDirection == 0 || _timeAfterSetDirection >= _lizard.timeToChooseDirection)
+            if (_timeAfterSetDirection == 0 || _timeAfterSetDirection >= _cockroach.timeToChooseDirection)
             {
                 SetMoveDirection();
                 _timeAfterSetDirection = 0;
@@ -61,31 +58,34 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
 
         private void UpdateChaseVector()
         {
-            var playerInRadius = Physics2D.OverlapCircle(_lizard.transform.position, _lizard.detectingPlayerRadius, _lizard.playerLayer);
-            var flyInRadius = Physics2D.OverlapCircle(_lizard.transform.position, _lizard.detectingPlayerRadius, _lizard.flyLayer);
-            if (_lizard.IsMech || flyInRadius == null)
+            var playerInRadius = Physics2D.OverlapCircle(_cockroach.transform.position,
+                _cockroach.detectingPlayerRadius, _cockroach.playerLayer);
+            var flyInRadius = Physics2D.OverlapCircle(_cockroach.transform.position,
+                _cockroach.detectingPlayerRadius, _cockroach.flyLayer);
+            
+            if (_cockroach.IsMech || !flyInRadius)
             {
-                _vectorToPlayer = playerInRadius.transform.position - _lizard.transform.position;
+                _vectorToPlayer = playerInRadius.transform.position - _cockroach.transform.position;
                 _vectorToChase = _vectorToPlayer;
                 return;
             }
 
-            _vectorToFly = flyInRadius.transform.position - _lizard.transform.position;
-            _vectorToPlayer = playerInRadius.transform.position - _lizard.transform.position;
+            _vectorToFly = flyInRadius.transform.position - _cockroach.transform.position;
+            _vectorToPlayer = playerInRadius.transform.position - _cockroach.transform.position;
 
             _vectorToChase = _vectorToFly.magnitude <= _vectorToChase.magnitude ? _vectorToFly : _vectorToPlayer;
         }
 
         private void UpdateDirectionRayHits()
         {
-            _rightRayHit = Physics2D.Raycast(_lizard.transform.position, Vector2.right, 100f, _lizard.groundLayer);
-            _leftRayHit = Physics2D.Raycast(_lizard.transform.position, Vector2.left, 100f, _lizard.groundLayer);
-            _rightRightUpRayHit = Physics2D.Raycast(_lizard.transform.position, new Vector2(1, 0.5f), 100f, _lizard.groundLayer);
-            _leftLeftUpRayHit = Physics2D.Raycast(_lizard.transform.position, new Vector2(-1, 0.5f), 100f, _lizard.groundLayer);
-            _rightUpRayHit = Physics2D.Raycast(_lizard.transform.position, new Vector2(1, 1), 100f, _lizard.groundLayer);
-            _leftUpRayHit = Physics2D.Raycast(_lizard.transform.position, new Vector2(-1, 1), 100f, _lizard.groundLayer);
-            _rightUpUpRayHit = Physics2D.Raycast(_lizard.transform.position, new Vector2(0.5f, 1), 100f, _lizard.groundLayer);
-            _leftUpUpRayHit = Physics2D.Raycast(_lizard.transform.position, new Vector2(-0.5f, 1), 100f, _lizard.groundLayer);
+            _rightRayHit = Physics2D.Raycast(_cockroach.transform.position, Vector2.right, 100f, _cockroach.groundLayer);
+            _leftRayHit = Physics2D.Raycast(_cockroach.transform.position, Vector2.left, 100f, _cockroach.groundLayer);
+            _rightRightUpRayHit = Physics2D.Raycast(_cockroach.transform.position, new Vector2(1, 0.5f), 100f, _cockroach.groundLayer);
+            _leftLeftUpRayHit = Physics2D.Raycast(_cockroach.transform.position, new Vector2(-1, 0.5f), 100f, _cockroach.groundLayer);
+            _rightUpRayHit = Physics2D.Raycast(_cockroach.transform.position, new Vector2(1, 1), 100f, _cockroach.groundLayer);
+            _leftUpRayHit = Physics2D.Raycast(_cockroach.transform.position, new Vector2(-1, 1), 100f, _cockroach.groundLayer);
+            _rightUpUpRayHit = Physics2D.Raycast(_cockroach.transform.position, new Vector2(0.5f, 1), 100f, _cockroach.groundLayer);
+            _leftUpUpRayHit = Physics2D.Raycast(_cockroach.transform.position, new Vector2(-0.5f, 1), 100f, _cockroach.groundLayer);
         }
 
         private void SetMoveDirection()
@@ -101,7 +101,7 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
             
         private void SetDirection(int dir)
         {
-            _lizard.SetMoveDirection(dir);
+            _cockroach.SetMoveDirection(dir);
         }
 
         private bool CheckBelowAndSetDirection()
@@ -138,7 +138,7 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
                 if (upHitFromDiffWall || hit2.distance > 10)
                 {
                     SetDirection(rayDir);
-                    _lizard.JumpAvaliableDisabler();
+                    _cockroach.JumpAvaliableDisabler();
                     return;
                 }
 
@@ -153,7 +153,7 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
 
         private void JumpIfNeed()
         {
-            if (_timeAfterJump < _lizard.jumpCooldown || !_lizard.JumpAvaliable)
+            if (_timeAfterJump < _cockroach.jumpCooldown || !_cockroach.JumpAvaliable)
                 return;
 
             if (CheckAndJumpOnPlayer())
@@ -173,12 +173,12 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
 
         private bool CheckAndJumpOnPlayer()
         {
-            if (_vectorToChase.magnitude <= _lizard.maxJumpDistance)
+            if (_vectorToChase.magnitude <= _cockroach.maxJumpDistance)
             {
-                var hitToWall = Physics2D.Raycast(_lizard.transform.position, _vectorToChase.normalized, _vectorToChase.magnitude, _lizard.groundLayer);
+                var hitToWall = Physics2D.Raycast(_cockroach.transform.position, _vectorToChase.normalized, _vectorToChase.magnitude, _cockroach.groundLayer);
                 if (!hitToWall)
                 {
-                    _lizard.Jump(_vectorToChase.normalized, _lizard.jumpForce);
+                    _cockroach.Jump(_vectorToChase.normalized, _cockroach.jumpForce);
                     //Debug.Log("OnPlayerJump");
                     return true;
                 }
@@ -189,10 +189,10 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
 
         private bool CheckChasmAndJump()
         {
-            if (_lizard.OnChasm() && _vectorToChase.y > 0)
+            if (_cockroach.OnChasm() && _vectorToChase.y > 0)
             {
-                var jumpDirection = new Vector2(_lizard.GetMoveDirection(), 2).normalized;
-                _lizard.Jump(jumpDirection, _lizard.jumpForce);
+                var jumpDirection = new Vector2(_cockroach.GetMoveDirection(), 2).normalized;
+                _cockroach.Jump(jumpDirection, _cockroach.jumpForce);
                 //Debug.Log("chasmJ");
                 return true;
             }
@@ -205,25 +205,25 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
             if (_vectorToChase.y > 0)
             {
                 var hit = GetCurrentDirectionHit();
-                var ceilingHit = GetCeilingHit(hit.point, _lizard.GetMoveDirection());
+                var ceilingHit = GetCeilingHit(hit.point, _cockroach.GetMoveDirection());
 
-                if (!ceilingHit && hit.distance <= _lizard.maxJumpDistance / 2)
+                if (!ceilingHit && hit.distance <= _cockroach.maxJumpDistance / 2)
                 {
-                    var jumpDirection = new Vector2(_lizard.GetMoveDirection(), 2).normalized;
-                    _lizard.Jump(jumpDirection, _lizard.jumpForce);
-                    //Debug.Log(_lizard.GetMoveDirection());
+                    var jumpDirection = new Vector2(_cockroach.GetMoveDirection(), 2).normalized;
+                    _cockroach.Jump(jumpDirection, _cockroach.jumpForce);
+                    //Debug.Log(_Cockroach.GetMoveDirection());
                     //Debug.Log("SideWallJump");
                     return true;
                 }
 
-                var rightWallUpOnAvaliable = _rightUpUpRayHit.distance <= _lizard.maxJumpDistance / 2 && Utils.CompareVectors(_rightUpUpRayHit.normal, Vector2.left);
-                var leftWallUpOnAvaliable = _leftUpUpRayHit.distance <= _lizard.maxJumpDistance / 2 && Utils.CompareVectors(_leftUpUpRayHit.normal, Vector2.right);
-                //Debug.DrawRay(_lizard.transform.position, new Vector2(0.5f, 1) * _lizard.maxJumpDistance / 2);
+                var rightWallUpOnAvaliable = _rightUpUpRayHit.distance <= _cockroach.maxJumpDistance / 2 && Utils.CompareVectors(_rightUpUpRayHit.normal, Vector2.left);
+                var leftWallUpOnAvaliable = _leftUpUpRayHit.distance <= _cockroach.maxJumpDistance / 2 && Utils.CompareVectors(_leftUpUpRayHit.normal, Vector2.right);
+                //Debug.DrawRay(_Cockroach.transform.position, new Vector2(0.5f, 1) * _Cockroach.maxJumpDistance / 2);
 
                 if (rightWallUpOnAvaliable || leftWallUpOnAvaliable)
                 {
-                    var jumpDirection = new Vector2(_lizard.GetMoveDirection(), 3).normalized;
-                    _lizard.Jump(jumpDirection, _lizard.jumpForce);
+                    var jumpDirection = new Vector2(_cockroach.GetMoveDirection(), 3).normalized;
+                    _cockroach.Jump(jumpDirection, _cockroach.jumpForce);
                     //Debug.Log("UpWallJump");
                     return true;
                 }
@@ -236,13 +236,13 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
         {
             if (_vectorToChase.y > 0)
             {
-                var rightLedgeAvaliable = Utils.CompareVectors(_rightRightUpRayHit.normal, Vector2.left) && _rightRightUpRayHit.distance <= _lizard.maxJumpDistance;
-                var leftLedgeAvaliable = Utils.CompareVectors(_leftLeftUpRayHit.normal, Vector2.right) && _leftLeftUpRayHit.distance <= _lizard.maxJumpDistance;
+                var rightLedgeAvaliable = Utils.CompareVectors(_rightRightUpRayHit.normal, Vector2.left) && _rightRightUpRayHit.distance <= _cockroach.maxJumpDistance;
+                var leftLedgeAvaliable = Utils.CompareVectors(_leftLeftUpRayHit.normal, Vector2.right) && _leftLeftUpRayHit.distance <= _cockroach.maxJumpDistance;
 
                 if (rightLedgeAvaliable || leftLedgeAvaliable)
                 {
-                    var jumpDirection = new Vector2(_lizard.GetMoveDirection(), 2).normalized;
-                    _lizard.Jump(jumpDirection, _lizard.jumpForce);
+                    var jumpDirection = new Vector2(_cockroach.GetMoveDirection(), 2).normalized;
+                    _cockroach.Jump(jumpDirection, _cockroach.jumpForce);
                     //Debug.Log("LedgeJump");
                     return true;
                 }
@@ -255,12 +255,12 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
 
         private RaycastHit2D GetCeilingHit(Vector2 hitPoint, int rayDir)
         {
-            return Physics2D.Raycast(hitPoint - Vector2.right * rayDir, Vector2.up, 10, _lizard.groundLayer);
+            return Physics2D.Raycast(hitPoint - Vector2.right * rayDir, Vector2.up, 10, _cockroach.groundLayer);
         }
 
         private RaycastHit2D GetCurrentDirectionHit() 
         {
-            return _lizard.GetMoveDirection() == 1 ? _rightRayHit : _leftRayHit;
+            return _cockroach.GetMoveDirection() == 1 ? _rightRayHit : _leftRayHit;
         }
 
         public void Exit()

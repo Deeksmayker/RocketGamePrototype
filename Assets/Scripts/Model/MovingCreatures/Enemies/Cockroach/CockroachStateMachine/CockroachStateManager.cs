@@ -1,13 +1,15 @@
-﻿using DefaultNamespace.StateMachine;
-using System.Collections;
+﻿using System.Collections;
+using Assets.Scripts.Model;
+using Assets.Scripts.Model.MovingCreatures.Enemies;
+using DefaultNamespace.StateMachine;
 using UnityEngine;
 
-namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
+namespace Model.MovingCreatures.Enemies.Cockroach.CockroachStateMachine
 {
-    [RequireComponent(typeof(LizardMoving))]
+    [RequireComponent(typeof(CockroachMoving))]
     public class CockroachStateManager : StateManager, ISpawnable, IDestructable
     {
-        private LizardMoving _lizardMoving;
+        private CockroachMoving _cockroachMoving;
 
         private float _currentSpeed;
 
@@ -21,7 +23,7 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
         public float jumpCooldown;
 
         [Header("PlayerChasingState")]
-        private LizardPlayerChasingState _playerChasingState;
+        private CockroachPlayerChasingState _playerChasingState;
         public LayerMask playerLayer;
         public LayerMask flyLayer;
         public float detectingPlayerRadius;
@@ -29,17 +31,15 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
 
         private void Awake()
         {
-            _lizardMoving = GetComponent<LizardMoving>();
+            _cockroachMoving = GetComponent<CockroachMoving>();
             SetJumpForce(jumpForce);
 
-            _playerChasingState = new LizardPlayerChasingState();
+            _playerChasingState = new CockroachPlayerChasingState();
             SetState(_playerChasingState);
         }
 
         protected override void Update()
         {
-
-
             base.Update();
         }
 
@@ -50,10 +50,11 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
 
         public void Jump(Vector2 direction, float force)
         {
-            _lizardMoving.Jump(direction, force);
+            _cockroachMoving.Jump(direction, force);
         }
 
         public void JumpAvaliableDisabler() => StartCoroutine(DisableJumpAvaliableWhileOnThisPlatform());
+        
         private IEnumerator DisableJumpAvaliableWhileOnThisPlatform()
         {
             JumpAvaliable = false;
@@ -63,17 +64,17 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
 
         public void SetMoveDirection(int newDirection)
         {
-            _lizardMoving.CurrentMoveDirection = newDirection;
+            _cockroachMoving.CurrentMoveDirection = newDirection;
         }
 
         public void SetSpeed(float value)
         {
-            _lizardMoving.speed = value;
+            _cockroachMoving.speed = value;
         }
 
         public void SetJumpForce(float value)
         {
-            _lizardMoving.JumpForce = value;
+            _cockroachMoving.JumpForce = value;
         }
 
         public void SetMech(bool value)
@@ -81,10 +82,10 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
             IsMech = value;
         }
 
-        public int GetMoveDirection() => _lizardMoving.CurrentMoveDirection;
-        public bool Jumping() => _lizardMoving.Jumping;
-        public bool OnChasm() => _lizardMoving.OnChasm;
-        public bool OnGround() => _lizardMoving.Grounded;
+        public int GetMoveDirection() => _cockroachMoving.CurrentMoveDirection;
+        public bool Jumping() => _cockroachMoving.Jumping;
+        public bool OnChasm() => _cockroachMoving.OnChasm;
+        public bool OnGround() => _cockroachMoving.Grounded;
 
         public void TakeDamage()
         {
