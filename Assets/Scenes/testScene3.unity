@@ -11105,11 +11105,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7467962305199094447, guid: 6477fafff13ff4846aed836ed1555268, type: 3}
       propertyPath: creatingEnemies.Array.data[1].timeToCreate
-      value: 50
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7467962305199094447, guid: 6477fafff13ff4846aed836ed1555268, type: 3}
       propertyPath: creatingEnemies.Array.data[2].timeToCreate
-      value: 50
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6477fafff13ff4846aed836ed1555268, type: 3}

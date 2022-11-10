@@ -1,11 +1,12 @@
 using Assets.Scripts.Model;
+using Assets.Scripts.Model.Interfaces;
 using Assets.Scripts.Model.MovingCreatures.Enemies;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class SpiderMoving : MonoBehaviour
+public class SpiderMoving : MonoBehaviour, IStopMoving
 {
     public LayerMask groundLayer;
     public float movingSpeed;
@@ -210,5 +211,15 @@ public class SpiderMoving : MonoBehaviour
         rays.Sort((a, b) => a.distance.CompareTo(b.distance));
 
         return rays[0].normal;
+    }
+
+    public void StopMoving()
+    {
+        _canMove = false;
+    }
+
+    public void ResumeMoving()
+    {
+        _canMove = true;
     }
 }

@@ -26,7 +26,7 @@ public class CockroachWingsMoving : MonoBehaviour
         {
             cockroachMoving.OnJumpStarted.AddListener(()=>StartCoroutine(OpenWings()));
             cockroachMoving.OnJumpStarted.AddListener(()=>StartCoroutine(WingShake()));
-            cockroachMoving.OnLanded.AddListener(()=>StartCoroutine(CloseWings()));
+            cockroachMoving.OnLandedAfterJump.AddListener(()=>StartCoroutine(CloseWings()));
 
             proceduralAnimation = cockroachMoving.gameObject.GetComponentInChildren<SpiderProceduralAnimationRef>();
 
@@ -37,7 +37,7 @@ public class CockroachWingsMoving : MonoBehaviour
                     proceduralAnimation.BlockProceduralAnimation();
                     proceduralAnimation.SetDefaultLegPosition();
                 });
-                cockroachMoving.OnLanded.AddListener(proceduralAnimation.UnBlockProceduralAnimation);
+                cockroachMoving.OnLandedAfterJump.AddListener(proceduralAnimation.UnBlockProceduralAnimation);
             }
         }
     }

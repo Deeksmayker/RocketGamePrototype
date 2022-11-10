@@ -1,10 +1,6 @@
 using Assets.Scripts.Model;
-using System.Collections;
-using System.Collections.Generic;
-using System.Drawing;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 
 public class CockroachMoving : MonoBehaviour
 {
@@ -41,6 +37,7 @@ public class CockroachMoving : MonoBehaviour
     private int _collisionsCount;
 
     [HideInInspector] public UnityEvent OnJumpStarted = new();
+    [HideInInspector] public UnityEvent OnLandedAfterJump = new();
     [HideInInspector] public UnityEvent OnLanded = new();
     [HideInInspector] public UnityEvent OnWallJumped = new();
 
@@ -93,7 +90,10 @@ public class CockroachMoving : MonoBehaviour
         foreach (var col in collision.contacts)
         {
             if (col.normal == Vector2.up)
+            {
+                OnLanded.Invoke();
                 Grounded = true;
+            }
         }
 
         if (Jumping)
@@ -107,7 +107,7 @@ public class CockroachMoving : MonoBehaviour
             else if (collision.GetContact(0).normal == Vector2.up)
             {
                 Jumping = false;
-                OnLanded.Invoke();
+                OnLandedAfterJump.Invoke();
             }
         }
     }

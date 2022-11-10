@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7837765771804259857}
   - component: {fileID: 7837765771804259886}
   m_Layer: 8
-  m_Name: SpiderEgg
+  m_Name: CockroachEgg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.754717, g: 0.47130784, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -137,4 +137,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeToSpawn: 5
-  enemyToSpawnPrefab: {fileID: 6341571826258908204, guid: 19fd15163ca92154fb00fba3ae894495, type: 3}
+  enemyToSpawnPrefab: {fileID: 1843853399755008130, guid: d83fb939d4a03ef4786e941da079bfad, type: 3}

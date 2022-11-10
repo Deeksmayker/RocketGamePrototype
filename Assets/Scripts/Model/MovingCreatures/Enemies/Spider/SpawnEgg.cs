@@ -3,10 +3,10 @@ using DefaultNamespace.Enemies.Spider.SpiderStateMachine;
 using System.Collections;
 using UnityEngine;
 
-public class SpiderEgg : MonoBehaviour, IDestructable
+public class SpawnEgg : MonoBehaviour, IDestructable
 {
     [SerializeField] private float timeToSpawn;
-    [SerializeField] SpiderStateManager spiderPrefab;
+    [SerializeField] GameObject enemyToSpawnPrefab;
 
     public void TakeDamage()
     {
@@ -16,7 +16,7 @@ public class SpiderEgg : MonoBehaviour, IDestructable
     private IEnumerator Start()
     {
         yield return new WaitForSeconds(timeToSpawn);
-        Instantiate(spiderPrefab, transform.position, Quaternion.identity);
+        Instantiate(enemyToSpawnPrefab, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 }

@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4415783255441067275
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3504295590035350664}
+  m_Layer: 8
+  m_Name: AttackCheckStartPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3504295590035350664
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4415783255441067275}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.117, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6341571826258908205}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6341571825918729792
 GameObject:
   m_ObjectHideFlags: 0
@@ -386,6 +417,7 @@ GameObject:
   - component: {fileID: 6341571827878470744}
   - component: {fileID: 6341571827878470745}
   - component: {fileID: 4691048682796792573}
+  - component: {fileID: 536817958922044038}
   m_Layer: 8
   m_Name: SpiderLineRenderer
   m_TagString: Untagged
@@ -406,6 +438,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6341571826796418585}
+  - {fileID: 3504295590035350664}
+  - {fileID: 5973761937032386486}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -466,7 +500,6 @@ MonoBehaviour:
     m_Bits: 128
   maxJumpDistance: 13
   jumpForce: 15
-  attackRadius: 3
   jumpOnEntityCooldown: 5
   eggPrefab: {fileID: 7837765771804259886, guid: 09d7d7ccd998afa41992e12bf806c9d7, type: 3}
   webMakingStateSpeed: 7
@@ -544,6 +577,32 @@ MonoBehaviour:
   timeBetweenPlacingWeb: 0.2
   webPointsCount: 13
   WebCreated:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &536817958922044038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6341571826258908204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcd3aa233837f974fa6ed91fb50fa040, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layersToCheck:
+    serializedVersion: 2
+    m_Bits: 128
+  attackCheckStartPoint: {fileID: 3504295590035350664}
+  attackCheckRadius: 2
+  captureTargetPoint: {fileID: 5973761937032386486}
+  timeToKill: 3
+  checksPerSecond: 20
+  enemyKilled:
+    m_PersistentCalls:
+      m_Calls: []
+  enemyCaptured:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &6341571826328700537
@@ -2469,3 +2528,34 @@ Transform:
   m_Father: {fileID: 6341571826796418585}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -50}
+--- !u!1 &8448160539130411913
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5973761937032386486}
+  m_Layer: 8
+  m_Name: CapturePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5973761937032386486
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8448160539130411913}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.74, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6341571826258908205}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

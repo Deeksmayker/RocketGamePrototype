@@ -415,8 +415,8 @@ GameObject:
   - component: {fileID: 3869696373820506129}
   - component: {fileID: 3869696373820506128}
   - component: {fileID: 3869696373820506135}
-  - component: {fileID: 3869696373820506348}
   - component: {fileID: 3869696373820506131}
+  - component: {fileID: 3869696373820506348}
   m_Layer: 8
   m_Name: Lizard
   m_TagString: Untagged
@@ -540,6 +540,37 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
+--- !u!114 &3869696373820506131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3869696373820506134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74c08ba2883e3524a88ac113e0b451d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 20
+  checkFloorDistance: 20
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  chasmCheckPoint: {fileID: 3869696372384733492}
+  rotationSpeed: 1000
+  fallMultiplier: 4
+  accelRate: 0.3
+  JumpForce: 0
+  jumpStarted:
+    m_PersistentCalls:
+      m_Calls: []
+  landed:
+    m_PersistentCalls:
+      m_Calls: []
+  wallJumped:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &3869696373820506348
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -566,28 +597,6 @@ MonoBehaviour:
     m_Bits: 128
   detectingPlayerRadius: 1000
   timeToChooseDirection: 3
---- !u!114 &3869696373820506131
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3869696373820506134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74c08ba2883e3524a88ac113e0b451d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 20
-  checkFloorDistance: 20
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  chasmCheckPoint: {fileID: 3869696372384733492}
-  rotationSpeed: 1000
-  fallMultiplier: 4
-  accelRate: 0.3
-  JumpForce: 0
 --- !u!1 &3869696373860638347
 GameObject:
   m_ObjectHideFlags: 0

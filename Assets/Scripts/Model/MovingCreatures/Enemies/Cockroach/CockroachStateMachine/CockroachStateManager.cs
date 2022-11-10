@@ -29,6 +29,9 @@ namespace Model.MovingCreatures.Enemies.Cockroach.CockroachStateMachine
         public float detectingPlayerRadius;
         public float timeToChooseDirection;
 
+
+        public SpawnEgg cockroachEgg;
+
         private void Awake()
         {
             _cockroachMoving = GetComponent<CockroachMoving>();
@@ -58,7 +61,7 @@ namespace Model.MovingCreatures.Enemies.Cockroach.CockroachStateMachine
         private IEnumerator DisableJumpAvaliableWhileOnThisPlatform()
         {
             JumpAvaliable = false;
-            yield return new WaitWhile(OnGround);
+            yield return new WaitForSeconds(3f);
             JumpAvaliable = true;
         }
 
@@ -80,6 +83,12 @@ namespace Model.MovingCreatures.Enemies.Cockroach.CockroachStateMachine
         public void SetMech(bool value)
         {
             IsMech = value;
+        }
+
+        public void KillFly(GameObject fly)
+        {
+            Destroy(fly);
+            Instantiate(cockroachEgg, transform.position, Quaternion.identity);
         }
 
         public int GetMoveDirection() => _cockroachMoving.CurrentMoveDirection;

@@ -31,6 +31,8 @@ namespace Model.MovingCreatures.Enemies.Cockroach.CockroachStateMachine
 
         public void Update()
         {
+            UpdateChaseVector();
+
             if (_cockroach.Jumping())
             {
                 _timeAfterJump = 0;
@@ -39,7 +41,6 @@ namespace Model.MovingCreatures.Enemies.Cockroach.CockroachStateMachine
             }
             _timeAfterJump += Time.deltaTime;
 
-            UpdateChaseVector();
             UpdateDirectionRayHits();
 
             if (!_cockroach.OnGround())
@@ -72,8 +73,16 @@ namespace Model.MovingCreatures.Enemies.Cockroach.CockroachStateMachine
 
             _vectorToFly = flyInRadius.transform.position - _cockroach.transform.position;
             _vectorToPlayer = playerInRadius.transform.position - _cockroach.transform.position;
-
+            CheckForAttack(flyInRadius);
             _vectorToChase = _vectorToFly.magnitude <= _vectorToChase.magnitude ? _vectorToFly : _vectorToPlayer;
+        }
+
+        private void CheckForAttack(Collider2D fly)
+        {
+            if (_vectorToFly.magnitude <= 3f && fly != null)
+            {
+                _cockroach.KillFly(fly.gameObject);
+            }
         }
 
         private void UpdateDirectionRayHits()
