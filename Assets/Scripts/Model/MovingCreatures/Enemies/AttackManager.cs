@@ -86,7 +86,7 @@ public class AttackManager : MonoBehaviour, ICapture
                 yield break;
 
             timer -= Time.deltaTime;
-            target.transform.position = Vector2.Lerp(target.transform.position, captureTargetPoint.position, Time.deltaTime * 10);
+            target.transform.position = Vector2.Lerp(target.transform.position, captureTargetPoint.position, Time.deltaTime * 30);
             yield return null;
         }
 

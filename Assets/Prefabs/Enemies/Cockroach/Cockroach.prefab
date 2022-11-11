@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1305346419861596851
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8569528016138466698}
+  m_Layer: 8
+  m_Name: AttackCheckStartPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8569528016138466698
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1305346419861596851}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.041, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1843853399755008134}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1843853398233116054
 GameObject:
   m_ObjectHideFlags: 0
@@ -956,6 +987,7 @@ GameObject:
   - component: {fileID: 1843853399755008131}
   - component: {fileID: 1843853399755008135}
   - component: {fileID: 1843853399755008120}
+  - component: {fileID: 2892220120154527596}
   m_Layer: 8
   m_Name: Cockroach
   m_TagString: Untagged
@@ -978,6 +1010,8 @@ Transform:
   - {fileID: 1843853398807349697}
   - {fileID: 1843853399280107812}
   - {fileID: 1843853398322409888}
+  - {fileID: 8569528016138466698}
+  - {fileID: 4490723192054658445}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1080,10 +1114,39 @@ MonoBehaviour:
   OnJumpStarted:
     m_PersistentCalls:
       m_Calls: []
+  OnLandedAfterJump:
+    m_PersistentCalls:
+      m_Calls: []
   OnLanded:
     m_PersistentCalls:
       m_Calls: []
   OnWallJumped:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &2892220120154527596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1843853399755008130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcd3aa233837f974fa6ed91fb50fa040, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layersToCheck:
+    serializedVersion: 2
+    m_Bits: 128
+  attackCheckStartPoint: {fileID: 8569528016138466698}
+  attackCheckRadius: 2
+  captureTargetPoint: {fileID: 4490723192054658445}
+  timeToKill: 3
+  checksPerSecond: 20
+  enemyKilled:
+    m_PersistentCalls:
+      m_Calls: []
+  enemyCaptured:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &1843853399819777853
@@ -1318,6 +1381,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &2256142804967511856
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4490723192054658445}
+  m_Layer: 8
+  m_Name: CapturePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4490723192054658445
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2256142804967511856}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.292, y: 0.31, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1843853399755008134}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6612712151485781471
 GameObject:
   m_ObjectHideFlags: 0

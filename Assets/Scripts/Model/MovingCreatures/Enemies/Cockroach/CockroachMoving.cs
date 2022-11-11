@@ -1,8 +1,10 @@
 using Assets.Scripts.Model;
+using Assets.Scripts.Model.Interfaces;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class CockroachMoving : MonoBehaviour
+public class CockroachMoving : MonoBehaviour, IStopMoving
+
 {
     [Header("Moving")]
     public float speed;
@@ -35,6 +37,7 @@ public class CockroachMoving : MonoBehaviour
     private bool _turningAround;
     private float _yAngleToRotate;
     private int _collisionsCount;
+    private bool _canMove = true;
 
     [HideInInspector] public UnityEvent OnJumpStarted = new();
     [HideInInspector] public UnityEvent OnLandedAfterJump = new();
@@ -53,7 +56,7 @@ public class CockroachMoving : MonoBehaviour
             Grounded = false;
         }
 
-        if (!Jumping && _collisionsCount != 0)
+        if (!Jumping && _collisionsCount != 0 && _canMove)
         {
             Walk();
         }
@@ -177,5 +180,15 @@ public class CockroachMoving : MonoBehaviour
         {
             _rb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
         }
+    }
+
+    public void StopMoving()
+    {
+        _canMove = false;
+    }
+
+    public void ResumeMoving()
+    {
+        _canMove = true;
     }
 }

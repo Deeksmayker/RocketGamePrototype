@@ -141,7 +141,6 @@ public class FlyController : MonoBehaviour, ISpawnable, IDestructable, ISlowable
 
     public void ReleaseCaught()
     {
-        Debug.Log(1);
         Destroy(gameObject);
     }
 }

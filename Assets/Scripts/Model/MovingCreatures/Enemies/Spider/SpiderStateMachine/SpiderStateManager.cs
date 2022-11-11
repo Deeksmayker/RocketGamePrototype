@@ -69,7 +69,7 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
             _timeAfterJumpOnEntity += Time.deltaTime;
 
             UpdateDirectionRayHits();
-            UpdateVectorsToChase();
+            UpdateVectorsToChaseAndJumpIfNeed();
             
             base.Update();
         }
@@ -82,7 +82,7 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
             DownRayHit = Physics2D.Raycast(transform.position, Vector2.down, 100f, GroundLayer);
         }
 
-        private void UpdateVectorsToChase()
+        private void UpdateVectorsToChaseAndJumpIfNeed()
         {
             var playerInRadius = Physics2D.OverlapCircle(transform.position, 100f, PlayerLayer);
             var flyInRadius = Physics2D.OverlapCircle(transform.position, 100f, FlyLayer);

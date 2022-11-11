@@ -32,12 +32,18 @@ namespace Model.MovingCreatures.Enemies.Cockroach.CockroachStateMachine
 
         public SpawnEgg cockroachEgg;
 
-        private void Awake()
+        private void Start()
         {
             _cockroachMoving = GetComponent<CockroachMoving>();
             SetJumpForce(jumpForce);
 
             _playerChasingState = new CockroachPlayerChasingState();
+
+            if (TryGetComponent<AttackManager>(out var attack))
+            {
+                attack.enemyKilled.AddListener(OnKilledFly);
+            }
+
             SetState(_playerChasingState);
         }
 
@@ -85,9 +91,8 @@ namespace Model.MovingCreatures.Enemies.Cockroach.CockroachStateMachine
             IsMech = value;
         }
 
-        public void KillFly(GameObject fly)
+        private void OnKilledFly()
         {
-            Destroy(fly);
             Instantiate(cockroachEgg, transform.position, Quaternion.identity);
         }
 

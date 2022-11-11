@@ -73,16 +73,7 @@ namespace Model.MovingCreatures.Enemies.Cockroach.CockroachStateMachine
 
             _vectorToFly = flyInRadius.transform.position - _cockroach.transform.position;
             _vectorToPlayer = playerInRadius.transform.position - _cockroach.transform.position;
-            CheckForAttack(flyInRadius);
             _vectorToChase = _vectorToFly.magnitude <= _vectorToChase.magnitude ? _vectorToFly : _vectorToPlayer;
-        }
-
-        private void CheckForAttack(Collider2D fly)
-        {
-            if (_vectorToFly.magnitude <= 3f && fly != null)
-            {
-                _cockroach.KillFly(fly.gameObject);
-            }
         }
 
         private void UpdateDirectionRayHits()
@@ -165,7 +156,7 @@ namespace Model.MovingCreatures.Enemies.Cockroach.CockroachStateMachine
             if (_timeAfterJump < _cockroach.jumpCooldown || !_cockroach.JumpAvaliable)
                 return;
 
-            if (CheckAndJumpOnPlayer())
+            if (CheckAndJumpOnTarget())
                 return;
 
             if (CheckChasmAndJump())
@@ -180,14 +171,14 @@ namespace Model.MovingCreatures.Enemies.Cockroach.CockroachStateMachine
 
         #region JumpChecks
 
-        private bool CheckAndJumpOnPlayer()
+        private bool CheckAndJumpOnTarget()
         {
-            if (_vectorToChase.magnitude <= _cockroach.maxJumpDistance)
+            if (_vectorToChase.magnitude <= _cockroach.maxJumpDistance * 2)
             {
                 var hitToWall = Physics2D.Raycast(_cockroach.transform.position, _vectorToChase.normalized, _vectorToChase.magnitude, _cockroach.groundLayer);
                 if (!hitToWall)
                 {
-                    _cockroach.Jump(_vectorToChase.normalized, _cockroach.jumpForce);
+                    _cockroach.Jump(_vectorToChase.normalized, _cockroach.jumpForce * 2);
                     //Debug.Log("OnPlayerJump");
                     return true;
                 }
