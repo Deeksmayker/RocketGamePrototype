@@ -1,3 +1,4 @@
+using System;
 using Assets.Scripts.Model;
 using Assets.Scripts.Model.Interfaces;
 using UnityEngine;
@@ -43,10 +44,22 @@ public class CockroachMoving : MonoBehaviour, IStopMoving
     [HideInInspector] public UnityEvent OnLandedAfterJump = new();
     [HideInInspector] public UnityEvent OnLanded = new();
     [HideInInspector] public UnityEvent OnWallJumped = new();
+    
+    [HideInInspector] public UnityEvent OnStartKillFly = new();
+    [HideInInspector] public UnityEvent OnStopKillFly = new();
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
+    }
+
+    private void Start()
+    {
+        if (TryGetComponent<AttackManager>(out var attack))
+        {
+            attack.enemyCaptured.AddListener(StartShakeMandible);
+            attack.enemyKilled.AddListener(StopShakeMandible);
+        }
     }
 
     private void FixedUpdate()
@@ -70,6 +83,16 @@ public class CockroachMoving : MonoBehaviour, IStopMoving
         CalculateInAirVelocity();
         OnChasm = CheckChasm();
         TurnInRightSide();
+    }
+    
+    private void StartShakeMandible()
+    {
+        OnStartKillFly.Invoke();
+    }
+    
+    private void StopShakeMandible()
+    {
+        OnStopKillFly.Invoke();
     }
 
     private void Walk()
