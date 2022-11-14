@@ -282,6 +282,8 @@ GameObject:
   - component: {fileID: 890357418586667379}
   - component: {fileID: 890357418586667390}
   - component: {fileID: 890357418586667391}
+  - component: {fileID: 890357418226770067}
+  - component: {fileID: 890357418226770068}
   m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
@@ -496,6 +498,9 @@ MonoBehaviour:
   move: {x: 0, y: 0}
   jump: 0
   shoot: 0
+  firstAbility: 0
+  secondAbility: 0
+  thirdAbility: 0
 --- !u!114 &890357418586667391
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -526,3 +531,42 @@ MonoBehaviour:
   m_DefaultActionMap: PlayerInput
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &890357418226770067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 890357418586667384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 551ea91b9ca88c74da9946cca6b7ec02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <GemCount>k__BackingField: 0
+  firstAbilityCasted:
+    m_PersistentCalls:
+      m_Calls: []
+  firstAbilityEnded:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &890357418226770068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 890357418586667384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa0b569b42276c84c85f03da3dd8585a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <GemCost>k__BackingField: 0
+  duration: 2
+  abilityEnded:
+    m_PersistentCalls:
+      m_Calls: []
+  slowTimeScale: 0.5
+  slowingTimeDuration: 1
+  speedMultiplier: 2

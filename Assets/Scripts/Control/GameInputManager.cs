@@ -9,6 +9,9 @@ namespace Player
         public Vector2 move;
         public bool jump;
         public bool shoot;
+        public bool firstAbility;
+        public bool secondAbility;
+        public bool thirdAbility;
 
         public void OnMove(InputValue value)
         {
@@ -29,6 +32,21 @@ namespace Player
         {
             ShootInput(value.isPressed);
         }
+
+        public void OnFirstAbility(InputValue value)
+        {
+            FirstAbilityInput(value.isPressed);
+        }
+
+        public void OnSecondAbility(InputValue value)
+        {
+            SecondAbilityInput(value.isPressed);
+        }
+
+        public void OnThirdAbility(InputValue value)
+        {
+            ThirdAbilityInput(value.isPressed);
+        }
         
         public void MoveInput(Vector2 newMoveDirection)
         {
@@ -48,6 +66,19 @@ namespace Player
         public void ShootInput(bool newShootState)
         {
             shoot = newShootState;
+        }
+
+        public void FirstAbilityInput(bool newAbilityState)
+        {
+            firstAbility = newAbilityState;
+        }
+        public void SecondAbilityInput(bool newAbilityState)
+        {
+            secondAbility = newAbilityState;
+        }
+        public void ThirdAbilityInput(bool newAbilityState)
+        {
+            thirdAbility = newAbilityState;
         }
     }
 }

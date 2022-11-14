@@ -143,7 +143,7 @@ namespace Player
             _lifetime = value;
         }
 
-        private void OnDestroy()
+        protected virtual void OnDestroy()
         {
             OnRocketExplosion.Invoke();
             ChangeParticleRadius();

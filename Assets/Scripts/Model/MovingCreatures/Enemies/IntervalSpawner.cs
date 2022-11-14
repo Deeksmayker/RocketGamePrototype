@@ -1,8 +1,5 @@
 using Assets.Scripts.Model;
 using Assets.Scripts.Model.MovingCreatures.Enemies;
-using DefaultNamespace.StateMachine;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class IntervalSpawner : MonoBehaviour, IDestructable
