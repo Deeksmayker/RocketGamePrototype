@@ -9,6 +9,8 @@ using UnityEngine.Events;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour, ISlowable
 {
+    public static Vector2 PlayerPosition;
+
     [Header("Movement on ground")]
     public float walkTargetSpeed;
     [Range(0, 1)] [SerializeField] private float acceleration;
@@ -59,6 +61,8 @@ public class PlayerController : MonoBehaviour, ISlowable
 
     private void Update()
     {
+        PlayerPosition = transform.position;
+
         if (_rb.velocity.y < 0)
         {
             IsJumping = false;

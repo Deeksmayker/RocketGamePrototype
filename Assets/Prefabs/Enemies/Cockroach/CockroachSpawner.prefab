@@ -146,7 +146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be2bea5e0e39bbb4cb898e1bb5a6f83f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creaturePrefab: {fileID: 1843853399755008135, guid: d83fb939d4a03ef4786e941da079bfad, type: 3}
+  creaturePrefab: {fileID: 273867459368678795, guid: 557b566271e924646b4982de8b19e587, type: 3}
   spawnInterval: 7
   startSpeed: 10
   spawnDirection: {x: 0, y: 1}
