@@ -3,19 +3,30 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.Tilemaps;
 using System.Collections;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
-    public List<TimeChangingObjects> timeChangingObjects;
     public float GameTime { get; private set; }
 
+    [SerializeField] private List<EnemiesCreating> creatingEnemies = new();
+    [SerializeField] private List<TimeChangingObjects> timeChangingObjects;
+    [SerializeField] private CreateEnemiesManager createEnemiesManager;
     [SerializeField] private Material blinkMaterial;
 
     [Serializable]
-    public struct TimeChangingObjects
+    private struct TimeChangingObjects
     {
         public int timeToAppear;
         public List<Tilemap> tilemapsToAppear;
+    }
+
+    [Serializable]
+    private struct EnemiesCreating
+    {
+        public Enemies chosenEnemy;
+        public int timeToCreate;
+        public int countOfSpawners;
     }
 
     private float _platformCreationTime;
@@ -23,8 +34,16 @@ public class GameManager : MonoBehaviour
     private float _platformRemovalTime;
     private Material _defaultMaterial;
 
+    private enum Enemies
+    {
+        spider,
+        lizard,
+        fly
+    }
+
     private void Start()
     {
+        creatingEnemies.OrderBy(time => time.timeToCreate);
         _defaultMaterial = timeChangingObjects[0].tilemapsToAppear[0].GetComponent<Material>();
         SetPlatformLifetime();
     }
@@ -44,6 +63,33 @@ public class GameManager : MonoBehaviour
                 SetPlatformLifetime();
                 _isPlatformBlinking = false;
                 break;
+        }
+
+        if (creatingEnemies.Count > 0 && Math.Round(GameTime) == creatingEnemies[0].timeToCreate)
+        {
+            for (int i = 0; i < creatingEnemies[0].countOfSpawners; i++)
+            {
+                switch (creatingEnemies[0].chosenEnemy)
+                {
+                    case Enemies.spider:
+                    {
+                        createEnemiesManager.CreateSpider();
+                        break;
+                    }
+                    case Enemies.fly:
+                    {
+                        createEnemiesManager.CreateFly();
+                        break;
+                    }
+                    case Enemies.lizard:
+                    {
+                        createEnemiesManager.CreateLizard();
+                        break;
+                    }
+                }
+            }
+
+            creatingEnemies.RemoveAt(0);
         }
     }
 
