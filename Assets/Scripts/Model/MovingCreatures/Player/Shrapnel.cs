@@ -4,6 +4,7 @@ using UnityEngine;
 public class Shrapnel : MonoBehaviour
 {
     [SerializeField] private float lifeTime;
+    private bool _canKill = true;
 
     [HideInInspector] public Rigidbody2D Rb;
 
@@ -21,9 +22,11 @@ public class Shrapnel : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.TryGetComponent<IDestructable>(out var target))
+        if (_canKill && collision.gameObject.TryGetComponent<IDestructable>(out var target))
         {
             target.TakeDamage();
         }
+
+        _canKill = false;
     }
 }

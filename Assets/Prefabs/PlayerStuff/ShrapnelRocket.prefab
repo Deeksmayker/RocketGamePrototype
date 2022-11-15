@@ -155,5 +155,5 @@ MonoBehaviour:
   explodeRadius: 4
   explodeParticles: {fileID: 8249380662462926968, guid: 886ab73d0855f0347b1bf2aaffe8b493, type: 3}
   shrapnelPrefab: {fileID: -3887016535587828271, guid: d63fbe38d19e25d4a98cdfb8766b1e2a, type: 3}
-  shrapnelCount: 100
+  shrapnelCount: 80
   shrapnelSpeed: 80

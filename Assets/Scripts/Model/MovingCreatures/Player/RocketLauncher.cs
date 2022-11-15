@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.Events;
 
 namespace Player
 {
     public class RocketLauncher : MonoBehaviour
     {
-        [SerializeField] private GameObject rocket;
+        [SerializeField] private Rocket rocket;
+        [SerializeField] private ShrapnelRocket shrapnelRocket;
+        private Rocket _currentRocket;
         [SerializeField] private Transform rocketStartPoint;
         [SerializeField] private GameObject rocketLauncherPivotPoint;
 
@@ -16,11 +18,14 @@ namespace Player
         private GameInputManager _input;
 
         private Vector2 _currentAimDirection;
+
+        public UnityEvent shootPerformed = new();
         
         private void Awake()
         {
             _currentCooldown = shootCooldown;
             _input = GetComponent<GameInputManager>();
+            _currentRocket = rocket;
         }
 
         private void Update()
@@ -56,8 +61,20 @@ namespace Player
 
         private void Shoot()
         {
-            var newRocket = Instantiate(rocket, rocketStartPoint.position, Quaternion.identity);
-            newRocket.GetComponent<Rocket>().SetDirection(_currentAimDirection);
+            var newRocket = Instantiate(_currentRocket, rocketStartPoint.position, Quaternion.identity);
+            newRocket.SetDirection(_currentAimDirection);
+
+            shootPerformed.Invoke();
+        }
+
+        public void SetRocketToShrapnel()
+        {
+            _currentRocket = shrapnelRocket;
+        }
+
+        public void SetRocketToDefault()
+        {
+            _currentRocket = rocket;
         }
     }
 }

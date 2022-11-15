@@ -12,36 +12,32 @@ public class PlayerAbilities : MonoBehaviour, ITakeGem
 
     private GameInputManager _input;
 
-    private bool _firstAbilityActive, _secondAbilityActive, _thirdAbilityActive;
-
-    public UnityEvent firstAbilityCasted = new();
-    public UnityEvent firstAbilityEnded = new();
-
-
     private void Start()
     {
         _input = GetComponent<GameInputManager>();
         _firstAbility = GetComponent<SlowTimeAbility>();
-        _secondAbility = GetComponent<ShrapnelAbility>();
-
-        _firstAbility.abilityEnded.AddListener(() =>
-        {
-            firstAbilityEnded.Invoke();
-            _firstAbilityActive = false;
-        });
+        _secondAbility = GetComponent<BounceRocketsAbility>();
+        _thirdAbility = GetComponent<ShrapnelAbility>();
     }
 
     private void Update()
     {
-        if (_input.firstAbility && !_firstAbilityActive)
-        {
-            firstAbilityCasted.Invoke();
-            StartCoroutine(_firstAbility.CastAbility());
-        }
+        CheckAndCastAbility(_input.firstAbility, _firstAbility);
+
+        CheckAndCastAbility(_input.thirdAbility, _thirdAbility);
+
 
         _input.firstAbility = false;
         _input.secondAbility = false;
         _input.thirdAbility = false;
+    }
+
+    private void CheckAndCastAbility(bool input, Ability ability)
+    {
+        if (input && !ability.IsActive)
+        {
+            StartCoroutine(ability.CastAbility());
+        }
     }
 
     public void TakeGem()

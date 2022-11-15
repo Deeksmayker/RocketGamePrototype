@@ -1,6 +1,7 @@
+using Player;
 using System.Collections;
 
-public class FiringAccelerationAbility : Ability
+public class BounceRocketsAbility : Ability
 {
     public override IEnumerator CastAbility()
     {

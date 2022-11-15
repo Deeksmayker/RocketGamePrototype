@@ -7,15 +7,16 @@ public abstract class Ability : MonoBehaviour
 {
     [field: SerializeField] public int GemCost { get; protected set; }
     [SerializeField] protected float duration;
-
-    protected PlayerController playerController;
-
-    public UnityEvent abilityEnded = new();
+    public bool IsActive { get; private set; }
 
     protected virtual void Awake()
     {
-        playerController = GetComponent<PlayerController>();
+        abilityCasted.AddListener(() => IsActive = true);
+        abilityEnded.AddListener(() => IsActive = false);
     }
+
+    public UnityEvent abilityCasted = new();
+    public UnityEvent abilityEnded = new();
 
     public abstract IEnumerator CastAbility();
 }
