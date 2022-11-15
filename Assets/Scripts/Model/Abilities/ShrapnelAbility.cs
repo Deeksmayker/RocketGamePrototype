@@ -17,6 +17,7 @@ public class ShrapnelAbility : Ability
 
     public override IEnumerator CastAbility()
     {
+        Debug.Log("FDS");
         abilityCasted.Invoke();
         _rocketLauncher.SetRocketToShrapnel();
 
