@@ -6,6 +6,7 @@ namespace Player
     public class RocketLauncher : MonoBehaviour
     {
         [SerializeField] private Rocket rocket;
+        [SerializeField] private BounceHomingRocket bounceRocket;
         [SerializeField] private ShrapnelRocket shrapnelRocketPrefab;
         private Rocket _currentRocket;
         [SerializeField] private Transform rocketStartPoint;
@@ -74,15 +75,24 @@ namespace Player
             shootPerformed.Invoke();
         }
 
-        public void SetRocketToShrapnel()
+        public void SetRocketToBounce()
         {
-            _nextRocketShrapnel = true;
+            _currentRocket = bounceRocket;
         }
 
         public void SetRocketToDefault()
         {
-            _nextRocketShrapnel = false;
+            _currentRocket = rocket;
+        }
 
+        public void MakeNextRocketShrapnel()
+        {
+            _nextRocketShrapnel = true;
+        }
+
+        public void RemoveShrapnelFromNextRocket()
+        {
+            _nextRocketShrapnel = false;
         }
     }
 }

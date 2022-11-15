@@ -23,8 +23,9 @@ public class PlayerAbilities : MonoBehaviour, ITakeGem
     private void Update()
     {
         CheckAndCastAbility(_input.firstAbility, _firstAbility);
-
+        CheckAndCastAbility(_input.secondAbility, _secondAbility);
         CheckAndCastAbility(_input.thirdAbility, _thirdAbility);
+
 
 
         _input.firstAbility = false;

@@ -7,12 +7,18 @@ public class ShrapnelRocket : MonoBehaviour
     [SerializeField] private float shrapnelCount;
     [SerializeField] private float shrapnelSpeed;
 
-    private void Awake()
+    private void Start()
     {
         transform.localPosition = Vector2.zero;
+
+        var parentRocket = GetComponentInParent<Rocket>();
+        if (parentRocket != null)
+        {
+            parentRocket.rocketMakedExplosion.AddListener(SpawnShrapnel);
+        }
     }
 
-    private void OnDestroy()
+    private void SpawnShrapnel()
     {
         for (var i = 0; i < shrapnelCount; i++)
         {

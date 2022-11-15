@@ -17,9 +17,8 @@ public class ShrapnelAbility : Ability
 
     public override IEnumerator CastAbility()
     {
-        Debug.Log("FDS");
         abilityCasted.Invoke();
-        _rocketLauncher.SetRocketToShrapnel();
+        _rocketLauncher.MakeNextRocketShrapnel();
 
         var timer = duration;
 
@@ -29,14 +28,14 @@ public class ShrapnelAbility : Ability
             {
                 abilityEnded.Invoke();
                 _shootPerformed = false;
-                _rocketLauncher.SetRocketToDefault();
+                _rocketLauncher.RemoveShrapnelFromNextRocket();
                 yield break;
             }
             timer -= Time.deltaTime;
             yield return null;
         }
 
-        _rocketLauncher.SetRocketToDefault();
+        _rocketLauncher.RemoveShrapnelFromNextRocket();
 
         abilityEnded.Invoke();
     }

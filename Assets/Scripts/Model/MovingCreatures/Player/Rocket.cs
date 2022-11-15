@@ -24,17 +24,16 @@ namespace Player
         [SerializeField] private ParticleSystem explodeParticles;
 
         public static UnityEvent OnRocketExplosion = new();
+        public UnityEvent rocketMakedExplosion = new();
         //[Range(0, 1)] [SerializeField] private float acceleration;
         private Vector2 _direction;
-        private Rigidbody2D _rb;
+        protected Rigidbody2D rb;
 
         private float _lifetime;
         
         private void Awake()
         {
-            _rb = GetComponent<Rigidbody2D>();
-
-            Physics2D.IgnoreCollision(GetComponent<BoxCollider2D>(), FindObjectOfType<PlayerController>().gameObject.GetComponent<BoxCollider2D>());
+            rb = GetComponent<Rigidbody2D>();
         }
 
         public void SetDirection(Vector2 dir)
@@ -44,23 +43,25 @@ namespace Player
             transform.eulerAngles = new Vector3(0, 0, angle);
         }
 
-        private void FixedUpdate()
+        protected Vector2 lastVelocity;
+        protected virtual void FixedUpdate()
         {
             if (_slowing)
             {
-                _rb.velocity -= Vector2.right * Mathf.Sign(_rb.velocity.x) * _rb.velocity.magnitude * xSlowingMultiplier;
-                _rb.velocity -= Vector2.up * _rb.velocity.magnitude * ySlowingMultiplier;
-                if (_rb.velocity.y <= 0)
+                rb.velocity -= Vector2.right * Mathf.Sign(rb.velocity.x) * rb.velocity.magnitude * xSlowingMultiplier;
+                rb.velocity -= Vector2.up * rb.velocity.magnitude * ySlowingMultiplier;
+                if (rb.velocity.y <= 0)
                 {
-                    _rb.velocity = new Vector2(_rb.velocity.x, -5);
+                    rb.velocity = new Vector2(rb.velocity.x, -5);
                 }
-                SetDirection(_rb.velocity);
+                SetDirection(rb.velocity);
                 SetLifeTime(0);
                 return;
             }
 
             var currentSpeed = CalculateCurrentSpeed();
-            _rb.velocity = _direction * currentSpeed;
+            rb.velocity = _direction * currentSpeed;
+            lastVelocity = rb.velocity;
         }
 
         private float CalculateCurrentSpeed()
@@ -79,17 +80,28 @@ namespace Player
             _lifetime += Time.deltaTime;
             
             if (_lifetime >= maxLifeTime)
-                Destroy(gameObject);
+                Explode();
         }
 
-        private void OnCollisionEnter2D(Collision2D col)
+        protected virtual void OnCollisionEnter2D(Collision2D col)
         {
-            if (col.gameObject.GetComponent<PlayerController>() != null)
-            {
-                return;
-            }
+            Explode();
+        }
 
+        protected void Explode()
+        {
             Destroy(gameObject);
+        }
+
+        protected void MakeExplosion()
+        {
+            OnRocketExplosion.Invoke();
+            ChangeParticleRadius();
+            var collidersInArea = Physics2D.OverlapCircleAll(transform.position, explodeRadius);
+
+            PushObjectsInExplosionRange(collidersInArea);
+
+            rocketMakedExplosion.Invoke();
         }
 
 
@@ -133,23 +145,19 @@ namespace Player
             }
         }
 
-        public void TakeDamage()
+        public virtual void TakeDamage()
         {
-            Destroy(gameObject);
+            Explode();
+        }
+
+        private void OnDestroy()
+        {
+            MakeExplosion();
         }
 
         public void SetLifeTime(float value)
         {
             _lifetime = value;
-        }
-
-        protected virtual void OnDestroy()
-        {
-            OnRocketExplosion.Invoke();
-            ChangeParticleRadius();
-            var collidersInArea = Physics2D.OverlapCircleAll(transform.position, explodeRadius);
-
-            PushObjectsInExplosionRange(collidersInArea);
         }
 
         public void Slow(bool slow)

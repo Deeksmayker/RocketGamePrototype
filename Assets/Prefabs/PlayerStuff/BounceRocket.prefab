@@ -10,11 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 3352318943102481162}
   - component: {fileID: 3352318943102481163}
-  - component: {fileID: 2827495425681577453}
   - component: {fileID: 3528820262345603604}
   - component: {fileID: 6522430733176092826}
+  - component: {fileID: 906594240022180127}
   m_Layer: 12
-  m_Name: Rocket
+  m_Name: BounceRocket
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -87,26 +87,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2827495425681577453
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3352318943102481160}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56bc63840f04cd7aaba2d541f2c804d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxSpeed: 80
-  timeForMaxSpeed: 0.4
-  ySlowingMultiplier: 0.5
-  xSlowingMultiplier: 0.2
-  maxLifeTime: 5
-  explodePower: 50
-  explodeRadius: 4
-  explodeParticles: {fileID: 8249380662462926968, guid: 886ab73d0855f0347b1bf2aaffe8b493, type: 3}
 --- !u!50 &3528820262345603604
 Rigidbody2D:
   serializedVersion: 4
@@ -154,3 +134,26 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &906594240022180127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3352318943102481160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f667d20b01b727a4dbddd368fbfbc805, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxSpeed: 80
+  timeForMaxSpeed: 0.4
+  ySlowingMultiplier: 0.5
+  xSlowingMultiplier: 0.2
+  maxLifeTime: 5
+  explodePower: 50
+  explodeRadius: 4
+  explodeParticles: {fileID: 8249380662462926968, guid: 886ab73d0855f0347b1bf2aaffe8b493, type: 3}
+  rotationSpeed: 100
+  maxBouncesCount: 100
+  enemyDetectingRadius: 100

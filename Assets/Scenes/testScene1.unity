@@ -37716,6 +37716,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2827495425681577453, guid: 529a7b5fffa26394ca1c115dd11430b3, type: 3}
     - target: {fileID: 890357418586667379, guid: ae8d51772f3d93a479187f48301337fb, type: 3}
+      propertyPath: bounceRocket
+      value: 
+      objectReference: {fileID: 906594240022180127, guid: 6f794522845091340aaaa0321952787a, type: 3}
+    - target: {fileID: 890357418586667379, guid: ae8d51772f3d93a479187f48301337fb, type: 3}
       propertyPath: shrapnelRocket
       value: 
       objectReference: {fileID: 1672861838498410539, guid: c959c9442762f8143bddf85ccdf573e1, type: 3}
@@ -37792,6 +37796,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <GemCost>k__BackingField: 0
   duration: 3
+  abilityCasted:
+    m_PersistentCalls:
+      m_Calls: []
+  abilityEnded:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &890357418226770080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 257096000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d230463762a0e72458310e3c2b6bdf87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <GemCost>k__BackingField: 0
+  duration: 4
   abilityCasted:
     m_PersistentCalls:
       m_Calls: []
