@@ -284,6 +284,8 @@ GameObject:
   - component: {fileID: 890357418586667391}
   - component: {fileID: 890357418226770067}
   - component: {fileID: 890357418226770068}
+  - component: {fileID: 890357418226770069}
+  - component: {fileID: 890357418226770080}
   m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
@@ -478,10 +480,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 983d81fdbdbc430db32144d72f1fd786, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rocket: {fileID: 3352318943102481160, guid: 529a7b5fffa26394ca1c115dd11430b3, type: 3}
+  rocket: {fileID: 2827495425681577453, guid: 529a7b5fffa26394ca1c115dd11430b3, type: 3}
+  bounceRocket: {fileID: 906594240022180127, guid: 6f794522845091340aaaa0321952787a, type: 3}
+  shrapnelRocketPrefab: {fileID: 2514745307976798272, guid: e6a8c58625effc3469b096511d179240, type: 3}
   rocketStartPoint: {fileID: 890357418135115138}
   rocketLauncherPivotPoint: {fileID: 890357418188273165}
   shootCooldown: 0.5
+  shootPerformed:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &890357418586667390
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -544,12 +551,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <GemCount>k__BackingField: 0
-  firstAbilityCasted:
-    m_PersistentCalls:
-      m_Calls: []
-  firstAbilityEnded:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &890357418226770068
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -564,9 +565,52 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <GemCost>k__BackingField: 0
   duration: 2
+  abilityCasted:
+    m_PersistentCalls:
+      m_Calls: []
   abilityEnded:
     m_PersistentCalls:
       m_Calls: []
   slowTimeScale: 0.5
   slowingTimeDuration: 1
   speedMultiplier: 2
+--- !u!114 &890357418226770069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 890357418586667384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e2a3ce14c5510c4ca6825a3b1bd86a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <GemCost>k__BackingField: 0
+  duration: 3
+  abilityCasted:
+    m_PersistentCalls:
+      m_Calls: []
+  abilityEnded:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &890357418226770080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 890357418586667384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d230463762a0e72458310e3c2b6bdf87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <GemCost>k__BackingField: 0
+  duration: 4
+  abilityCasted:
+    m_PersistentCalls:
+      m_Calls: []
+  abilityEnded:
+    m_PersistentCalls:
+      m_Calls: []
