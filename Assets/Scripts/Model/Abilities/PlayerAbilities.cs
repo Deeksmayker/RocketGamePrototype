@@ -12,6 +12,8 @@ public class PlayerAbilities : MonoBehaviour, ITakeGem
 
     private GameInputManager _input;
 
+    public UnityEvent gemTaken = new();
+
     private void Start()
     {
         _input = GetComponent<GameInputManager>();
@@ -44,5 +46,6 @@ public class PlayerAbilities : MonoBehaviour, ITakeGem
     public void TakeGem()
     {
         GemCount++;
+        gemTaken.Invoke();
     }
 }

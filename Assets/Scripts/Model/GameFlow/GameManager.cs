@@ -43,14 +43,24 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        creatingEnemies.OrderBy(time => time.timeToCreate);
-        _defaultMaterial = timeChangingObjects[0].tilemapsToAppear[0].GetComponent<Material>();
-        SetPlatformLifetime();
+        if (creatingEnemies.Count != 0)
+        {
+            creatingEnemies.OrderBy(time => time.timeToCreate);
+        }
+
+        if (timeChangingObjects.Count != 0)
+        {
+            _defaultMaterial = timeChangingObjects[0].tilemapsToAppear[0].GetComponent<Material>();
+            SetPlatformLifetime();
+        }
     }
 
     private void Update()
     {
         UpdateGameTime();
+
+        if (timeChangingObjects.Count == 0)
+            return;
         switch (_platformRemovalTime - GameTime)
         {
             case <= 5 when !_isPlatformBlinking:

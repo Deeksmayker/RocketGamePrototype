@@ -1,6 +1,7 @@
 using Assets.Scripts.Model.Interfaces;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Gem : MonoBehaviour
 {
@@ -31,6 +32,7 @@ public class Gem : MonoBehaviour
 
         if (possibleGemTaker == default(ITakeGem))
             return;
+
 
         possibleGemTaker.TakeGem();
         Destroy(gameObject);
