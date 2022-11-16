@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7837765771804259856}
   - component: {fileID: 7837765771804259857}
   - component: {fileID: 7837765771804259886}
+  - component: {fileID: -7524053638469311567}
   m_Layer: 8
   m_Name: SpiderEgg
   m_TagString: Untagged
@@ -138,3 +139,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeToSpawn: 5
   enemyToSpawnPrefab: {fileID: 6341571826258908204, guid: 19fd15163ca92154fb00fba3ae894495, type: 3}
+--- !u!114 &-7524053638469311567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7837765771804259887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 276158b158c1bf64e944dc16d882b953, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gemPrefab: {fileID: 6404256094005438249, guid: d0b19647d8b65a64a958b60fcebe851c, type: 3}

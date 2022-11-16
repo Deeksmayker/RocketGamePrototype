@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7837765771804259856}
   - component: {fileID: 7837765771804259857}
   - component: {fileID: 7837765771804259886}
+  - component: {fileID: 6381720174001700070}
   m_Layer: 8
   m_Name: CockroachEgg
   m_TagString: Untagged
@@ -138,3 +139,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeToSpawn: 5
   enemyToSpawnPrefab: {fileID: 1843853399755008130, guid: d83fb939d4a03ef4786e941da079bfad, type: 3}
+--- !u!114 &6381720174001700070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7837765771804259887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 276158b158c1bf64e944dc16d882b953, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gemPrefab: {fileID: 6404256094005438249, guid: d0b19647d8b65a64a958b60fcebe851c, type: 3}

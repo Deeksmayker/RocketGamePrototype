@@ -122,7 +122,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lifeTime: 0
   toPlayerAcceleration: 1
-  repulsionMultiplier: 0
+  maxSpeed: 70
+  repulsionMultiplier: 25
+  Rb: {fileID: 0}
 --- !u!61 &692337524968662467
 BoxCollider2D:
   m_ObjectHideFlags: 0

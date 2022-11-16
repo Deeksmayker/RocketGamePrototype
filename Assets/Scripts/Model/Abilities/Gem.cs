@@ -10,13 +10,13 @@ public class Gem : MonoBehaviour
     [SerializeField] private float maxSpeed;
     [SerializeField] private float repulsionMultiplier;
 
-    private Rigidbody2D _rb;
+    [HideInInspector] public Rigidbody2D Rb;
 
     private Vector2 _vectorToPlayer;
 
     private void Awake()
     {
-        _rb = GetComponent<Rigidbody2D>();
+        Rb = GetComponent<Rigidbody2D>();
 
         RocketLauncher.GlobalShootPreformed.AddListener(RepulseGem);
     }
@@ -25,13 +25,12 @@ public class Gem : MonoBehaviour
     {
         _vectorToPlayer = (PlayerController.PlayerPosition - (Vector2)transform.position);
 
-        _rb.velocity = Vector2.Lerp(_rb.velocity, _vectorToPlayer.normalized * maxSpeed, toPlayerAcceleration * Time.fixedDeltaTime);
+        Rb.velocity = Vector2.Lerp(Rb.velocity, _vectorToPlayer.normalized * maxSpeed, toPlayerAcceleration * Time.fixedDeltaTime);
     }
 
     private void RepulseGem()
     {
-        Debug.Log(1);
-        _rb.velocity = -_vectorToPlayer.normalized * repulsionMultiplier * repulsionMultiplier / _vectorToPlayer.magnitude;
+        Rb.velocity = repulsionMultiplier * repulsionMultiplier * -_vectorToPlayer.normalized / _vectorToPlayer.magnitude;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
