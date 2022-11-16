@@ -1,26 +1,37 @@
 using Assets.Scripts.Model.Interfaces;
+using Player;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class Gem : MonoBehaviour
 {
     [SerializeField] private float lifeTime;
     [SerializeField] private float toPlayerAcceleration;
+    [SerializeField] private float maxSpeed;
     [SerializeField] private float repulsionMultiplier;
 
     private Rigidbody2D _rb;
 
+    private Vector2 _vectorToPlayer;
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
+
+        RocketLauncher.GlobalShootPreformed.AddListener(RepulseGem);
     }
 
     private void FixedUpdate()
     {
-        var vectorToPlayer = (PlayerController.PlayerPosition - (Vector2)transform.position).normalized;
+        _vectorToPlayer = (PlayerController.PlayerPosition - (Vector2)transform.position);
 
-        _rb.AddForce(vectorToPlayer * toPlayerAcceleration, ForceMode2D.Impulse);
+        _rb.velocity = Vector2.Lerp(_rb.velocity, _vectorToPlayer.normalized * maxSpeed, toPlayerAcceleration * Time.fixedDeltaTime);
+    }
+
+    private void RepulseGem()
+    {
+        Debug.Log(1);
+        _rb.velocity = -_vectorToPlayer.normalized * repulsionMultiplier * repulsionMultiplier / _vectorToPlayer.magnitude;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

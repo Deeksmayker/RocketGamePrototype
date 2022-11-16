@@ -21,6 +21,7 @@ namespace Player
 
         private Vector2 _currentAimDirection;
 
+        public static UnityEvent GlobalShootPreformed = new();
         public UnityEvent shootPerformed = new();
         
         private void Awake()
@@ -72,6 +73,7 @@ namespace Player
                 _nextRocketShrapnel = false;
             }
 
+            GlobalShootPreformed.Invoke();
             shootPerformed.Invoke();
         }
 
