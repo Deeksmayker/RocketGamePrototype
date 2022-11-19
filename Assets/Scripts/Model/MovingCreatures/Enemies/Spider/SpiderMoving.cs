@@ -1,3 +1,4 @@
+using System;
 using Assets.Scripts.Model;
 using Assets.Scripts.Model.Interfaces;
 using Assets.Scripts.Model.MovingCreatures.Enemies;
@@ -15,6 +16,9 @@ public class SpiderMoving : MonoBehaviour, IStopMoving
     [SerializeField] private float rotationSpeed;
     [SerializeField] private float gravityMultuplier;
     [SerializeField] private float checkWallDistance;
+    
+    [HideInInspector] public UnityEvent OnStartKillFly = new();
+    [HideInInspector] public UnityEvent OnStopKillFly = new();
 
     private int _moveDirection;
     public int MoveDirection
@@ -29,7 +33,6 @@ public class SpiderMoving : MonoBehaviour, IStopMoving
     }
     public bool Jumping { get; private set; }
     public Vector2 Upward { get; private set; }
-
 
     private Vector2 _moveVector;
     private Vector2 _velocity;
@@ -51,6 +54,15 @@ public class SpiderMoving : MonoBehaviour, IStopMoving
         _collisionDetector = GetComponent<SpiderCollisionDetector>();
 
         Upward = GetClosestSurfaceNormal();
+    }
+
+    private void Start()
+    {
+        if (TryGetComponent<AttackManager>(out var attack))
+        {
+            attack.enemyCaptured.AddListener(StartPullingLegsOnCapturePoint);
+            attack.enemyKilled.AddListener(StopPullingLegsOnCapturePoint);
+        }
     }
 
     private void FixedUpdate()
@@ -89,6 +101,17 @@ public class SpiderMoving : MonoBehaviour, IStopMoving
 
         _rb.velocity = _velocity;
     }
+    
+    private void StopPullingLegsOnCapturePoint()
+    {
+        OnStopKillFly.Invoke();
+    }
+
+    private void StartPullingLegsOnCapturePoint()
+    {
+        OnStartKillFly.Invoke();
+    }
+
 
     private void Walk()
     {
