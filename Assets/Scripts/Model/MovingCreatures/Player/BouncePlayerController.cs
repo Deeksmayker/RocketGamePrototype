@@ -1,3 +1,4 @@
+using Mono.Cecil.Cil;
 using Player;
 using System.Collections;
 using UnityEngine;
@@ -20,19 +21,28 @@ public class BouncePlayerController : MonoBehaviour
 
     public AirStates AirState { get; private set; } = AirStates.Grounded;
 
+    [Header("Walking")]
     [SerializeField] private float maxWalkSpeed;
     [SerializeField] private float walkAcceleration, walkDeceleration;
-
+    [Header("Jumping")]
     [SerializeField] private AnimationCurve jumpingCurve;
     [SerializeField] private float jumpVelocity;
     [SerializeField] private float jumpDuration;
-
+    [Header("Rocket Jumping")]
+    [SerializeField] private AnimationCurve rocketJumpCurve;
+    [SerializeField] private float rocketJumpPower;
+    [SerializeField] private float rocketJumpDuration;
+    [Header("Falling")]
     [SerializeField] private float maxFallingSpeed;
     [SerializeField] private float fallingAcceleration;
 
-    //[SerializeField] private float magnitudeForFullBounce;
+    [Header("Bouncing")]
     [SerializeField] private float perBounceSpeedMultiplier;
     [SerializeField] private float stickGroundTime;
+    [Header("Wall bouncing")]
+    [SerializeField] private float minMagnitudeForWallBounce;
+    [SerializeField] private float stickWallTime;
+    [SerializeField, Min(0), Tooltip("Может быть не нормализирован")] private Vector2 wallBounceDirection;
 
     private CollisionDetector _collisionDetector;
     private GameInputManager _input;
@@ -92,7 +102,7 @@ public class BouncePlayerController : MonoBehaviour
     {
         if (Mathf.Abs(_velocity.x) > maxWalkSpeed && (Mathf.Sign(_input.move.x) == Mathf.Sign(_velocity.x) || _input.move.x == 0))
             return;
-
+        
         var targetSpeed = _input.move.x * maxWalkSpeed;
 
         if (Mathf.Abs(_rb.velocity.x) > 3 && Mathf.Sign(_velocity.x) != Mathf.Sign(targetSpeed))
@@ -128,7 +138,7 @@ public class BouncePlayerController : MonoBehaviour
         AirState = AirStates.Falling;
     }
 
-    private IEnumerator StickAndBounce(float bounceHeight)
+    private IEnumerator StickAndBounceOnGround(float bounceHeight)
     {
         var timer = stickGroundTime;
         _velocity.x = (Mathf.Abs(_velocity.x) >= maxWalkSpeed ? _velocity.x : maxWalkSpeed);
@@ -149,6 +159,55 @@ public class BouncePlayerController : MonoBehaviour
         _velocity.x *= perBounceSpeedMultiplier;
 
         StartCoroutine(Jump(bounceHeight));
+    }
+
+    private IEnumerator StickAndBounceOnWall(Vector2 wallNormal, float additionalMagnitude)
+    {
+        var timer = stickWallTime;
+
+        _velocity.x = 0;
+        _velocity.y = additionalMagnitude;
+
+        while (timer > 0)
+        {
+            _velocity.x = 0;
+            _velocity.y = additionalMagnitude * Mathf.Sign(_velocity.y);
+            timer -= Time.deltaTime;
+            yield return null;
+        }
+
+        _velocity.x = maxWalkSpeed * wallNormal.x;
+        StartCoroutine(Jump(minMagnitudeForWallBounce + additionalMagnitude));
+    }
+
+    public void InvokeRocketJump(Vector2 direction) => StartCoroutine(MakeRocketJump(direction));
+    private IEnumerator MakeRocketJump(Vector2 direction)
+    {
+        AirState = AirStates.RocketJumping;
+        var expiredTime = 0f;
+        var progress = 0f;
+
+        _velocity = rocketJumpCurve.Evaluate(progress) * rocketJumpPower * direction;
+
+        while (progress < 1)
+        {
+            if (AirState != AirStates.RocketJumping)
+                yield break;
+
+            expiredTime += Time.fixedDeltaTime;
+            progress = expiredTime / rocketJumpDuration;
+            
+            _velocity.y = rocketJumpCurve.Evaluate(progress) * rocketJumpPower * direction.y;
+
+            if (Mathf.Abs(_velocity.x) > maxWalkSpeed && Mathf.Sign(_input.move.x) == Mathf.Sign(_velocity.x))
+            {
+                _velocity.x = Mathf.Lerp(_velocity.x, maxWalkSpeed * Mathf.Sign(_velocity.x), Mathf.Pow(walkAcceleration * Time.fixedDeltaTime, 2));
+            }
+            
+            yield return new WaitForFixedUpdate();
+        }
+
+        AirState = AirStates.Falling;
     }
 
     private void Fall()
@@ -173,9 +232,23 @@ public class BouncePlayerController : MonoBehaviour
                     continue;
 
                 AirState = AirStates.Bouncing;
-                StartCoroutine(StickAndBounce(_input.move.x != 0
+                StartCoroutine(StickAndBounceOnGround(_input.move.x != 0
                     ? jumpVelocity
                     : (jumpVelocity / 2)));
+            }
+
+            if (collision.GetContact(i).normal == Vector2.right || collision.GetContact(i).normal == Vector2.left)
+            {
+                if (AirState == AirStates.WallBouncing)
+                    return;
+                
+                AirState = AirStates.WallBouncing;
+                StartCoroutine(StickAndBounceOnWall(collision.GetContact(i).normal, LastFrameVelocity.magnitude / 2));
+            }
+
+            if (collision.GetContact(i).normal == Vector2.down)
+            {
+                AirState = AirStates.Falling;
             }
         }
     }
@@ -184,7 +257,7 @@ public class BouncePlayerController : MonoBehaviour
     {
         for (var i = 0; i < collision.contactCount; i++)
         {
-            if (collision.GetContact(i).normal == Vector2.up && AirState != AirStates.Bouncing)
+            if (collision.GetContact(i).normal == Vector2.up && AirState != AirStates.Bouncing && AirState != AirStates.RocketJumping)
             {
                 AirState = AirStates.Grounded;
                 _velocity.y = 0;

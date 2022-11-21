@@ -8,7 +8,7 @@ using UnityEngine;
 namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
 {
     [RequireComponent(typeof(SpiderMoving), typeof(SpiderWebManager))]
-    public class SpiderStateManager : StateManager, IDestructable
+    public class SpiderStateManager : StateManager, IReactToExplosion
     {
         private SpiderMoving _spiderMoving;
         private SpiderWebManager _spiderWebManager;

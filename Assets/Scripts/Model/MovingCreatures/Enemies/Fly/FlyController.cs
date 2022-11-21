@@ -4,7 +4,7 @@ using Assets.Scripts.Model.MovingCreatures.Enemies;
 using System.Collections;
 using UnityEngine;
 
-public class FlyController : MonoBehaviour, ISpawnable, IDestructable, ISlowable, IGetCaught
+public class FlyController : MonoBehaviour, ISpawnable, IReactToExplosion, ISlowable, IGetCaught
 {
     [Header("Jerking")]
     [SerializeField] private float minTimeBeforeJerk;

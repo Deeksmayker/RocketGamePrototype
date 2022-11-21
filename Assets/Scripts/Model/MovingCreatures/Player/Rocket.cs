@@ -7,7 +7,7 @@ using UnityEngine.Events;
 
 namespace Player
 {
-    public class Rocket : MonoBehaviour, IDestructable, ISlowable
+    public class Rocket : MonoBehaviour, IReactToExplosion, ISlowable
     {
         private bool _slowing;
 
@@ -122,14 +122,21 @@ namespace Player
                     continue;
 
                 var direction = (body.transform.position - transform.position).normalized;
-                
+
+                if (body.TryGetComponent<BouncePlayerController>(out var player))
+                {
+                    player.InvokeRocketJump(direction);
+                    continue;
+                }
+
                 if (body.GetComponent<PlayerController>() != null)
                 {
                     body.GetComponent<Rigidbody2D>().velocity = direction.normalized * explodePower;
                     body.GetComponent<PlayerController>().RocketJump();
                     continue;
                 }
-                body.GetComponent<Rigidbody2D>().AddForce(direction.normalized * explodePower * 5);
+                
+                body.GetComponent<Rigidbody2D>().AddForce(5 * explodePower * direction.normalized);
             }
         }
 
@@ -138,7 +145,7 @@ namespace Player
             var bodyScripts = body.GetComponents<MonoBehaviour>();
             foreach (var script in bodyScripts)
             {
-                if (script is IDestructable destructable)
+                if (script is IReactToExplosion destructable)
                 {
                     destructable.TakeDamage();
                 }

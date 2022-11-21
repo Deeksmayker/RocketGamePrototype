@@ -286,6 +286,7 @@ GameObject:
   - component: {fileID: 890357418226770068}
   - component: {fileID: 890357418226770069}
   - component: {fileID: 890357418226770080}
+  - component: {fileID: 1036072211}
   m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
@@ -375,8 +376,8 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_AngularDrag: 0
+  m_GravityScale: 0
   m_Material: {fileID: 6200000, guid: eaf6b7a123aa55a469d19375a20aada0, type: 2}
   m_Interpolate: 1
   m_SleepingMode: 1
@@ -415,7 +416,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 890357418586667384}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aeb9831ce250c83438d204338caef3f5, type: 3}
   m_Name: 
@@ -551,6 +552,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <GemCount>k__BackingField: 0
+  gemTaken:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &890357418226770068
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -614,3 +618,104 @@ MonoBehaviour:
   abilityEnded:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1036072211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 890357418586667384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88b8393e9bdaf1f43a8940f3323ae7fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxWalkSpeed: 20
+  walkAcceleration: 0.01
+  walkDeceleration: 1.5
+  jumpingCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.00020883756
+      value: 1.000012
+      inSlope: -1.4741616
+      outSlope: -1.4741616
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.23180713
+      value: 0.657983
+      inSlope: -1.3563334
+      outSlope: -1.3563334
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.2811469
+    - serializedVersion: 3
+      time: 0.53389716
+      value: 0.2210167
+      inSlope: -0.6128586
+      outSlope: -0.6128586
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.13780904
+    - serializedVersion: 3
+      time: 1
+      value: -0.00042951107
+      inSlope: -0.47510162
+      outSlope: -0.47510162
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  jumpVelocity: 20
+  jumpDuration: 0.5
+  rocketJumpCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.6635673
+      outSlope: -0.6635673
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.4069032
+      value: 0.72999233
+      inSlope: -0.082296476
+      outSlope: -0.082296476
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.1018603
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -1.2308148
+      outSlope: -1.2308148
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  rocketJumpPower: 50
+  rocketJumpDuration: 0.7
+  maxFallingSpeed: 100
+  fallingAcceleration: 5
+  perBounceSpeedMultiplier: 1.2
+  stickGroundTime: 0.05
+  minMagnitudeForWallBounce: 50
+  stickWallTime: 0.05
+  wallBounceDirection: {x: 1, y: 3}

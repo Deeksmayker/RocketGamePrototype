@@ -2,7 +2,7 @@ using Assets.Scripts.Model;
 using Assets.Scripts.Model.MovingCreatures.Enemies;
 using UnityEngine;
 
-public class IntervalSpawner : MonoBehaviour, IDestructable
+public class IntervalSpawner : MonoBehaviour, IReactToExplosion
 {
     [SerializeField] private MonoBehaviour creaturePrefab;
     [SerializeField] private float spawnInterval;
