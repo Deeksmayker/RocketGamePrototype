@@ -10,6 +10,7 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
     [RequireComponent(typeof(SpiderMoving), typeof(SpiderWebManager))]
     public class SpiderStateManager : StateManager, IDestructable
     {
+        public GameObject bloodParticlePrefab;
         private SpiderMoving _spiderMoving;
         private SpiderWebManager _spiderWebManager;
 
@@ -208,6 +209,8 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
 
         public void TakeDamage()
         {
+            GameObject bloodExplosion = Instantiate(bloodParticlePrefab, transform.position, Quaternion.identity);
+            Destroy (bloodExplosion, bloodExplosion.GetComponent<ParticleSystem> ().main.startLifetimeMultiplier);
             Destroy(gameObject);
         }
     }

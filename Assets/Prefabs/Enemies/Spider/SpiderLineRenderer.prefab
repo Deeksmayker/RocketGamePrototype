@@ -492,6 +492,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1daf6adcd76e484ea65b5c3853e436ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bloodParticlePrefab: {fileID: 8671197636869436007, guid: db5dd49023f1aca4290ff3d570269b3d, type: 3}
   PlayerLayer:
     serializedVersion: 2
     m_Bits: 8
