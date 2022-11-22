@@ -103,6 +103,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 8178683947910177616}
     m_Modifications:
     - target: {fileID: 2051777783629050859, guid: a7694773960187f45b1e8d0fd9fe51c1, type: 3}
+      propertyPath: stopAction
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2051777783629050859, guid: a7694773960187f45b1e8d0fd9fe51c1, type: 3}
       propertyPath: startDelay.scalar
       value: 0.25
       objectReference: {fileID: 0}
