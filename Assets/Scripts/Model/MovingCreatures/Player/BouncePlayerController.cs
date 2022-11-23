@@ -1,9 +1,9 @@
 using Assets.Scripts.Model;
 using Assets.Scripts.Model.Interfaces;
-using Mono.Cecil.Cil;
 using Player;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(GameInputManager))]
 [RequireComponent(typeof(Rigidbody2D))]
@@ -30,6 +30,31 @@ public class BouncePlayerController : MonoBehaviour, ISlowable
         {
             LastAirState = AirState;
             _currentAirState = value;
+
+            switch (AirState)
+            {
+                case AirStates.Jumping:
+                    if (LastAirState != AirStates.Grounded)
+                        break;
+                    Jumped.Invoke();
+                    break;
+                case AirStates.Bouncing:
+                    Bounced.Invoke();
+                    break;
+                case AirStates.WallBouncing:
+                    WallBounced.Invoke();
+                    break;
+                case AirStates.Grounded:
+                    if (LastAirState == AirStates.Grounded)
+                        break;
+                    Landed.Invoke();
+                    break;
+                case AirStates.RocketJumping:
+                    RocketJumped.Invoke();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -68,6 +93,11 @@ public class BouncePlayerController : MonoBehaviour, ISlowable
     public Vector2 LastFrameVelocity { get; private set; }
     private Vector2 _velocity;
 
+    [HideInInspector] public UnityEvent Jumped = new();
+    [HideInInspector] public UnityEvent Bounced = new();
+    [HideInInspector] public UnityEvent WallBounced = new();
+    [HideInInspector] public UnityEvent Landed = new();
+    [HideInInspector] public UnityEvent RocketJumped = new();
 
     private void Start()
     {
@@ -324,4 +354,7 @@ public class BouncePlayerController : MonoBehaviour, ISlowable
     {
         _inWeb = slow;
     }
+
+    public bool OnGround() => AirState == AirStates.Grounded;
+    public int CurrentMoveDirection() => (int)_input.move.x;
 }
