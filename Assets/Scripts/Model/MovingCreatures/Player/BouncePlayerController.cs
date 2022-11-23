@@ -1,4 +1,5 @@
 using Assets.Scripts.Model;
+using Assets.Scripts.Model.Interfaces;
 using Mono.Cecil.Cil;
 using Player;
 using System.Collections;
@@ -6,7 +7,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(GameInputManager))]
 [RequireComponent(typeof(Rigidbody2D))]
-public class BouncePlayerController : MonoBehaviour
+public class BouncePlayerController : MonoBehaviour, ISlowable
 {
     public static Vector2 PlayerPosition;
 
@@ -34,6 +35,7 @@ public class BouncePlayerController : MonoBehaviour
 
     [Header("Walking")]
     [SerializeField] private float maxWalkSpeed;
+    public float OriginalWalkSpeed { get; private set; }
     [SerializeField] private float walkAcceleration, walkDeceleration;
     [Header("Jumping")]
     [SerializeField] private AnimationCurve jumpingCurve;
@@ -43,6 +45,7 @@ public class BouncePlayerController : MonoBehaviour
     [SerializeField] private AnimationCurve rocketJumpCurve;
     [SerializeField] private float rocketJumpPower;
     [SerializeField] private float rocketJumpDuration;
+    [SerializeField] private float maxRocketJumpHorizontalVelocity;
     [Header("Falling")]
     [SerializeField] private float maxFallingSpeed;
     [SerializeField] private float fallingAcceleration;
@@ -54,6 +57,9 @@ public class BouncePlayerController : MonoBehaviour
     [SerializeField] private float minMagnitudeForWallBounce;
     [SerializeField] private float stickWallTime;
     [SerializeField, Min(0), Tooltip("Может быть не нормализирован")] private Vector2 wallBounceDirection;
+    [Header("Slowing")]
+    [SerializeField] private float inWebVelocityDecelerationMultiplier;
+    private bool _inWeb;
 
     private CollisionDetector _collisionDetector;
     private GameInputManager _input;
@@ -65,6 +71,8 @@ public class BouncePlayerController : MonoBehaviour
 
     private void Start()
     {
+        OriginalWalkSpeed = maxWalkSpeed;
+
         _rb = GetComponent<Rigidbody2D>();
         _collisionDetector = GetComponent<CollisionDetector>();
         _input = GetComponent<GameInputManager>();
@@ -92,6 +100,10 @@ public class BouncePlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (_inWeb)
+        {
+            _velocity = Vector2.Lerp(_velocity, Vector2.zero, Mathf.Pow(inWebVelocityDecelerationMultiplier * Time.fixedDeltaTime, 2));
+        }
         Walk();
 
         switch (AirState)
@@ -195,7 +207,7 @@ public class BouncePlayerController : MonoBehaviour
             yield return null;
         }
 
-        _velocity.x = maxWalkSpeed * wallNormal.x;
+        _velocity.x = OriginalWalkSpeed * wallNormal.x;
         StartCoroutine(Jump(minMagnitudeForWallBounce + additionalMagnitude));
     }
 
@@ -207,6 +219,7 @@ public class BouncePlayerController : MonoBehaviour
         var progress = 0f;
 
         _velocity = rocketJumpCurve.Evaluate(progress) * rocketJumpPower * direction;
+        _velocity.x = Mathf.Clamp(_velocity.x, -maxRocketJumpHorizontalVelocity, maxRocketJumpHorizontalVelocity);
         while (progress < 1 && _velocity.y > 0)
         {
             if (AirState != AirStates.RocketJumping)
@@ -230,7 +243,7 @@ public class BouncePlayerController : MonoBehaviour
 
     private void Fall()
     {
-        if (_velocity.y > 0)
+        if (_velocity.y > 0 && !_inWeb)
             _velocity.y = 0;
         _velocity.y = Mathf.Lerp(_velocity.y, -maxFallingSpeed, Mathf.Pow(fallingAcceleration * Time.fixedDeltaTime, 2));
     }
@@ -300,5 +313,15 @@ public class BouncePlayerController : MonoBehaviour
                 AirState = AirStates.Falling;
             }
         }
+    }
+
+    public void SetWalkSpeed(float value)
+    {
+        maxWalkSpeed = value;
+    }
+
+    public void Slow(bool slow)
+    {
+        _inWeb = slow;
     }
 }

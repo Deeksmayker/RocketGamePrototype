@@ -37255,10 +37255,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: CockroachSpawner
       objectReference: {fileID: 0}
-    - target: {fileID: 1373483980098435314, guid: 55b71b1e831329b4bb59a7a828422c51, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1373483980098435325, guid: 55b71b1e831329b4bb59a7a828422c51, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -37542,24 +37538,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1728241454 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6341571826258908204, guid: 19fd15163ca92154fb00fba3ae894495, type: 3}
-  m_PrefabInstance: {fileID: 6341571827878470742}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1728241463
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1728241454}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 276158b158c1bf64e944dc16d882b953, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gemPrefab: {fileID: 6404256094005438249, guid: d0b19647d8b65a64a958b60fcebe851c, type: 3}
 --- !u!1001 &890357418226770057
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -37567,34 +37545,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1036072211, guid: ae8d51772f3d93a479187f48301337fb, type: 3}
-      propertyPath: walkAcceleration
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1036072211, guid: ae8d51772f3d93a479187f48301337fb, type: 3}
-      propertyPath: rocketJumpCurve.m_Curve.Array.data[1].time
-      value: 0.43113416
-      objectReference: {fileID: 0}
-    - target: {fileID: 1036072211, guid: ae8d51772f3d93a479187f48301337fb, type: 3}
-      propertyPath: rocketJumpCurve.m_Curve.Array.data[1].value
-      value: 0.47799343
-      objectReference: {fileID: 0}
-    - target: {fileID: 1036072211, guid: ae8d51772f3d93a479187f48301337fb, type: 3}
-      propertyPath: rocketJumpCurve.m_Curve.Array.data[0].inSlope
-      value: -1.2107753
-      objectReference: {fileID: 0}
-    - target: {fileID: 1036072211, guid: ae8d51772f3d93a479187f48301337fb, type: 3}
-      propertyPath: rocketJumpCurve.m_Curve.Array.data[2].inSlope
-      value: -0.84025687
-      objectReference: {fileID: 0}
-    - target: {fileID: 1036072211, guid: ae8d51772f3d93a479187f48301337fb, type: 3}
-      propertyPath: rocketJumpCurve.m_Curve.Array.data[0].outSlope
-      value: -1.2107753
-      objectReference: {fileID: 0}
-    - target: {fileID: 1036072211, guid: ae8d51772f3d93a479187f48301337fb, type: 3}
-      propertyPath: rocketJumpCurve.m_Curve.Array.data[2].outSlope
-      value: -0.84025687
-      objectReference: {fileID: 0}
     - target: {fileID: 890357418586667384, guid: ae8d51772f3d93a479187f48301337fb, type: 3}
       propertyPath: m_Name
       value: Player
@@ -37661,14 +37611,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: FlySpawner
       objectReference: {fileID: 0}
-    - target: {fileID: 2147311408140433426, guid: fb237643717d12a4a9906175b9c97a07, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2147311408140433427, guid: fb237643717d12a4a9906175b9c97a07, type: 3}
-      propertyPath: spawnInterval
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 2147311408140433431, guid: fb237643717d12a4a9906175b9c97a07, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -37725,10 +37667,6 @@ PrefabInstance:
     - target: {fileID: 6341571826258908204, guid: 19fd15163ca92154fb00fba3ae894495, type: 3}
       propertyPath: m_Name
       value: SpiderLineRenderer
-      objectReference: {fileID: 0}
-    - target: {fileID: 6341571826258908204, guid: 19fd15163ca92154fb00fba3ae894495, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6341571826258908205, guid: 19fd15163ca92154fb00fba3ae894495, type: 3}
       propertyPath: m_RootOrder
@@ -37888,29 +37826,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: CameraStuff
       objectReference: {fileID: 0}
-    - target: {fileID: 8900579288792748826, guid: 1e169e21f4b0ea049af2f1bdba98c955, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 41.500404
-      objectReference: {fileID: 0}
-    - target: {fileID: 8900579288792748826, guid: 1e169e21f4b0ea049af2f1bdba98c955, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 8.269894
-      objectReference: {fileID: 0}
     - target: {fileID: 8900579288792748901, guid: 1e169e21f4b0ea049af2f1bdba98c955, type: 3}
       propertyPath: m_Follow
       value: 
       objectReference: {fileID: 890357418226770058}
-    - target: {fileID: 8900579289080089125, guid: 1e169e21f4b0ea049af2f1bdba98c955, type: 3}
-      propertyPath: m_OcclusionCulling
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8900579289080089306, guid: 1e169e21f4b0ea049af2f1bdba98c955, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 41.5004
-      objectReference: {fileID: 0}
-    - target: {fileID: 8900579289080089306, guid: 1e169e21f4b0ea049af2f1bdba98c955, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 3.140602
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1e169e21f4b0ea049af2f1bdba98c955, type: 3}

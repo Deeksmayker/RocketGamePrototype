@@ -59,20 +59,18 @@ namespace Model.MovingCreatures.Enemies.Cockroach.CockroachStateMachine
 
         private void UpdateChaseVector()
         {
-            var playerInRadius = Physics2D.OverlapCircle(_cockroach.transform.position,
-                _cockroach.detectingPlayerRadius, _cockroach.playerLayer);
+            _vectorToPlayer = BouncePlayerController.PlayerPosition - (Vector2)_cockroach.transform.position;
+
             var flyInRadius = Physics2D.OverlapCircle(_cockroach.transform.position,
                 _cockroach.detectingPlayerRadius, _cockroach.flyLayer);
-            
+
             if (_cockroach.IsMech || !flyInRadius)
             {
-                _vectorToPlayer = playerInRadius.transform.position - _cockroach.transform.position;
                 _vectorToChase = _vectorToPlayer;
                 return;
             }
 
             _vectorToFly = flyInRadius.transform.position - _cockroach.transform.position;
-            _vectorToPlayer = playerInRadius.transform.position - _cockroach.transform.position;
             _vectorToChase = _vectorToFly.magnitude <= _vectorToChase.magnitude ? _vectorToFly : _vectorToPlayer;
         }
 
