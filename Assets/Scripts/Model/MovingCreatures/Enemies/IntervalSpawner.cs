@@ -1,10 +1,11 @@
 using Assets.Scripts.Model;
 using Assets.Scripts.Model.MovingCreatures.Enemies;
+using System.Linq;
 using UnityEngine;
 
-public class IntervalSpawner : MonoBehaviour, IDestructable
+public class IntervalSpawner : MonoBehaviour, IReactToExplosion
 {
-    [SerializeField] private MonoBehaviour creaturePrefab;
+    [SerializeField] private GameObject creaturePrefab;
     [SerializeField] private float spawnInterval;
     [SerializeField] private float startSpeed;
     public Vector2 spawnDirection = Vector2.up;
@@ -19,7 +20,7 @@ public class IntervalSpawner : MonoBehaviour, IDestructable
         {
             var creature = Instantiate(creaturePrefab);
             creature.transform.position = transform.position + (Vector3)spawnDirection * 2;
-            (creature as ISpawnable).Spawn(startSpeed, spawnDirection);
+            creature.GetComponent<ISpawnable>().Spawn(startSpeed, spawnDirection);
             _timeFromLastSpawn = 0;
         }
     }

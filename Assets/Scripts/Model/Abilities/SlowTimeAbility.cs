@@ -2,17 +2,18 @@ using Assets.Scripts.Model;
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(BouncePlayerController))]
 public class SlowTimeAbility : Ability
 {
     [SerializeField] private float slowTimeScale;
     [SerializeField] private float slowingTimeDuration;
     [SerializeField] private float speedMultiplier;
 
-    private PlayerController _playerController;
+    private BouncePlayerController _playerController;
 
     private void Start()
     {
-        _playerController = GetComponent<PlayerController>();
+        _playerController = GetComponent<BouncePlayerController>();
     }
 
     public override IEnumerator CastAbility()

@@ -22,7 +22,7 @@ public class Shrapnel : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (_canKill && collision.gameObject.TryGetComponent<IDestructable>(out var target))
+        if (_canKill && collision.gameObject.TryGetComponent<IReactToExplosion>(out var target))
         {
             target.TakeDamage();
         }

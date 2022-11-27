@@ -418,6 +418,7 @@ GameObject:
   - component: {fileID: 6341571827878470745}
   - component: {fileID: 4691048682796792573}
   - component: {fileID: 536817958922044038}
+  - component: {fileID: 1728241463}
   m_Layer: 8
   m_Name: SpiderLineRenderer
   m_TagString: Untagged
@@ -605,6 +606,19 @@ MonoBehaviour:
   enemyCaptured:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1728241463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6341571826258908204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 276158b158c1bf64e944dc16d882b953, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gemPrefab: {fileID: 6404256094005438249, guid: d0b19647d8b65a64a958b60fcebe851c, type: 3}
 --- !u!1 &6341571826328700537
 GameObject:
   m_ObjectHideFlags: 0

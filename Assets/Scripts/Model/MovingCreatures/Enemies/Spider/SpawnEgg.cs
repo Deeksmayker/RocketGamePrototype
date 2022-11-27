@@ -3,7 +3,7 @@ using DefaultNamespace.Enemies.Spider.SpiderStateMachine;
 using System.Collections;
 using UnityEngine;
 
-public class SpawnEgg : MonoBehaviour, IDestructable
+public class SpawnEgg : MonoBehaviour, IReactToExplosion
 {
     [SerializeField] private float timeToSpawn;
     [SerializeField] GameObject enemyToSpawnPrefab;

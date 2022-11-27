@@ -2,7 +2,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
-[RequireComponent(typeof(PlayerController))]
 public abstract class Ability : MonoBehaviour
 {
     [field: SerializeField] public int GemCost { get; protected set; }

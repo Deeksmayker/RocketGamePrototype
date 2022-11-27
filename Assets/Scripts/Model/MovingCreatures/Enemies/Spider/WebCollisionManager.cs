@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(PolygonCollider2D), typeof(LineRenderer))]
-public class WebCollisionManager : MonoBehaviour, IDestructable
+public class WebCollisionManager : MonoBehaviour, IReactToExplosion
 {
     private LineRenderer _lr;
     private PolygonCollider2D _collider;

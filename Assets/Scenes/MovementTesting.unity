@@ -123,11 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &479563336 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 890357418586667384, guid: ae8d51772f3d93a479187f48301337fb, type: 3}
-  m_PrefabInstance: {fileID: 1036072197}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &792637052
 GameObject:
   m_ObjectHideFlags: 0
@@ -185,20 +180,6 @@ CompositeCollider2D:
   - m_Collider: {fileID: 792637056}
     m_ColliderPaths:
     - - X: 1160000000
-        Y: 409999900
-      - X: 1160000041
-        Y: 409999900
-      - X: 1160000100
-        Y: 409999959
-      - X: 1160000100
-        Y: 430000041
-      - X: 1160000041
-        Y: 430000100
-      - X: 369999959
-        Y: 430000100
-      - X: 369999900
-        Y: 430000041
-      - X: 369999900
         Y: 430000000
       - X: -420000000
         Y: 430000000
@@ -206,38 +187,14 @@ CompositeCollider2D:
         Y: -180000000
       - X: 1160000000
         Y: -180000000
-    - - X: 349999959
-        Y: -160000100
-      - X: 349999900
-        Y: -160000041
-      - X: 349999900
-        Y: -160000000
-      - X: -400000000
+    - - X: -400000000
         Y: -160000000
       - X: -400000000
         Y: 410000000
-      - X: 349999900
+      - X: 1140000000
         Y: 410000000
-      - X: 349999900
-        Y: 410000041
-      - X: 349999959
-        Y: 410000100
-      - X: 369999900
-        Y: 410000100
-      - X: 369999900
-        Y: 409999959
-      - X: 369999959
-        Y: 409999900
-      - X: 1140000000
-        Y: 409999900
       - X: 1140000000
         Y: -160000000
-      - X: 370000100
-        Y: -160000000
-      - X: 370000100
-        Y: -160000041
-      - X: 370000041
-        Y: -160000100
     - - X: 280000000
         Y: 100000000
       - X: 170000000
@@ -273,13 +230,13 @@ CompositeCollider2D:
   m_CompositePaths:
     m_Paths:
     - - {x: 115.99998, y: -18}
-      - {x: 115.99998, y: 43.00001}
+      - {x: 115.99998, y: 43}
       - {x: -42, y: 42.999973}
       - {x: -41.999973, y: -18}
     - - {x: 114, y: -15.999971}
       - {x: -40, y: -15.999971}
       - {x: -39.999973, y: 41}
-      - {x: 114, y: 40.99996}
+      - {x: 114, y: 40.999973}
     - - {x: 27.999971, y: 8}
       - {x: 27.999971, y: 10}
       - {x: 17, y: 9.99997}
@@ -10066,10 +10023,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 890357418586667377, guid: ae8d51772f3d93a479187f48301337fb, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 890357418586667384, guid: ae8d51772f3d93a479187f48301337fb, type: 3}
       propertyPath: m_Name
       value: Player
@@ -10118,14 +10071,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 890357418586667389, guid: ae8d51772f3d93a479187f48301337fb, type: 3}
-      propertyPath: m_AngularDrag
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 890357418586667389, guid: ae8d51772f3d93a479187f48301337fb, type: 3}
-      propertyPath: m_GravityScale
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ae8d51772f3d93a479187f48301337fb, type: 3}
 --- !u!4 &1036072198 stripped
@@ -10133,69 +10078,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 890357418586667386, guid: ae8d51772f3d93a479187f48301337fb, type: 3}
   m_PrefabInstance: {fileID: 1036072197}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1036072211
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 479563336}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88b8393e9bdaf1f43a8940f3323ae7fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxWalkSpeed: 20
-  walkAcceleration: 0.01
-  walkDeceleration: 1.5
-  jumpingCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: -0.00020883756
-      value: 1.000012
-      inSlope: -1.4741616
-      outSlope: -1.4741616
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.23180713
-      value: 0.657983
-      inSlope: -1.3563334
-      outSlope: -1.3563334
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.2811469
-    - serializedVersion: 3
-      time: 0.53389716
-      value: 0.2210167
-      inSlope: -0.6128586
-      outSlope: -0.6128586
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.13780904
-    - serializedVersion: 3
-      time: 1
-      value: -0.00042951107
-      inSlope: -0.47510162
-      outSlope: -0.47510162
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  jumpVelocity: 20
-  jumpDuration: 0.5
-  maxFallingSpeed: 100
-  fallingAcceleration: 5
-  perBounceSpeedMultiplier: 1.3
-  stickGroundTime: 0.05
 --- !u!1 &1434990978
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PointOfSupportWeb : MonoBehaviour, IDestructable
+public class PointOfSupportWeb : MonoBehaviour, IReactToExplosion
 {
     public List<GameObject> ConnectedWebs = new();
 

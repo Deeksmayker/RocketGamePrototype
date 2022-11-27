@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Model.MovingCreatures.Enemies.Cockroach.CockroachStateMachine
 {
     [RequireComponent(typeof(CockroachMoving))]
-    public class CockroachStateManager : StateManager, ISpawnable, IDestructable
+    public class CockroachStateManager : StateManager, ISpawnable, IReactToExplosion
     {
         private CockroachMoving _cockroachMoving;
 
@@ -32,7 +32,7 @@ namespace Model.MovingCreatures.Enemies.Cockroach.CockroachStateMachine
 
         public SpawnEgg cockroachEgg;
 
-        private void Start()
+        private void Awake()
         {
             _cockroachMoving = GetComponent<CockroachMoving>();
             SetJumpForce(jumpForce);
