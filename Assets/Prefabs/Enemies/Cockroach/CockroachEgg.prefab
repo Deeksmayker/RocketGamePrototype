@@ -138,7 +138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeToSpawn: 5
-  enemyToSpawnPrefab: {fileID: 1843853399755008130, guid: d83fb939d4a03ef4786e941da079bfad, type: 3}
+  enemyToSpawnPrefab: {fileID: 273867459368678798, guid: 557b566271e924646b4982de8b19e587, type: 3}
 --- !u!114 &6381720174001700070
 MonoBehaviour:
   m_ObjectHideFlags: 0

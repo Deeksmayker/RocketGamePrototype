@@ -37623,6 +37623,26 @@ Camera:
   m_CorrespondingSourceObject: {fileID: 8900579289080089125, guid: 1e169e21f4b0ea049af2f1bdba98c955, type: 3}
   m_PrefabInstance: {fileID: 8900579289437893210}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1309322092 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8900579288792748900, guid: 1e169e21f4b0ea049af2f1bdba98c955, type: 3}
+  m_PrefabInstance: {fileID: 8900579289437893210}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1309322096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1309322092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5162e20322c467345b55194d2f70a268, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  camSizeOnPlayerGetCaught: 5
+  camSizeOnRain: 20
+  zoomSpeed: 0.1
 --- !u!114 &1343776665 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 562709528, guid: 8b53509e9a76b424ab4c828b58b5ea61, type: 3}
@@ -37634,6 +37654,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1797595183 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 890357418586667384, guid: ae8d51772f3d93a479187f48301337fb, type: 3}
+  m_PrefabInstance: {fileID: 890357418226770057}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &890357418226770057
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -37696,6 +37721,29 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 890357418586667386, guid: ae8d51772f3d93a479187f48301337fb, type: 3}
   m_PrefabInstance: {fileID: 890357418226770057}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &890357418226770071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1797595183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d7998885e25cb94dabca7faebd51057, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Health>k__BackingField: 3
+  timeForShootAfterGetCaught: 0.5
+  GetCaughtEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  ReleasedCaughtEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  DamagedEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &2147311408388197586
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -37922,9 +37970,38 @@ PrefabInstance:
       propertyPath: m_Name
       value: CameraStuff
       objectReference: {fileID: 0}
+    - target: {fileID: 8900579288792748826, guid: 1e169e21f4b0ea049af2f1bdba98c955, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.7605009
+      objectReference: {fileID: 0}
     - target: {fileID: 8900579288792748901, guid: 1e169e21f4b0ea049af2f1bdba98c955, type: 3}
       propertyPath: m_Follow
       value: 
       objectReference: {fileID: 890357418226770058}
-    m_RemovedComponents: []
+    - target: {fileID: 8900579288792748901, guid: 1e169e21f4b0ea049af2f1bdba98c955, type: 3}
+      propertyPath: m_Lens.ModeOverride
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8900579288792748901, guid: 1e169e21f4b0ea049af2f1bdba98c955, type: 3}
+      propertyPath: m_Lens.OrthographicSize
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8900579289080089125, guid: 1e169e21f4b0ea049af2f1bdba98c955, type: 3}
+      propertyPath: orthographic size
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8900579289080089306, guid: 1e169e21f4b0ea049af2f1bdba98c955, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 41.5004
+      objectReference: {fileID: 0}
+    - target: {fileID: 8900579289080089306, guid: 1e169e21f4b0ea049af2f1bdba98c955, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.140602
+      objectReference: {fileID: 0}
+    - target: {fileID: 8900579289080089306, guid: 1e169e21f4b0ea049af2f1bdba98c955, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.7605009
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 8367674031215145650, guid: 1e169e21f4b0ea049af2f1bdba98c955, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 1e169e21f4b0ea049af2f1bdba98c955, type: 3}

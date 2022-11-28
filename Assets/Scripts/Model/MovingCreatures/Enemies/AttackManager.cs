@@ -39,7 +39,11 @@ public class AttackManager : MonoBehaviour, ICapture
             Debug.LogError("Interface for stop moving is not implemented on this object, attack manager script was deleted");
         }
 
-        enemyKilled.AddListener(() => _capturedTarget.ReleaseCaught());
+        enemyKilled.AddListener(() =>
+        {
+            _capturedTarget.ReleaseCaught();
+            _capturedTarget.TakeDamageOnRelease();
+        });
     }
 
     private void Update()
@@ -94,6 +98,14 @@ public class AttackManager : MonoBehaviour, ICapture
         yield return new WaitForSeconds(0.5f);
         _capture = false;
         _stopMovingScript.ResumeMoving();
+    }
+
+    private void OnDestroy()
+    {
+        if (_capture)
+        {
+            _capturedTarget.ReleaseCaught();
+        }
     }
 
     private void OnDrawGizmosSelected()

@@ -8,18 +8,21 @@ namespace Player
         [SerializeField] private Rocket rocket;
         [SerializeField] private BounceHomingRocket bounceRocket;
         [SerializeField] private ShrapnelRocket shrapnelRocketPrefab;
-        private Rocket _currentRocket;
         [SerializeField] private Transform rocketStartPoint;
         [SerializeField] private GameObject rocketLauncherPivotPoint;
 
         [SerializeField] private float shootCooldown;
-        private float _currentCooldown;
-        private bool _canShoot;
-        private bool _nextRocketShrapnel;
 
-        private GameInputManager _input;
+        private float _currentCooldown;
+
+        private bool _canShoot;
+        private bool _isNextRocketShrapnel;
+        private bool _getCaught;
 
         private Vector2 _currentAimDirection;
+
+        private GameInputManager _input;
+        private Rocket _currentRocket;
 
         public static UnityEvent GlobalShootPreformed = new();
         public UnityEvent shootPerformed = new();
@@ -34,6 +37,12 @@ namespace Player
         private void Update()
         {
             TurnLauncherOnMouse();
+
+            if (_getCaught)
+            {
+                _input.shoot = false;
+                return;
+            }
 
             if (!_canShoot)
             {
@@ -67,10 +76,10 @@ namespace Player
             var newRocket = Instantiate(_currentRocket, rocketStartPoint.position, Quaternion.identity);
             newRocket.SetDirection(_currentAimDirection);
 
-            if (_nextRocketShrapnel)
+            if (_isNextRocketShrapnel)
             {
                 Instantiate(shrapnelRocketPrefab, newRocket.transform);
-                _nextRocketShrapnel = false;
+                _isNextRocketShrapnel = false;
             }
 
             GlobalShootPreformed.Invoke();
@@ -87,14 +96,19 @@ namespace Player
             _currentRocket = rocket;
         }
 
+        public void SetCaught(bool isGetCaught)
+        {
+            _getCaught = isGetCaught;
+        }
+
         public void MakeNextRocketShrapnel()
         {
-            _nextRocketShrapnel = true;
+            _isNextRocketShrapnel = true;
         }
 
         public void RemoveShrapnelFromNextRocket()
         {
-            _nextRocketShrapnel = false;
+            _isNextRocketShrapnel = false;
         }
     }
 }

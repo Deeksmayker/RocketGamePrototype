@@ -601,7 +601,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   layersToCheck:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 136
   attackCheckStartPoint: {fileID: 3504295590035350664}
   attackCheckRadius: 2.5
   captureTargetPoint: {fileID: 5973761937032386486}

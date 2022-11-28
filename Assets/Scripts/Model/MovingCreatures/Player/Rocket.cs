@@ -1,7 +1,6 @@
 ﻿using Assets.Scripts.Model;
 using Assets.Scripts.Model.Interfaces;
 using System;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -107,7 +106,7 @@ namespace Player
 
         private void ChangeParticleRadius()
         {
-            var a = Instantiate(explodeParticles, transform.position, quaternion.identity);
+            var a = Instantiate(explodeParticles, transform.position, Quaternion.identity);
             var b = a.shape;
             b.radius = explodeRadius - 1;
         }

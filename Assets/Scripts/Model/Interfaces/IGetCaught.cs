@@ -4,5 +4,6 @@
     {
         public void GetCaught();
         public void ReleaseCaught();
+        public void TakeDamageOnRelease();
     }
 }

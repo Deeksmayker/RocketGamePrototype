@@ -141,6 +141,11 @@ public class FlyController : MonoBehaviour, ISpawnable, IReactToExplosion, ISlow
 
     public void ReleaseCaught()
     {
+        _getCaught = false;
+    }
+
+    public void TakeDamageOnRelease()
+    {
         Destroy(gameObject);
     }
 }

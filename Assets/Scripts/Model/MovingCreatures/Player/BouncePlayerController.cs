@@ -1,5 +1,6 @@
 using Assets.Scripts.Model;
 using Assets.Scripts.Model.Interfaces;
+using Newtonsoft.Json.Bson;
 using Player;
 using System.Collections;
 using UnityEngine;
@@ -58,9 +59,10 @@ public class BouncePlayerController : MonoBehaviour, ISlowable
         }
     }
 
+    public float OriginalWalkSpeed { get; private set; }
+
     [Header("Walking")]
     [SerializeField] private float maxWalkSpeed;
-    public float OriginalWalkSpeed { get; private set; }
     [SerializeField] private float walkAcceleration, walkDeceleration;
     [Header("Jumping")]
     [SerializeField] private AnimationCurve jumpingCurve;
@@ -74,7 +76,6 @@ public class BouncePlayerController : MonoBehaviour, ISlowable
     [Header("Falling")]
     [SerializeField] private float maxFallingSpeed;
     [SerializeField] private float fallingAcceleration;
-
     [Header("Bouncing")]
     [SerializeField] private float perBounceSpeedMultiplier;
     [SerializeField] private float stickGroundTime;
@@ -84,7 +85,9 @@ public class BouncePlayerController : MonoBehaviour, ISlowable
     [SerializeField, Min(0), Tooltip("Может быть не нормализирован")] private Vector2 wallBounceDirection;
     [Header("Slowing")]
     [SerializeField] private float inWebVelocityDecelerationMultiplier;
+
     private bool _inWeb;
+    private bool _getCaught;
 
     private CollisionDetector _collisionDetector;
     private GameInputManager _input;
@@ -145,6 +148,11 @@ public class BouncePlayerController : MonoBehaviour, ISlowable
             case AirStates.Falling:
                 Fall();
                 break;
+        }
+
+        if (_getCaught)
+        {
+            _velocity = Vector2.zero;
         }
 
         _rb.velocity = _velocity;
@@ -353,6 +361,11 @@ public class BouncePlayerController : MonoBehaviour, ISlowable
     public void Slow(bool slow)
     {
         _inWeb = slow;
+    }
+
+    public void SetCaught(bool isGetCaught)
+    {
+        _getCaught = isGetCaught;
     }
 
     public bool OnGround() => AirState == AirStates.Grounded;
