@@ -1,141 +1,118 @@
+using DefaultNamespace.Enemies.Spider.SpiderStateMachine;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class CreateEnemiesManager : MonoBehaviour
 {
-    [SerializeField] private GameObject spiderPrefab;
-    [SerializeField] private GameObject lizardPrefab;
-    [SerializeField] private GameObject flyPrefab;
+    [SerializeField] private SpiderStateManager spiderPrefab;
+    [SerializeField] private IntervalSpawner cockroachSpawnerPrefab;
+    [SerializeField] private IntervalSpawner flySpawnerPrefab;
 
-    [SerializeField] private Transform point1;
-    [SerializeField] private Transform point2;
+    [SerializeField] private Transform leftUpArenaCorner;
+    [SerializeField] private Transform rightDownArenaCorner;
 
-    [SerializeField] private int lizardLayer = 8;
-    [SerializeField] private int flyLayer = 7;
-    [SerializeField] private int playerLayer = 3;
+    [SerializeField] private int randomRayHitsCount;
 
-    private List<Vector2> _raycastPoints1 = new();
-    private List<Vector2> _raycastPoints2 = new();
-    private List<Vector2> _raycastPoints3 = new();
-
-    private List<Vector2> _directionsForSpawnSpider = new();
-
-    private int _spawnerLayer;
-    private bool _isThisFly;
-    private bool _isThisSpider;
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private LayerMask spawnerLayer;
 
     private void Start()
     {
-        _directionsForSpawnSpider.Add(Vector2.down);
-        _directionsForSpawnSpider.Add(Vector2.up);
-        _directionsForSpawnSpider.Add(Vector2.left);
-        _directionsForSpawnSpider.Add(Vector2.right);
+
     }
 
-    public void CreateSpider()
+    public void SpawnSpider()
     {
-        _isThisFly = false;
-        _isThisSpider = true;
-        Vector3 positionOfNewEnemy = GetFarthestSpawnPoint(10, 0);
-        Instantiate(spiderPrefab, positionOfNewEnemy, Quaternion.identity);
+        var rayHit = GetFarthestFromPlayerRayHit(new Vector2[] { Vector2.down, Vector2.right, Vector2.up, Vector2.left });
+        var spider = Instantiate(spiderPrefab);
+
+        spider.transform.position = rayHit.point + rayHit.normal;
+        spider.transform.rotation = Quaternion.FromToRotation(transform.up, rayHit.normal) * transform.rotation;
     }
 
-    public void CreateLizard()
+    public void SpawnCockroachSpawner()
     {
-        _isThisFly = false;
-        _isThisSpider = false;
-        Vector3 positionOfNewEnemy = GetFarthestSpawnPoint(10, 1);
-        Instantiate(lizardPrefab, positionOfNewEnemy, Quaternion.identity);
+        var rayHit = GetFarthestFromSpawnerRayHit(new Vector2[] { Vector2.down });
+
+        var cockroachSpawner = Instantiate(cockroachSpawnerPrefab);
+        cockroachSpawner.spawnDirection = Vector2.up;
+        cockroachSpawner.transform.position = rayHit.point + rayHit.normal;
+        cockroachSpawner.transform.rotation = Quaternion.FromToRotation(transform.up, rayHit.normal) * transform.rotation;
     }
 
-    public void CreateFly()
+    public void SpawnFlySpawner()
     {
-        _isThisFly = true;
-        _isThisSpider = false;
-        Vector3 positionOfNewEnemy = GetFarthestSpawnPoint(10, 2);
-        Instantiate(flyPrefab, positionOfNewEnemy, Quaternion.identity);
+        var rayHit = GetFarthestFromSpawnerRayHit(new Vector2[] { Vector2.down, Vector2.right, Vector2.up, Vector2.left });
+
+        var flySpawner = Instantiate(flySpawnerPrefab);
+        flySpawner.spawnDirection = rayHit.normal;
+        flySpawner.transform.position = rayHit.point + rayHit.normal;
+        flySpawner.transform.rotation = Quaternion.FromToRotation(transform.up, rayHit.normal) * transform.rotation;
     }
 
 
-    private void CreateRandomSpawnPoints(int countOfRaycasts, List<Vector2> raycastPoints)
+    private RaycastHit2D[] GetRandomRayHits(Vector2[] rayDirections)
     {
-        for (var i = 0; i < countOfRaycasts; i++)
+        var rayHits = new RaycastHit2D[randomRayHitsCount];
+
+        for (var i = 0; i < randomRayHitsCount; i++)
         {
-            // get random point
-            var posOfPointX = Random.Range(point1.position.x, point2.position.x);
-            var posOfPointY = Random.Range(point2.position.y, point1.position.y);
-            Vector2 positionOfRandomPoint = new Vector2(posOfPointX, posOfPointY);
+            var posOfPointX = Random.Range(leftUpArenaCorner.position.x, rightDownArenaCorner.position.x);
+            var posOfPointY = Random.Range(rightDownArenaCorner.position.y, leftUpArenaCorner.position.y);
+            Vector2 randomRayStartPoint = new Vector2(posOfPointX, posOfPointY);
 
+            var rayDirection = rayDirections[Random.Range(0, rayDirections.Length)];
 
-            // raycast
-            if (_isThisSpider) // if a spider 
+            var hit = Physics2D.Raycast(randomRayStartPoint, rayDirection, 100, groundLayer);
+
+            if (hit.point.y > leftUpArenaCorner.position.y)
             {
-                int randomDirectionForSpawnSpider = Random.Range(0, 4);
-
-                RaycastHit2D hit = Physics2D.Raycast(positionOfRandomPoint,
-                    _directionsForSpawnSpider[randomDirectionForSpawnSpider], 1,
-                    LayerMask.GetMask("Level"));
-                if (hit.collider == null)
-                    raycastPoints.Add(positionOfRandomPoint);
+                hit = Physics2D.Raycast(randomRayStartPoint, new Vector2(-1, -1), 100, groundLayer);
             }
-            /*else if (_isThisFly) // if a fly 
-            {
-                RaycastHit2D hit = Physics2D.Raycast(positionOfRandomPoint, new Vector2(0, -1), 1,
-                    LayerMask.GetMask("Level"));
-                if (hit.collider == null)
-                    raycastPoints.Add(positionOfRandomPoint);
-            }*/
-            else // if a lizard + if a fly 
-            {
-                RaycastHit2D hit = Physics2D.Raycast(positionOfRandomPoint, new Vector2(0, -1), 100,
-                    LayerMask.GetMask("Level"));
-                if (hit.collider != null)
-                {
-                    raycastPoints.Add(hit.point);
-                }
-            }
-        }
-    }
 
-    private Vector2 GetFarthestSpawnPoint(int countOfRaycasts, int numOfLayer)
-    {
-        var result = new List<Vector2>();
-
-        switch (numOfLayer)
-        {
-            case 0:
-                _raycastPoints1.Clear();
-                _spawnerLayer = playerLayer;
-                CreateRandomSpawnPoints(countOfRaycasts, _raycastPoints1);
-                result = GetSortedPointsByDistance(_raycastPoints1);
-                break;
-            case 1:
-                _raycastPoints2.Clear();
-                _spawnerLayer = lizardLayer;
-                CreateRandomSpawnPoints(countOfRaycasts, _raycastPoints2);
-                result = GetSortedPointsByDistance(_raycastPoints2);
-                break;
-            case 2:
-                _raycastPoints3.Clear();
-                _spawnerLayer = flyLayer;
-                CreateRandomSpawnPoints(countOfRaycasts, _raycastPoints3);
-                result = GetSortedPointsByDistance(_raycastPoints3);
-                break;
+            rayHits[i] = hit;
         }
 
-        return result[0];
+        return rayHits;
     }
 
-    private List<Vector2> GetSortedPointsByDistance(List<Vector2> raycastPoints)
+    private RaycastHit2D GetFarthestFromSpawnerRayHit(Vector2[] rayDirections)
+    {
+        var hits = GetRandomRayHits(rayDirections);
+
+        return GetRayHitsSortedByDistanceToSpawner(hits.ToList())[0];
+    }
+
+    private RaycastHit2D GetFarthestFromPlayerRayHit(Vector2[] rayDirections)
+    {
+        var hits = GetRandomRayHits(rayDirections).ToList();
+        if (hits.Count < 2)
+            return hits[0];
+
+        hits.Sort((a, b) =>
+        {
+            var distanceToPlayerFromFirst = Vector2.Distance(BouncePlayerController.PlayerPosition, a.point);
+            var distanceToPlayerFromSecond = Vector2.Distance(BouncePlayerController.PlayerPosition, b.point);
+
+            return distanceToPlayerFromSecond.CompareTo(distanceToPlayerFromFirst);
+        });
+
+        return hits[0];
+    }
+
+    private RaycastHit2D[] GetRayHitsSortedByDistanceToSpawner(List<RaycastHit2D> raycastPoints)
     {
         if (raycastPoints.Count < 2)
-            return raycastPoints;
+            return raycastPoints.ToArray();
 
         raycastPoints.Sort((a, b) =>
             {
-                var firstSpawnerInRadius = Physics2D.OverlapCircle(a, 100, _spawnerLayer);
-                var secondSpawnerInRadius = Physics2D.OverlapCircle(b, 100, _spawnerLayer);
+                var firstSpawnerInRadius = Physics2D.OverlapCircle(a.point, 100, spawnerLayer);
+                var secondSpawnerInRadius = Physics2D.OverlapCircle(b.point, 100, spawnerLayer);
 
                 if (firstSpawnerInRadius == null && secondSpawnerInRadius == null
                     || firstSpawnerInRadius != null && secondSpawnerInRadius == null)
@@ -148,13 +125,13 @@ public class CreateEnemiesManager : MonoBehaviour
                     return -1;
                 }
 
-                Vector2 vectorToFirst = (Vector2)firstSpawnerInRadius.transform.position - a;
-                Vector2 vectorToSecond = (Vector2)secondSpawnerInRadius.transform.position - b;
+                var distanceToFirst = Vector2.Distance(firstSpawnerInRadius.transform.position, a.point);
+                var distanceToSecond = Vector2.Distance(secondSpawnerInRadius.transform.position, b.point);
 
-                return vectorToSecond.magnitude.CompareTo(vectorToFirst.magnitude);
+                return distanceToSecond.CompareTo(distanceToFirst);
             }
         );
 
-        return raycastPoints;
+        return raycastPoints.ToArray();
     }
 }

@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
 {
     public float GameTime { get; private set; }
 
-    [SerializeField] private List<EnemiesCreating> creatingEnemies = new();
+    [SerializeField] private List<EnemiesSpawnInfo> enemiesSpawnInfo = new();
     [SerializeField] private List<TimeChangingObjects> timeChangingObjects;
     [SerializeField] private CreateEnemiesManager createEnemiesManager;
     [SerializeField] private Material blinkMaterial;
@@ -22,11 +22,10 @@ public class GameManager : MonoBehaviour
     }
 
     [Serializable]
-    private struct EnemiesCreating
+    private struct EnemiesSpawnInfo
     {
-        public Enemies chosenEnemy;
-        public int timeToCreate;
-        public int countOfSpawners;
+        public Enemies[] enemiesToSpawn;
+        public int secondToSpawn;
     }
 
     private float _platformCreationTime;
@@ -36,16 +35,16 @@ public class GameManager : MonoBehaviour
 
     private enum Enemies
     {
-        spider,
-        lizard,
-        fly
+        Spider,
+        CockroachSpawner,
+        FlySpawner
     }
 
     private void Start()
     {
-        if (creatingEnemies.Count != 0)
+        if (enemiesSpawnInfo.Count != 0)
         {
-            creatingEnemies.OrderBy(time => time.timeToCreate);
+            enemiesSpawnInfo.OrderBy(time => time.secondToSpawn);
         }
 
         if (timeChangingObjects.Count != 0)
@@ -59,6 +58,13 @@ public class GameManager : MonoBehaviour
     {
         UpdateGameTime();
 
+        CheckPlatformCreation();
+
+        CheckEnemiesSpawn();
+    }
+
+    private void CheckPlatformCreation()
+    {
         if (timeChangingObjects.Count == 0)
             return;
         switch (_platformRemovalTime - GameTime)
@@ -74,33 +80,37 @@ public class GameManager : MonoBehaviour
                 _isPlatformBlinking = false;
                 break;
         }
+    }
 
-        if (creatingEnemies.Count > 0 && Math.Round(GameTime) == creatingEnemies[0].timeToCreate)
+    private void CheckEnemiesSpawn()
+    {
+        if (enemiesSpawnInfo.Count == 0 || GameTime < enemiesSpawnInfo[0].secondToSpawn)
+            return;
+
+        for (var i = 0; i < enemiesSpawnInfo[0].enemiesToSpawn.Length; i++)
         {
-            for (int i = 0; i < creatingEnemies[0].countOfSpawners; i++)
+            switch (enemiesSpawnInfo[0].enemiesToSpawn[i])
             {
-                switch (creatingEnemies[0].chosenEnemy)
-                {
-                    case Enemies.spider:
+                case Enemies.Spider:
                     {
-                        createEnemiesManager.CreateSpider();
+                        createEnemiesManager.SpawnSpider();
                         break;
                     }
-                    case Enemies.fly:
+                case Enemies.FlySpawner:
                     {
-                        createEnemiesManager.CreateFly();
+                        createEnemiesManager.SpawnFlySpawner();
                         break;
                     }
-                    case Enemies.lizard:
+                case Enemies.CockroachSpawner:
                     {
-                        createEnemiesManager.CreateLizard();
+                        createEnemiesManager.SpawnCockroachSpawner();
                         break;
                     }
-                }
             }
-
-            creatingEnemies.RemoveAt(0);
         }
+
+
+        enemiesSpawnInfo.RemoveAt(0);
     }
 
     private void UpdateGameTime()
