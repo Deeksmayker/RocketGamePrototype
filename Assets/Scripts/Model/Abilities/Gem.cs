@@ -24,12 +24,15 @@ public class Gem : MonoBehaviour
     private void FixedUpdate()
     {
         _vectorToPlayer = (BouncePlayerController.PlayerPosition - (Vector2)transform.position);
-
+        if (_vectorToPlayer.x is float.NaN)
+            return;
         Rb.velocity = Vector2.Lerp(Rb.velocity, _vectorToPlayer.normalized * maxSpeed, toPlayerAcceleration * Time.fixedDeltaTime);
     }
 
     private void RepulseGem()
     {
+        if (_vectorToPlayer.x is float.NaN || Rb.velocity.x is float.NaN)
+            return;
         Rb.velocity = repulsionMultiplier * repulsionMultiplier * -_vectorToPlayer.normalized / _vectorToPlayer.magnitude;
     }
 

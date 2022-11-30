@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   creaturePrefab: {fileID: 273867459368678798, guid: 557b566271e924646b4982de8b19e587, type: 3}
-  spawnInterval: 7
+  spawnInterval: 12
   startSpeed: 10
   spawnDirection: {x: 0, y: 1}
 --- !u!114 &6898665333030378876

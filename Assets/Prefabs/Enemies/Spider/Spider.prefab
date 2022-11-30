@@ -269,6 +269,8 @@ GameObject:
   - component: {fileID: 6793332224900050597}
   - component: {fileID: 5142822411260473345}
   - component: {fileID: 86733080318625914}
+  - component: {fileID: -2703300341387447037}
+  - component: {fileID: 3539154443248174962}
   m_Layer: 8
   m_Name: Spider
   m_TagString: Untagged
@@ -450,7 +452,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   layersToCheck:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 136
   attackCheckStartPoint: {fileID: 3956069318503296628}
   attackCheckRadius: 2.5
   captureTargetPoint: {fileID: 6097903053349002570}
@@ -462,6 +464,32 @@ MonoBehaviour:
   enemyCaptured:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &-2703300341387447037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6793332223282650832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 276158b158c1bf64e944dc16d882b953, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gemPrefab: {fileID: 6404256094005438249, guid: d0b19647d8b65a64a958b60fcebe851c, type: 3}
+--- !u!114 &3539154443248174962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6793332223282650832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fda960a564fff54d9d3eeb006798a2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particlesOnDeath: {fileID: 8671197636869436826, guid: db5dd49023f1aca4290ff3d570269b3d, type: 3}
 --- !u!1 &6793332223319399112
 GameObject:
   m_ObjectHideFlags: 0

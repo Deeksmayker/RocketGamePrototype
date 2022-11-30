@@ -17,6 +17,7 @@ public class PlayerHealth : MonoBehaviour, IGetCaught
     [HideInInspector] public UnityEvent GetCaughtEvent = new();
     [HideInInspector] public UnityEvent ReleasedCaughtEvent = new();
     [HideInInspector] public UnityEvent DamagedEvent = new();
+    [HideInInspector] public UnityEvent PlayerDiedEvent = new();
 
     private void Start()
     {
@@ -59,8 +60,14 @@ public class PlayerHealth : MonoBehaviour, IGetCaught
 
     public void TakeDamageOnRelease()
     {
+        Health--;
         DamagedEvent.Invoke();
-        Debug.Log("Damaged");
+
+        if (Health <= 0)
+        {
+            PlayerDiedEvent.Invoke();
+            Destroy(gameObject);
+        }
     }
 
     private void DisableShooting()

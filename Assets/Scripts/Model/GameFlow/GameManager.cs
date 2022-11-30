@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.Tilemaps;
 using System.Collections;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,11 +15,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] private CreateEnemiesManager createEnemiesManager;
     [SerializeField] private Material blinkMaterial;
 
+    [SerializeField] private float startCycleInterval;
+    [SerializeField] private float perCycleIntervalReduction;
+
     [Serializable]
     private struct TimeChangingObjects
     {
         public int timeToAppear;
         public List<Tilemap> tilemapsToAppear;
+        public bool needRain;
     }
 
     [Serializable]
@@ -28,10 +33,15 @@ public class GameManager : MonoBehaviour
         public int secondToSpawn;
     }
 
-    private float _platformCreationTime;
     private bool _isPlatformBlinking;
-    private float _platformRemovalTime;
     private Material _defaultMaterial;
+
+    private int _currentCycle;
+    private float _lastTimeCycleSpawnedEnemies;
+
+    [SerializeField] private ParticleSystem rainParticles;
+
+    //private Tilemap _currentTilemap;
 
     private enum Enemies
     {
@@ -49,8 +59,8 @@ public class GameManager : MonoBehaviour
 
         if (timeChangingObjects.Count != 0)
         {
-            _defaultMaterial = timeChangingObjects[0].tilemapsToAppear[0].GetComponent<Material>();
-            SetPlatformLifetime();
+            _defaultMaterial = timeChangingObjects[0].tilemapsToAppear[0].GetComponent<TilemapRenderer>().material;
+            timeChangingObjects[0].tilemapsToAppear[0].gameObject.SetActive(true);
         }
     }
 
@@ -60,23 +70,23 @@ public class GameManager : MonoBehaviour
 
         CheckPlatformCreation();
 
-        CheckEnemiesSpawn();
+        var isCycleTimePassed = (GameTime - _lastTimeCycleSpawnedEnemies) >= startCycleInterval - (_currentCycle * perCycleIntervalReduction);
+        if (_currentCycle == 0 || isCycleTimePassed)
+            CheckEnemiesSpawn();
     }
 
     private void CheckPlatformCreation()
     {
-        if (timeChangingObjects.Count == 0)
+        if (timeChangingObjects.Count <= 1)
             return;
-        switch (_platformRemovalTime - GameTime)
+        switch (timeChangingObjects[1].timeToAppear - GameTime)
         {
             case <= 5 when !_isPlatformBlinking:
                 _isPlatformBlinking = true;
                 StartCoroutine(MakePlatformBlink());
-                StopCoroutine(MakePlatformBlink());
                 break;
             case <= 0:
                 ChangePlatforms();
-                SetPlatformLifetime();
                 _isPlatformBlinking = false;
                 break;
         }
@@ -109,27 +119,18 @@ public class GameManager : MonoBehaviour
             }
         }
 
-
-        enemiesSpawnInfo.RemoveAt(0);
+        if (enemiesSpawnInfo.Count > 1)
+            enemiesSpawnInfo.RemoveAt(0);
+        else
+        {
+            _currentCycle++;
+            _lastTimeCycleSpawnedEnemies = GameTime;
+        }
     }
 
     private void UpdateGameTime()
     {
         GameTime += Time.deltaTime;
-    }
-
-    private void SetPlatformLifetime()
-    {
-        _platformCreationTime = GameTime;
-        _platformRemovalTime = _platformCreationTime + timeChangingObjects[0].timeToAppear;
-    }
-
-    private void RemoveCurrentPlatform()
-    {
-        if (timeChangingObjects[0].tilemapsToAppear.Count > 0)
-        {
-            timeChangingObjects[0].tilemapsToAppear.RemoveAt(0);
-        }
     }
 
     private void ChangeMaterial(Material material)
@@ -150,15 +151,20 @@ public class GameManager : MonoBehaviour
 
     private void ChangePlatforms()
     {
-        RemoveCurrentPlatform();
-        CreateNewPlatform();
-    }
+        timeChangingObjects[0].tilemapsToAppear[0].gameObject.SetActive(false);
+        timeChangingObjects.RemoveAt(0);
+        timeChangingObjects[0].tilemapsToAppear[0].gameObject.SetActive(true);
 
-    private void CreateNewPlatform()
-    {
-        if (timeChangingObjects[0].tilemapsToAppear.Count > 0)
+        if (timeChangingObjects[0].needRain)
         {
-            Instantiate(timeChangingObjects[0].tilemapsToAppear[0]);
+            rainParticles = Instantiate(rainParticles);
         }
+        
+        //_currentTilemap.GetComponent<TilemapRenderer>().material = _defaultMaterial;
+    }  
+
+    public void ReloadLevel()
+    {
+        SceneManager.LoadScene(0);
     }
 }
