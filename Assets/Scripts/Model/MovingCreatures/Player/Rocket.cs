@@ -18,7 +18,7 @@ namespace Player
         [SerializeField] private float maxLifeTime;
 
         [SerializeField] private float explodePower;
-        [SerializeField] private float explodeRadius;
+        public float explodeRadius;
 
         [SerializeField] private ParticleSystem explodeParticles;
 
@@ -95,20 +95,11 @@ namespace Player
         protected void MakeExplosion()
         {
             OnRocketExplosion.Invoke();
-            ChangeParticleRadius();
             var collidersInArea = Physics2D.OverlapCircleAll(transform.position, explodeRadius);
 
             PushObjectsInExplosionRange(collidersInArea);
 
             rocketMakedExplosion.Invoke();
-        }
-
-
-        private void ChangeParticleRadius()
-        {
-            var a = Instantiate(explodeParticles, transform.position, Quaternion.identity);
-            var b = a.shape;
-            b.radius = explodeRadius - 1;
         }
 
         private void PushObjectsInExplosionRange(Collider2D[] collidersInArea)

@@ -3,24 +3,25 @@ using UnityEngine;
 public class JumpDust : MonoBehaviour
 {
     [SerializeField] private ParticleSystem dustParticlePrefab;
+
+    [SerializeField] private float bounceDustDuration, wallBounceDustDuration, rocketJumpDustDuration;
     private BouncePlayerController _bouncePlayerController;
 
     private void Awake()
     {
         _bouncePlayerController = gameObject.GetComponent<BouncePlayerController>();
 
-        _bouncePlayerController.Bounced.AddListener(SpawnDustParticles);
-        _bouncePlayerController.WallBounced.AddListener(SpawnDustParticles);
+        _bouncePlayerController.Bounced.AddListener(() => SpawnDustParticles(bounceDustDuration));
+        _bouncePlayerController.WallBounced.AddListener(() => SpawnDustParticles(wallBounceDustDuration));
+        _bouncePlayerController.RocketJumped.AddListener(() => SpawnDustParticles(rocketJumpDustDuration));
     }
 
-    private void OnDisable()
+    private void SpawnDustParticles(float duration)
     {
-        _bouncePlayerController.Bounced.RemoveListener(SpawnDustParticles);
-        _bouncePlayerController.WallBounced.RemoveListener(SpawnDustParticles);
-    }
+        var dust = Instantiate(dustParticlePrefab, transform.position, Quaternion.identity, transform);
+        var mainDust = dust.main;
 
-    private void SpawnDustParticles()
-    {
-        Instantiate(dustParticlePrefab, transform.position, Quaternion.identity, transform);
+        mainDust.duration = duration;
+        dust.Play();
     }
 }
