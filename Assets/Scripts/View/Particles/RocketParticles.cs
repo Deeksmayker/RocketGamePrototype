@@ -1,18 +1,25 @@
 using Player;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RocketParticles : MonoBehaviour
 {
     [SerializeField] private ParticleSystem[] explosionParticles;
-
+    [SerializeField] private ParticleSystem rocketSmokeParticlePrefab;
+    [SerializeField] private float smokeParticleSpawnInterval;
+    [SerializeField] private float startTimeForSpawnSmoke = 0.025f;
     private Rocket _rocket;
 
     private void Awake()
     {
         _rocket = GetComponent<Rocket>();
         _rocket.rocketMakedExplosion.AddListener(Explode);
+
+        InvokeRepeating(nameof(SpawnRocketSmoke), startTimeForSpawnSmoke, smokeParticleSpawnInterval);
+    }
+
+    private void SpawnRocketSmoke()
+    {
+        Instantiate(rocketSmokeParticlePrefab, transform.position, Quaternion.identity);
     }
 
     public void Explode()
