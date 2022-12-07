@@ -173,3 +173,5 @@ MonoBehaviour:
   explosionParticles:
   - {fileID: 8249380662462926968, guid: ab545bdc715024648bc8ad1400277722, type: 3}
   - {fileID: 2051777783629050859, guid: a7694773960187f45b1e8d0fd9fe51c1, type: 3}
+  rocketSmokeParticlePrefab: {fileID: 8648011950201218027, guid: 3e2d1b5d29eb60d49af9731145a0a23b, type: 3}
+  smokeParticleSpawnInterval: 0.01
