@@ -15,6 +15,8 @@ public class SpiderWebManager : MonoBehaviour
 
     private SpiderMoving _spider;
 
+    [SerializeField] private ParticleSystem webParticles;
+
     public UnityEvent<SpiderWebSlower> WebCreated = new();
 
     private void Start()
@@ -25,6 +27,9 @@ public class SpiderWebManager : MonoBehaviour
     private List<Vector2> _points = new();
     public IEnumerator MakeWeb()
     {
+        Instantiate(webParticles, transform.position, Quaternion.identity);
+        yield break;
+
         _points = new();
         var lines = Instantiate(webPrefab, transform.position, Quaternion.identity);
         WebCreated.Invoke(lines.GetComponent<SpiderWebSlower>());

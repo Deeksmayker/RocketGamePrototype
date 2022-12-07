@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3528820262345603604}
   - component: {fileID: 6522430733176092826}
   - component: {fileID: 906594240022180127}
+  - component: {fileID: 694794921050387780}
   m_Layer: 12
   m_Name: BounceRocket
   m_TagString: Untagged
@@ -154,6 +155,24 @@ MonoBehaviour:
   explodePower: 50
   explodeRadius: 4
   explodeParticles: {fileID: 8249380662462926968, guid: 886ab73d0855f0347b1bf2aaffe8b493, type: 3}
-  rotationSpeed: 100
-  maxBouncesCount: 100
-  enemyDetectingRadius: 100
+  rocketMakedExplosion:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &694794921050387780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3352318943102481160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 858b1337f2cfea24db801f743fa124cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explosionParticles:
+  - {fileID: 8249380662462926968, guid: ab545bdc715024648bc8ad1400277722, type: 3}
+  - {fileID: 2051777783629050859, guid: a7694773960187f45b1e8d0fd9fe51c1, type: 3}
+  rocketSmokeParticlePrefab: {fileID: 8648011950201218027, guid: 3e2d1b5d29eb60d49af9731145a0a23b, type: 3}
+  smokeParticleSpawnInterval: 0.01
+  startTimeForSpawnSmoke: 0.025

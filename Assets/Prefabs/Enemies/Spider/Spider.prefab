@@ -435,6 +435,7 @@ MonoBehaviour:
   maxWebDistance: 13
   timeBetweenPlacingWeb: 0.2
   webPointsCount: 13
+  webParticles: {fileID: 5327472537406689025, guid: e1bddaac50d58524fb81a55c96573e26, type: 3}
   WebCreated:
     m_PersistentCalls:
       m_Calls: []
