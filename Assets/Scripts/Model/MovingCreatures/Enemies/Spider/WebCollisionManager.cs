@@ -31,14 +31,12 @@ public class WebCollisionManager : MonoBehaviour, IReactToExplosion
 
         for (var i = 0; i < intersectionCount; i++)
         {
-            Debug.Log(_collisionEvents[i].intersection);
             _webPointsPositions.Add(_collisionEvents[i].intersection);
         }
     }
 
     private void ConnectWebPointsWithColliders()
     {
-        Debug.Log(_webPointsPositions.Count);
         if (_webPointsPositions.Count < 2)
         {
             _collider.pathCount = 0;

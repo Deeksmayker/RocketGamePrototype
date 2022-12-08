@@ -293,7 +293,7 @@ public class BouncePlayerController : MonoBehaviour, ISlowable
         {
             if (Utils.CompareVectors(collision.GetContact(i).normal, Vector2.up))
             {
-                if (LastFrameVelocity.magnitude <= jumpVelocity / 1.5f)
+                if (LastFrameVelocity.magnitude <= jumpVelocity / 1.5f || _input.move.y < -0.4f)
                 {
                     AirState = AirStates.Grounded;
                     _velocity.y = 0;
@@ -311,7 +311,7 @@ public class BouncePlayerController : MonoBehaviour, ISlowable
 
             if (Utils.CompareVectors(collision.GetContact(i).normal, Vector2.right) || Utils.CompareVectors(collision.GetContact(i).normal, Vector2.left))
             {
-                if (AirState == AirStates.WallBouncing)
+                if (AirState == AirStates.WallBouncing || _input.move.x == 0 || _input.move.y < -0.4f)
                     return;
                 
                 AirState = AirStates.WallBouncing;

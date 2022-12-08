@@ -1,4 +1,5 @@
 using Player;
+using System.Collections;
 using UnityEngine;
 
 public class RocketParticles : MonoBehaviour
@@ -19,7 +20,12 @@ public class RocketParticles : MonoBehaviour
 
     private void SpawnRocketSmoke()
     {
-        Instantiate(rocketSmokeParticlePrefab, transform.position, Quaternion.identity);
+        if (!gameObject.activeSelf)
+            return;
+
+        var particle = ParticlesPool.Instance.RocketSmokePool.Get();
+        particle.transform.position = transform.position;
+        particle.GetComponent<ParticleToPoolReleaser>().pool = ParticlesPool.Instance.RocketSmokePool;
     }
 
     public void Explode()

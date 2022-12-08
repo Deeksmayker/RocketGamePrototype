@@ -1,8 +1,10 @@
 ﻿using Assets.Scripts.Model;
 using Assets.Scripts.Model.Interfaces;
 using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Pool;
 
 namespace Player
 {
@@ -20,7 +22,7 @@ namespace Player
         [SerializeField] private float explodePower;
         public float explodeRadius;
 
-        [SerializeField] private ParticleSystem explodeParticles;
+        private ObjectPool<Rocket> _pool;
 
         public static UnityEvent OnRocketExplosion = new();
         public UnityEvent rocketMakedExplosion = new();
@@ -89,6 +91,7 @@ namespace Player
 
         protected void Explode()
         {
+            MakeExplosion();
             Destroy(gameObject);
         }
 
@@ -106,6 +109,9 @@ namespace Player
         {
             foreach (var body in collidersInArea)
             {
+                if (body.gameObject == gameObject)
+                    continue;
+
                 DestructBodyIfNeed(body.gameObject);
 
                 if (body.GetComponent<Rigidbody2D>() == null)
@@ -119,12 +125,12 @@ namespace Player
                     continue;
                 }
 
-                if (body.GetComponent<PlayerController>() != null)
+                /*if (body.GetComponent<PlayerController>() != null)
                 {
                     body.GetComponent<Rigidbody2D>().velocity = direction.normalized * explodePower;
                     body.GetComponent<PlayerController>().RocketJump();
                     continue;
-                }
+                }*/
                 
                 body.GetComponent<Rigidbody2D>().AddForce(5 * explodePower * direction.normalized);
             }
@@ -145,11 +151,6 @@ namespace Player
         public virtual void TakeDamage()
         {
             Explode();
-        }
-
-        private void OnDestroy()
-        {
-            MakeExplosion();
         }
 
         public void SetLifeTime(float value)
