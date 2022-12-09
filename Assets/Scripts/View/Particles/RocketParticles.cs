@@ -1,5 +1,4 @@
 using Player;
-using System.Collections;
 using UnityEngine;
 
 public class RocketParticles : MonoBehaviour
