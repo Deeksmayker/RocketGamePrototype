@@ -69,7 +69,7 @@ public class AttackManager : MonoBehaviour, ICapture
 
         _capturedTarget = possibleTarget.GetComponents<MonoBehaviour>().OfType<IGetCaught>().FirstOrDefault();
 
-        if (_capturedTarget == default(IGetCaught))
+        if (_capturedTarget == default(IGetCaught) || !_capturedTarget.CanGetCaught())
             return;
 
         _capturedTarget.GetCaught();

@@ -148,4 +148,6 @@ public class FlyController : MonoBehaviour, ISpawnable, IReactToExplosion, ISlow
     {
         Destroy(gameObject);
     }
+
+    public bool CanGetCaught() => !_getCaught;
 }
