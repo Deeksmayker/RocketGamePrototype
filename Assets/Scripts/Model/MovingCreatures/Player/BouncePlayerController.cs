@@ -87,7 +87,7 @@ public class BouncePlayerController : MonoBehaviour, ISlowable
     [SerializeField] private float inWebVelocityDecelerationMultiplier;
 
     private bool _inWeb;
-    private bool _getCaught;
+    public bool GetCaught { get; private set; }
 
     private CollisionDetector _collisionDetector;
     private GameInputManager _input;
@@ -150,7 +150,7 @@ public class BouncePlayerController : MonoBehaviour, ISlowable
                 break;
         }
 
-        if (_getCaught)
+        if (GetCaught)
         {
             _velocity = Vector2.zero;
         }
@@ -365,7 +365,7 @@ public class BouncePlayerController : MonoBehaviour, ISlowable
 
     public void SetCaught(bool isGetCaught)
     {
-        _getCaught = isGetCaught;
+        GetCaught = isGetCaught;
     }
 
     public bool OnGround() => AirState == AirStates.Grounded;

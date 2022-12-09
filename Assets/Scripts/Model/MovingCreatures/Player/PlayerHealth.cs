@@ -8,8 +8,10 @@ public class PlayerHealth : MonoBehaviour, IGetCaught
     [field: SerializeField] public int Health { get; private set; }
 
     [SerializeField] private float timeForShootAfterGetCaught;
+    [SerializeField] private float invinsibilityAfterGetCaught;
 
     private bool _getCaught;
+    private bool _invinsible;
 
     private BouncePlayerController _playerController;
     private RocketLauncher _rocketLauncher;
@@ -56,6 +58,9 @@ public class PlayerHealth : MonoBehaviour, IGetCaught
         {
             _rocketLauncher.SetCaught(false);
         }
+
+        _invinsible = true;
+        Invoke(nameof(RemoveInvinsibility), invinsibilityAfterGetCaught);
     }
 
     public void TakeDamageOnRelease()
@@ -76,4 +81,11 @@ public class PlayerHealth : MonoBehaviour, IGetCaught
             return;
         _rocketLauncher.SetCaught(true);
     }
+
+    private void RemoveInvinsibility()
+    {
+        _invinsible = false;
+    }
+
+    public bool CanGetCaught() => !_playerController.GetCaught && !_invinsible;
 }
