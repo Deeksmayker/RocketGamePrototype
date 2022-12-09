@@ -223,6 +223,9 @@ public class BouncePlayerController : MonoBehaviour, ISlowable
             yield return null;
         }
 
+        if (AirState == AirStates.RocketJumping)
+            yield break;
+
         if (Mathf.Sign(_velocity.x) != Mathf.Sign(_input.move.x) || _input.move.x == 0)
             _velocity.x *= _input.move.x;
         _velocity.x *= perBounceSpeedMultiplier;
@@ -300,7 +303,7 @@ public class BouncePlayerController : MonoBehaviour, ISlowable
                     continue;
                 }
 
-                if (AirState == AirStates.Bouncing)
+                if (AirState == AirStates.Bouncing || AirState == AirStates.RocketJumping)
                     continue;
 
                 AirState = AirStates.Bouncing;

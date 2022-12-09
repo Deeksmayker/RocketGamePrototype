@@ -715,6 +715,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Health>k__BackingField: 3
   timeForShootAfterGetCaught: 0.5
+  invinsibilityAfterGetCaught: 2
   GetCaughtEvent:
     m_PersistentCalls:
       m_Calls: []

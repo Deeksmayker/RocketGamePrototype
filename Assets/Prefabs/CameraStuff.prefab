@@ -194,6 +194,7 @@ GameObject:
   - component: {fileID: 8900579288792748826}
   - component: {fileID: 8900579288792748901}
   - component: {fileID: 8900579288792748827}
+  - component: {fileID: 1309322096}
   m_Layer: 0
   m_Name: CM vcam1
   m_TagString: Untagged
@@ -243,7 +244,7 @@ MonoBehaviour:
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
-    ModeOverride: 0
+    ModeOverride: 1
     LensShift: {x: 0, y: 0}
     GateFit: 2
     m_SensorSize: {x: 1, y: 1}
@@ -270,6 +271,21 @@ MonoBehaviour:
   m_BoundingShape2D: {fileID: 8900579287950688123}
   m_Damping: 0.5
   m_MaxWindowSize: -1
+--- !u!114 &1309322096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8900579288792748900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5162e20322c467345b55194d2f70a268, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  camSizeOnPlayerGetCaught: 5
+  camSizeOnRain: 20
+  zoomSpeed: 0.1
 --- !u!1001 &6569906821462716410
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -329,7 +345,8 @@ PrefabInstance:
       propertyPath: m_OcclusionCulling
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3401075627349351752, guid: b47a23af3c22d5d45b64dcf4b60eb550, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: b47a23af3c22d5d45b64dcf4b60eb550, type: 3}
 --- !u!1 &8900579289080089126 stripped
 GameObject:
