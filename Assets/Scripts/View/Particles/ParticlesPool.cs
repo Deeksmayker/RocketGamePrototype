@@ -8,7 +8,7 @@ public class ParticlesPool : MonoBehaviour
     [SerializeField] private ParticleSystem rocketSmokeParticle;
 
     public ObjectPool<ParticleSystem> RocketSmokePool { get; private set; }
-
+    
     private void Start()
     {
         Instance = this;
@@ -20,13 +20,27 @@ public class ParticlesPool : MonoBehaviour
     {
         return new ObjectPool<ParticleSystem>(
             () => Instantiate(particlePrefab),
-            particle =>
-            {
-                particlePrefab.gameObject.SetActive(true);
-                particlePrefab.Play();
-            },
-            particle => particle.gameObject.SetActive(false),
-            Destroy,
+            OnGet,
+            OnRelease,
+            OnDestroy,
             false, defaultCount, maxCount);
+
+
+        void OnGet(ParticleSystem particle)
+        {
+            if (particle == null) return;
+
+            particle.gameObject.SetActive(true);
+            particle.Play();
+        }
+
+        void OnRelease(ParticleSystem particle)
+        {
+            particle.gameObject.SetActive(false);
+        }
+
+        void OnDestroy(ParticleSystem particle)
+        {
+        }
     }
 }
