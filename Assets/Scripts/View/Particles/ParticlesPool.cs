@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -18,17 +16,17 @@ public class ParticlesPool : MonoBehaviour
         RocketSmokePool = SetupParticlePool(rocketSmokeParticle, 20, 100);
     }
 
-    private ObjectPool<ParticleSystem> SetupParticlePool(ParticleSystem particle, int defaultCount, int maxCount)
+    private ObjectPool<ParticleSystem> SetupParticlePool(ParticleSystem particlePrefab, int defaultCount, int maxCount)
     {
         return new ObjectPool<ParticleSystem>(
-            () => Instantiate(particle),
+            () => Instantiate(particlePrefab),
             particle =>
             {
-                particle.gameObject.SetActive(true);
-                particle.Play();
+                particlePrefab.gameObject.SetActive(true);
+                particlePrefab.Play();
             },
             particle => particle.gameObject.SetActive(false),
-            particle => Destroy(particle.gameObject),
+            Destroy,
             false, defaultCount, maxCount);
     }
 }
