@@ -89,6 +89,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcee4f630e2dec24693f5edc0e46de3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  webDestroyingParticleSystem: {fileID: 1223626289517876027, guid: 3c13be5af6d16c744a926ce235f21efb, type: 3}
   collidersWidth: 1
   webParticles: {fileID: 5327472537406689025}
 --- !u!199 &5327472537406689024
@@ -3998,7 +3999,7 @@ ParticleSystem:
     subEmitters:
     - serializedVersion: 3
       emitter: {fileID: 0}
-      type: 0
+      type: 2
       properties: 0
       emitProbability: 1
   LightsModule:

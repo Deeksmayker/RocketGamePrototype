@@ -5742,7 +5742,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 14
-      m_TileSpriteIndex: 15
+      m_TileSpriteIndex: 14
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -5752,7 +5752,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 14
-      m_TileSpriteIndex: 15
+      m_TileSpriteIndex: 14
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -5762,7 +5762,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 14
-      m_TileSpriteIndex: 15
+      m_TileSpriteIndex: 14
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -5772,7 +5772,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 14
-      m_TileSpriteIndex: 15
+      m_TileSpriteIndex: 14
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -6212,7 +6212,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 14
-      m_TileSpriteIndex: 15
+      m_TileSpriteIndex: 14
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -6252,7 +6252,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 14
-      m_TileSpriteIndex: 15
+      m_TileSpriteIndex: 14
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -6322,7 +6322,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 14
-      m_TileSpriteIndex: 15
+      m_TileSpriteIndex: 14
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -6332,7 +6332,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 14
-      m_TileSpriteIndex: 15
+      m_TileSpriteIndex: 14
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -6342,7 +6342,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 14
-      m_TileSpriteIndex: 15
+      m_TileSpriteIndex: 14
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -10999,10 +10999,10 @@ Tilemap:
     m_Data: {fileID: 1081563402, guid: 489abb6893ec975458fe4cc7f295aab6, type: 3}
   - m_RefCount: 107
     m_Data: {fileID: -2116174962, guid: 489abb6893ec975458fe4cc7f295aab6, type: 3}
+  - m_RefCount: 9
+    m_Data: {fileID: 21300000, guid: a7d92d9c5646f8a43b461d29459d7279, type: 3}
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 9
-    m_Data: {fileID: 494879638, guid: 489abb6893ec975458fe4cc7f295aab6, type: 3}
   m_TileMatrixArray:
   - m_RefCount: 1056
     m_Data:
@@ -12719,25 +12719,6 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 0
   m_Loop: 0
---- !u!1 &921829244 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8900579288792748900, guid: 1e169e21f4b0ea049af2f1bdba98c955, type: 3}
-  m_PrefabInstance: {fileID: 284890865}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &921829246
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 921829244}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0166b0bf822a4f449a022be4a6ec6b61, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shakingForce: 2
-  shakingTime: 0.2
 --- !u!1 &1000266420
 GameObject:
   m_ObjectHideFlags: 0
@@ -13934,7 +13915,7 @@ PrefabInstance:
     - target: {fileID: 2330966300249325880, guid: 35e78089c2a39dd4a90552f16548b675, type: 3}
       propertyPath: m_TileSpriteArray.Array.data[0].m_Data
       value: 
-      objectReference: {fileID: 494879638, guid: 489abb6893ec975458fe4cc7f295aab6, type: 3}
+      objectReference: {fileID: 21300000, guid: a7d92d9c5646f8a43b461d29459d7279, type: 3}
     - target: {fileID: 2330966300249325880, guid: 35e78089c2a39dd4a90552f16548b675, type: 3}
       propertyPath: m_TileObjectToInstantiateArray.Array.data[0].m_Data
       value: 

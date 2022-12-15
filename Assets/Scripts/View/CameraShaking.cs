@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Cinemachine;
 using Player;
@@ -11,12 +12,20 @@ public class CameraShaking : MonoBehaviour
     private CinemachineVirtualCamera _virtualCamera;
     private CinemachineBasicMultiChannelPerlin _basicMultiChannelPerlin;
 
-    private void Start()
+    private void Awake()
     {
         _virtualCamera = GetComponent<CinemachineVirtualCamera>();
         _basicMultiChannelPerlin = _virtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+    }
 
+    private void Start()
+    {
         Rocket.OnRocketExplosion.AddListener(OnRocketExplosion);
+    }
+
+    private void OnDestroy()
+    {
+        Rocket.OnRocketExplosion.RemoveListener(OnRocketExplosion);
     }
 
     private void OnRocketExplosion()
