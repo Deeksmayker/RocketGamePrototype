@@ -1,10 +1,13 @@
 using UnityEngine;
+using UnityEngine.U2D;
 
 [RequireComponent(typeof(LineRenderer))]
 public class RocketLauncherView : MonoBehaviour
 {
     [SerializeField] private Transform rocketShootStartPoint;
     [SerializeField] private LayerMask layersToHit;
+
+    [SerializeField] private Light2DBase endLaserLight;
 
     private LineRenderer _lr;
 
@@ -25,6 +28,8 @@ public class RocketLauncherView : MonoBehaviour
 
         var hit = Physics2D.Raycast(rocketShootStartPoint.position, GetLookDirection(), 500f, layersToHit);
         _lr.SetPosition(1, hit.point);
+
+        endLaserLight.transform.position = hit.point;
     }
 
     public Vector2 GetLookDirection() => transform.right;

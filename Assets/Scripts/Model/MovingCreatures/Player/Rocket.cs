@@ -109,7 +109,7 @@ namespace Player
         {
             foreach (var body in collidersInArea)
             {
-                if (body.gameObject == gameObject)
+                if (body.TryGetComponent<Rocket>(out var r))
                     continue;
 
                 DestructBodyIfNeed(body.gameObject);
