@@ -7,6 +7,7 @@ using static UnityEngine.ParticleSystem;
 [RequireComponent(typeof(PolygonCollider2D))]
 public class WebCollisionManager : MonoBehaviour, IReactToExplosion
 {
+    [SerializeField] private ParticleSystem webDestroyingParticleSystem;
     [SerializeField] private float collidersWidth;
 
     private PolygonCollider2D _collider;
@@ -51,7 +52,7 @@ public class WebCollisionManager : MonoBehaviour, IReactToExplosion
             List<Vector2> currentPositions = new List<Vector2>
             {
                 _webPointsPositions[i],
-                _webPointsPositions[i+1]
+                _webPointsPositions[i + 1]
             };
 
             List<Vector2> currentColliderPoints = CalculateColliderPoints(currentPositions);
@@ -71,7 +72,8 @@ public class WebCollisionManager : MonoBehaviour, IReactToExplosion
         offsets[0] = new Vector2(-deltaX, deltaY);
         offsets[1] = new Vector2(deltaX, -deltaY);
 
-        List<Vector2> colliderPoints = new List<Vector2> {
+        List<Vector2> colliderPoints = new List<Vector2>
+        {
             positions[0] + offsets[0],
             positions[1] + offsets[0],
             positions[1] + offsets[1],
@@ -82,9 +84,9 @@ public class WebCollisionManager : MonoBehaviour, IReactToExplosion
     }
 
 
-
     public void TakeDamage()
     {
+        Instantiate(webDestroyingParticleSystem, gameObject.transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 }

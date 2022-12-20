@@ -23,6 +23,8 @@ public class RocketParticles : MonoBehaviour
             return;
 
         var particle = ParticlesPool.Instance.RocketSmokePool.Get();
+        if (particle == null) return;
+
         particle.transform.position = transform.position;
         particle.GetComponent<ParticleToPoolReleaser>().pool = ParticlesPool.Instance.RocketSmokePool;
     }

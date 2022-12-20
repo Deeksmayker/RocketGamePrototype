@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -10,7 +8,7 @@ public class ParticlesPool : MonoBehaviour
     [SerializeField] private ParticleSystem rocketSmokeParticle;
 
     public ObjectPool<ParticleSystem> RocketSmokePool { get; private set; }
-
+    
     private void Start()
     {
         Instance = this;
@@ -18,17 +16,31 @@ public class ParticlesPool : MonoBehaviour
         RocketSmokePool = SetupParticlePool(rocketSmokeParticle, 20, 100);
     }
 
-    private ObjectPool<ParticleSystem> SetupParticlePool(ParticleSystem particle, int defaultCount, int maxCount)
+    private ObjectPool<ParticleSystem> SetupParticlePool(ParticleSystem particlePrefab, int defaultCount, int maxCount)
     {
         return new ObjectPool<ParticleSystem>(
-            () => Instantiate(particle),
-            particle =>
-            {
-                particle.gameObject.SetActive(true);
-                particle.Play();
-            },
-            particle => particle.gameObject.SetActive(false),
-            particle => Destroy(particle.gameObject),
+            () => Instantiate(particlePrefab),
+            OnGet,
+            OnRelease,
+            OnDestroy,
             false, defaultCount, maxCount);
+
+
+        void OnGet(ParticleSystem particle)
+        {
+            if (particle == null) return;
+
+            particle.gameObject.SetActive(true);
+            particle.Play();
+        }
+
+        void OnRelease(ParticleSystem particle)
+        {
+            particle.gameObject.SetActive(false);
+        }
+
+        void OnDestroy(ParticleSystem particle)
+        {
+        }
     }
 }
