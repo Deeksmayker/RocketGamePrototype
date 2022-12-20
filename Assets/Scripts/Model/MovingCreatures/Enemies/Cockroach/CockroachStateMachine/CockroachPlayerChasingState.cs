@@ -29,7 +29,7 @@ namespace Model.MovingCreatures.Enemies.Cockroach.CockroachStateMachine
             _cockroach = (CockroachStateManager)manager;
         }
 
-        public void Update()
+        public void Update(float delta)
         {
             UpdateChaseVector();
 
@@ -39,7 +39,7 @@ namespace Model.MovingCreatures.Enemies.Cockroach.CockroachStateMachine
                 _timeAfterSetDirection = 0;
                 return;
             }
-            _timeAfterJump += Time.deltaTime;
+            _timeAfterJump += delta;
 
             UpdateDirectionRayHits();
 
@@ -54,7 +54,7 @@ namespace Model.MovingCreatures.Enemies.Cockroach.CockroachStateMachine
                 _timeAfterSetDirection = 0;
             }
 
-            _timeAfterSetDirection += Time.deltaTime;
+            _timeAfterSetDirection += delta;
         }
 
         private void UpdateChaseVector()

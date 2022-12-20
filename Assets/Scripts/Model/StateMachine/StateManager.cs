@@ -5,16 +5,27 @@ namespace DefaultNamespace.StateMachine
     public abstract class StateManager : MonoBehaviour
     {
         public IState CurrentState;
-        
+
+        [SerializeField] private int checksPerSecond = 20;
+        private float _tickRate;
+        private float _tickTimer;
+
         public void SetState(IState newState)
         {
+            _tickRate = 1f / checksPerSecond;
             CurrentState = newState;
             newState.Enter(this);
         }
 
         protected virtual void Update()
         {
-            CurrentState.Update();
+            _tickTimer += Time.deltaTime;
+
+            if (_tickTimer > _tickRate)
+            {
+                CurrentState.Update(_tickTimer);
+                _tickTimer = 0f;
+            }
         }
     }
 }

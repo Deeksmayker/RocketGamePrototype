@@ -22,7 +22,7 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Spider.SpiderStateMachine
             _spider.SetSpeed(_spider.flyChasingStateSpeed);
         }
 
-        public void Update()
+        public void Update(float delta)
         {
             if (_spider.Jumping())
             {
@@ -31,8 +31,8 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Spider.SpiderStateMachine
                 return;
             }
 
-            _timeAfterChangingDirection += Time.deltaTime;
-            _timeAfterJump += Time.deltaTime;
+            _timeAfterChangingDirection += delta;
+            _timeAfterJump += delta;
 
             if (_timeAfterChangingDirection >= _spider.changeDirectionDelay)
             {
@@ -44,7 +44,7 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Spider.SpiderStateMachine
                 CalculateJumpPossibility();
             if (_needToJumpUp)
             {
-                _upJumpDelayTimer += Time.deltaTime;
+                _upJumpDelayTimer += delta;
                 if (_upJumpDelayTimer >= 0.3f)
                 {
                     _spider.Jump(Vector2.up, _spider.jumpForce * 3);

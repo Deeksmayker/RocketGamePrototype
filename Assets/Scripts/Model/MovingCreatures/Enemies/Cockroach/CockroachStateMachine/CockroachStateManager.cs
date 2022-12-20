@@ -29,7 +29,6 @@ namespace Model.MovingCreatures.Enemies.Cockroach.CockroachStateMachine
         public float detectingPlayerRadius;
         public float timeToChooseDirection;
 
-
         public SpawnEgg cockroachEgg;
 
         private void Awake()

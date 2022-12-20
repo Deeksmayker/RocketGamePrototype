@@ -30,7 +30,7 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
             _isSetUpMoveDirection = true;
         }
 
-        public void Update()
+        public void Update(float delta)
         {
             if (_spider.Jumping())
             {
@@ -38,7 +38,7 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
                 _isSetUpMoveDirection = false;
                 return;
             }
-            _timePassedFromJump += Time.deltaTime;
+            _timePassedFromJump += delta;
 
             if (!_isSetUpMoveDirection)
             {
@@ -58,7 +58,7 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
 
             if (_needToJumpUp)
             {
-                _upJumpDelayTimer += Time.deltaTime;
+                _upJumpDelayTimer += delta;
                 if (_upJumpDelayTimer >= 0.3f)
                 {
                     _spider.Jump(Vector2.up, _spider.jumpForce * 3);
@@ -68,7 +68,7 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
 
             if (_needToMakeWeb)
             {
-                _makeWebDelayTimer += Time.deltaTime;
+                _makeWebDelayTimer += delta;
                 if (_makeWebDelayTimer >= 0.4f)
                 {
                     _spider.MakeWeb();
