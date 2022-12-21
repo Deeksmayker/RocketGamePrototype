@@ -169,8 +169,8 @@ public class BouncePlayerController : MonoBehaviour, ISlowable
         if (Mathf.Abs(_rb.velocity.x) > 3 && Mathf.Sign(_velocity.x) != Mathf.Sign(targetSpeed))
             targetSpeed = 0;
 
-        if (AirState != AirStates.Grounded)
-            targetSpeed /= 1.5f;
+        /*if (AirState != AirStates.Grounded)
+            targetSpeed /= 1.5f;*/
 
         var accelRate = Mathf.Sign(_velocity.x) == Mathf.Sign(targetSpeed) && targetSpeed != 0
             ? walkAcceleration
@@ -291,7 +291,6 @@ public class BouncePlayerController : MonoBehaviour, ISlowable
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        
         for (var i = 0; i < collision.contactCount; i++)
         {
             if (Utils.CompareVectors(collision.GetContact(i).normal, Vector2.up))

@@ -29,7 +29,7 @@ public class RocketLauncherView : MonoBehaviour
         var hit = Physics2D.Raycast(rocketShootStartPoint.position, GetLookDirection(), 500f, layersToHit);
         _lr.SetPosition(1, hit.point);
 
-        endLaserLight.transform.position = hit.point;
+        //endLaserLight.transform.position = hit.point;
     }
 
     public Vector2 GetLookDirection() => transform.right;
