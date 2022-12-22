@@ -20,7 +20,7 @@ namespace Player
         private bool _isNextRocketShrapnel;
         private bool _getCaught;
 
-        private Vector2 _currentAimDirection;
+        //private Vector2 _currentAimDirection;
 
         private GameInputManager _input;
         private Rocket _currentRocket;
@@ -65,17 +65,14 @@ namespace Player
 
         private void TurnLauncherOnMouse()
         {
-            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(_input.mousePosition);
-            _currentAimDirection = (mousePosition - transform.position).normalized;
-
-            var angle = Mathf.Atan2(_currentAimDirection.y, _currentAimDirection.x) * Mathf.Rad2Deg;
+            var angle = Mathf.Atan2(_input.aimDirection.y, _input.aimDirection.x) * Mathf.Rad2Deg;
             rocketLauncherPivotPoint.transform.eulerAngles = new Vector3(0, 0, angle);
         }
 
         private void Shoot()
         {
             var newRocket = Instantiate(_currentRocket, rocketStartPoint.position, Quaternion.identity);
-            newRocket.SetDirection(_currentAimDirection);
+            newRocket.SetDirection(_input.aimDirection);
 
             if (_isNextRocketShrapnel)
             {

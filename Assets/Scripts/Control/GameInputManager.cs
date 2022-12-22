@@ -10,6 +10,8 @@ namespace Player
         public bool jump;
         public bool shoot;
 
+        public bool firstAbility, secondAbility, thirdAbility;
+
         public void OnMove(InputValue value)
         {
             MoveInput(value.Get<Vector2>());
