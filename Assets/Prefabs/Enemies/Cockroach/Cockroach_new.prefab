@@ -889,6 +889,7 @@ GameObject:
   - component: {fileID: 3637058042915326560}
   - component: {fileID: 6002032491539718672}
   - component: {fileID: 6588067924321409436}
+  - component: {fileID: 4044350193069340716}
   m_Layer: 8
   m_Name: Cockroach_new
   m_TagString: Untagged
@@ -974,6 +975,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d18030b3fe296140af5115414f4081b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  checksPerSecond: 20
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -1081,6 +1083,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particlesOnDeath: {fileID: 8671197636869436826, guid: db5dd49023f1aca4290ff3d570269b3d, type: 3}
+--- !u!114 &4044350193069340716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 273867459368678798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ddfc68bd2921d048bfdc254896032f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bottomPosToCheckBelow: 15
+  upPosToTeleport: 90
+  delta: 1
+  maxTimeToBeBelow: 10
 --- !u!1 &273867459370573159
 GameObject:
   m_ObjectHideFlags: 0

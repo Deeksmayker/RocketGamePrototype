@@ -271,6 +271,7 @@ GameObject:
   - component: {fileID: 86733080318625914}
   - component: {fileID: -2703300341387447037}
   - component: {fileID: 3539154443248174962}
+  - component: {fileID: -2860197587894845972}
   m_Layer: 8
   m_Name: Spider
   m_TagString: Untagged
@@ -345,6 +346,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1daf6adcd76e484ea65b5c3853e436ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  checksPerSecond: 20
   PlayerLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -491,6 +493,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particlesOnDeath: {fileID: 8671197636869436826, guid: db5dd49023f1aca4290ff3d570269b3d, type: 3}
+--- !u!114 &-2860197587894845972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6793332223282650832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ddfc68bd2921d048bfdc254896032f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bottomPosToCheckBelow: 0
+  upPosToTeleport: 90
+  delta: 1
+  maxTimeToBeBelow: 10
 --- !u!1 &6793332223319399112
 GameObject:
   m_ObjectHideFlags: 0
