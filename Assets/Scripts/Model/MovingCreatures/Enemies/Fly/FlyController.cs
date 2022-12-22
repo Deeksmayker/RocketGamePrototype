@@ -4,7 +4,7 @@ using Assets.Scripts.Model.MovingCreatures.Enemies;
 using System.Collections;
 using UnityEngine;
 
-public class FlyController : MonoBehaviour, ISpawnable, IDestructable, ISlowable
+public class FlyController : MonoBehaviour, ISpawnable, IReactToExplosion, ISlowable, IGetCaught
 {
     [Header("Jerking")]
     [SerializeField] private float minTimeBeforeJerk;
@@ -27,6 +27,7 @@ public class FlyController : MonoBehaviour, ISpawnable, IDestructable, ISlowable
     private bool _needToStop;
     private bool _calculatingJerkDirection;
     private bool _jerking;
+    private bool _getCaught;
 
     private void Awake()
     {
@@ -37,6 +38,12 @@ public class FlyController : MonoBehaviour, ISpawnable, IDestructable, ISlowable
 
     private void FixedUpdate()
     {
+        if (_getCaught)
+        {
+            _rb.velocity = Vector2.zero;
+            return; 
+        }
+
         if (_needToStop)
         {
             _rb.velocity = Vector2.Lerp(_rb.velocity, Vector2.zero, Time.fixedDeltaTime * 2);
@@ -111,7 +118,7 @@ public class FlyController : MonoBehaviour, ISpawnable, IDestructable, ISlowable
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.GetComponent<PlayerController>())
+        if (collision.gameObject.GetComponent<BouncePlayerController>())
         {
             TakeDamage();
         }
@@ -126,4 +133,21 @@ public class FlyController : MonoBehaviour, ISpawnable, IDestructable, ISlowable
     {
         _needToStop = slow;
     }
+
+    public void GetCaught()
+    {
+        _getCaught = true;
+    }
+
+    public void ReleaseCaught()
+    {
+        _getCaught = false;
+    }
+
+    public void TakeDamageOnRelease()
+    {
+        Destroy(gameObject);
+    }
+
+    public bool CanGetCaught() => !_getCaught;
 }

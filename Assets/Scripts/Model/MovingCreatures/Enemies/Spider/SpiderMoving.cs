@@ -1,11 +1,13 @@
+using System;
 using Assets.Scripts.Model;
+using Assets.Scripts.Model.Interfaces;
 using Assets.Scripts.Model.MovingCreatures.Enemies;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class SpiderMoving : MonoBehaviour
+public class SpiderMoving : MonoBehaviour, IStopMoving
 {
     public LayerMask groundLayer;
     public float movingSpeed;
@@ -14,6 +16,9 @@ public class SpiderMoving : MonoBehaviour
     [SerializeField] private float rotationSpeed;
     [SerializeField] private float gravityMultuplier;
     [SerializeField] private float checkWallDistance;
+    
+    [HideInInspector] public UnityEvent OnStartKillFly = new();
+    [HideInInspector] public UnityEvent OnStopKillFly = new();
 
     private int _moveDirection;
     public int MoveDirection
@@ -28,7 +33,6 @@ public class SpiderMoving : MonoBehaviour
     }
     public bool Jumping { get; private set; }
     public Vector2 Upward { get; private set; }
-
 
     private Vector2 _moveVector;
     private Vector2 _velocity;
@@ -50,6 +54,15 @@ public class SpiderMoving : MonoBehaviour
         _collisionDetector = GetComponent<SpiderCollisionDetector>();
 
         Upward = GetClosestSurfaceNormal();
+    }
+
+    private void Start()
+    {
+        if (TryGetComponent<AttackManager>(out var attack))
+        {
+            attack.enemyCaptured.AddListener(StartPullingLegsOnCapturePoint);
+            attack.enemyKilled.AddListener(StopPullingLegsOnCapturePoint);
+        }
     }
 
     private void FixedUpdate()
@@ -88,6 +101,17 @@ public class SpiderMoving : MonoBehaviour
 
         _rb.velocity = _velocity;
     }
+    
+    private void StopPullingLegsOnCapturePoint()
+    {
+        OnStopKillFly.Invoke();
+    }
+
+    private void StartPullingLegsOnCapturePoint()
+    {
+        OnStartKillFly.Invoke();
+    }
+
 
     private void Walk()
     {
@@ -210,5 +234,15 @@ public class SpiderMoving : MonoBehaviour
         rays.Sort((a, b) => a.distance.CompareTo(b.distance));
 
         return rays[0].normal;
+    }
+
+    public void StopMoving()
+    {
+        _canMove = false;
+    }
+
+    public void ResumeMoving()
+    {
+        _canMove = true;
     }
 }

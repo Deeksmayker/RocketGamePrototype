@@ -2,38 +2,57 @@ using Assets.Scripts.Model;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
 
-[RequireComponent(typeof(PolygonCollider2D), typeof(LineRenderer))]
-public class WebCollisionManager : MonoBehaviour, IDestructable
+[RequireComponent(typeof(PolygonCollider2D))]
+public class WebCollisionManager : MonoBehaviour, IReactToExplosion
 {
-    private LineRenderer _lr;
+    [SerializeField] private ParticleSystem webDestroyingParticleSystem;
+    [SerializeField] private float collidersWidth;
+
     private PolygonCollider2D _collider;
+    [SerializeField] private ParticleSystem webParticles;
+
+    private List<ParticleCollisionEvent> _collisionEvents = new List<ParticleCollisionEvent>();
+
+    private List<Vector3> _webPointsPositions = new();
 
     private void Awake()
     {
-        _lr = GetComponent<LineRenderer>();
         _collider = GetComponent<PolygonCollider2D>();
+
+        Invoke(nameof(ConnectWebPointsWithColliders), 2);
     }
 
-    private void LateUpdate()
+    private void OnParticleCollision(GameObject other)
     {
-        var positions = GetLinePositions();
+        ParticlePhysicsExtensions.GetCollisionEvents(webParticles, other, _collisionEvents);
 
-        if (positions.Length < 2)
+        var intersectionCount = _collisionEvents.Count;
+
+        for (var i = 0; i < intersectionCount; i++)
+        {
+            _webPointsPositions.Add(_collisionEvents[i].intersection);
+        }
+    }
+
+    private void ConnectWebPointsWithColliders()
+    {
+        if (_webPointsPositions.Count < 2)
         {
             _collider.pathCount = 0;
             return;
         }
 
-        var linesCount = positions.Length - 1;
+        var linesCount = _webPointsPositions.Count - 1;
         _collider.pathCount = linesCount;
 
         for (var i = 0; i < linesCount; i++)
         {
             List<Vector2> currentPositions = new List<Vector2>
             {
-                positions[i],
-                positions[i+1]
+                _webPointsPositions[i],
+                _webPointsPositions[i + 1]
             };
 
             List<Vector2> currentColliderPoints = CalculateColliderPoints(currentPositions);
@@ -43,7 +62,7 @@ public class WebCollisionManager : MonoBehaviour, IDestructable
 
     private List<Vector2> CalculateColliderPoints(List<Vector2> positions)
     {
-        var width = _lr.startWidth;
+        var width = collidersWidth;
 
         float m = (positions[1].y - positions[0].y) / (positions[1].x - positions[0].x);
         float deltaX = (width / 2f) * (m / Mathf.Pow(m * m + 1, 0.5f));
@@ -53,7 +72,8 @@ public class WebCollisionManager : MonoBehaviour, IDestructable
         offsets[0] = new Vector2(-deltaX, deltaY);
         offsets[1] = new Vector2(deltaX, -deltaY);
 
-        List<Vector2> colliderPoints = new List<Vector2> {
+        List<Vector2> colliderPoints = new List<Vector2>
+        {
             positions[0] + offsets[0],
             positions[1] + offsets[0],
             positions[1] + offsets[1],
@@ -63,15 +83,10 @@ public class WebCollisionManager : MonoBehaviour, IDestructable
         return colliderPoints;
     }
 
-    public Vector3[] GetLinePositions()
-    {
-        Vector3[] positions = new Vector3[_lr.positionCount];
-        _lr.GetPositions(positions);
-        return positions;
-    }
 
     public void TakeDamage()
     {
+        Instantiate(webDestroyingParticleSystem, gameObject.transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 }

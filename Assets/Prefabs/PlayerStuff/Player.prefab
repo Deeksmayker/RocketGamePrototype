@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 890357417394158872}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.512, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 0.2972112, z: 1}
+  m_LocalScale: {x: 1, y: 0.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 890357418188273164}
@@ -277,11 +277,17 @@ GameObject:
   - component: {fileID: 890357418586667387}
   - component: {fileID: 890357418586667389}
   - component: {fileID: 890357418586667388}
-  - component: {fileID: 890357418586667377}
+  - component: {fileID: 1036072211}
   - component: {fileID: 890357418586667378}
   - component: {fileID: 890357418586667379}
   - component: {fileID: 890357418586667390}
   - component: {fileID: 890357418586667391}
+  - component: {fileID: 890357418226770067}
+  - component: {fileID: 890357418226770068}
+  - component: {fileID: 890357418226770069}
+  - component: {fileID: 890357418226770080}
+  - component: {fileID: 890357418226770071}
+  - component: {fileID: 1342712539}
   m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
@@ -371,8 +377,8 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_AngularDrag: 0
+  m_GravityScale: 0
   m_Material: {fileID: 6200000, guid: eaf6b7a123aa55a469d19375a20aada0, type: 2}
   m_Interpolate: 1
   m_SleepingMode: 1
@@ -404,7 +410,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &890357418586667377
+--- !u!114 &1036072211
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -413,31 +419,113 @@ MonoBehaviour:
   m_GameObject: {fileID: 890357418586667384}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aeb9831ce250c83438d204338caef3f5, type: 3}
+  m_Script: {fileID: 11500000, guid: 88b8393e9bdaf1f43a8940f3323ae7fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkTargetSpeed: 15
-  acceleration: 0.3
-  deceleration: 0.3
-  jumpForce: 25
-  fallMultiplier: 3
-  airAcceleration: 0.1
-  airDeceleration: 0.1
-  jumpUpDeceleration: 0.13
-  airOverSpeedDeceleration: 0.03
-  inWebVelocityDeceleration: 0.5
-  maxWallSlideDownSpeed: 0
-  wallSlideUpDeceleration: 0
-  wallSlideDownAcceleration: 0.2
-  wallJumpMovementEffectDuration: 0.4
-  rocketJumpDeceleration: 0.05
-  onJump:
+  maxWalkSpeed: 20
+  walkAcceleration: 0.2
+  walkDeceleration: 1.5
+  jumpingCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.00020883756
+      value: 1.000012
+      inSlope: -1.4741616
+      outSlope: -1.4741616
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.23180713
+      value: 0.657983
+      inSlope: -1.3563334
+      outSlope: -1.3563334
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.2811469
+    - serializedVersion: 3
+      time: 0.53389716
+      value: 0.2210167
+      inSlope: -0.6128586
+      outSlope: -0.6128586
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.13780904
+    - serializedVersion: 3
+      time: 1
+      value: -0.00042951107
+      inSlope: -0.47510162
+      outSlope: -0.47510162
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  jumpVelocity: 20
+  jumpDuration: 0.5
+  rocketJumpCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -1.2107753
+      outSlope: -1.2107753
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.43113416
+      value: 0.47799343
+      inSlope: -0.082296476
+      outSlope: -0.082296476
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.1018603
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.84025687
+      outSlope: -0.84025687
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  rocketJumpPower: 50
+  rocketJumpDuration: 0.7
+  maxRocketJumpHorizontalVelocity: 40
+  maxFallingSpeed: 100
+  fallingAcceleration: 5
+  perBounceSpeedMultiplier: 1.2
+  stickGroundTime: 0.05
+  minMagnitudeForWallBounce: 50
+  stickWallTime: 0.05
+  wallBounceDirection: {x: 1, y: 3}
+  inWebVelocityDecelerationMultiplier: 35
+  Jumped:
     m_PersistentCalls:
       m_Calls: []
-  onWallJump:
+  Bounced:
     m_PersistentCalls:
       m_Calls: []
-  onRocketJump:
+  WallBounced:
+    m_PersistentCalls:
+      m_Calls: []
+  Landed:
+    m_PersistentCalls:
+      m_Calls: []
+  RocketJumped:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &890357418586667378
@@ -461,7 +549,7 @@ MonoBehaviour:
   onLeftWall: 0
   wallSide: 0
   collisionRadius: 0.5
-  bottomOffset: {x: 0, y: -0.3}
+  bottomOffset: {x: 0, y: -0.2}
   rightOffset: {x: 0.2, y: 0}
   leftOffset: {x: -0.2, y: 0}
 --- !u!114 &890357418586667379
@@ -476,10 +564,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 983d81fdbdbc430db32144d72f1fd786, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rocket: {fileID: 3352318943102481160, guid: 529a7b5fffa26394ca1c115dd11430b3, type: 3}
+  rocket: {fileID: 2827495425681577453, guid: 529a7b5fffa26394ca1c115dd11430b3, type: 3}
+  bounceRocket: {fileID: 906594240022180127, guid: 6f794522845091340aaaa0321952787a, type: 3}
+  shrapnelRocketPrefab: {fileID: 2514745307976798272, guid: e6a8c58625effc3469b096511d179240, type: 3}
   rocketStartPoint: {fileID: 890357418135115138}
   rocketLauncherPivotPoint: {fileID: 890357418188273165}
   shootCooldown: 0.5
+  shootPerformed:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &890357418586667390
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -496,6 +589,9 @@ MonoBehaviour:
   move: {x: 0, y: 0}
   jump: 0
   shoot: 0
+  firstAbility: 0
+  secondAbility: 0
+  thirdAbility: 0
 --- !u!114 &890357418586667391
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -526,3 +622,125 @@ MonoBehaviour:
   m_DefaultActionMap: PlayerInput
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &890357418226770067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 890357418586667384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 551ea91b9ca88c74da9946cca6b7ec02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <GemCount>k__BackingField: 0
+  gemTaken:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &890357418226770068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 890357418586667384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa0b569b42276c84c85f03da3dd8585a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <GemCost>k__BackingField: 0
+  duration: 2
+  abilityCasted:
+    m_PersistentCalls:
+      m_Calls: []
+  abilityEnded:
+    m_PersistentCalls:
+      m_Calls: []
+  slowTimeScale: 0.5
+  slowingTimeDuration: 1
+  speedMultiplier: 2
+--- !u!114 &890357418226770069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 890357418586667384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e2a3ce14c5510c4ca6825a3b1bd86a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <GemCost>k__BackingField: 0
+  duration: 3
+  abilityCasted:
+    m_PersistentCalls:
+      m_Calls: []
+  abilityEnded:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &890357418226770080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 890357418586667384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d230463762a0e72458310e3c2b6bdf87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <GemCost>k__BackingField: 0
+  duration: 4
+  abilityCasted:
+    m_PersistentCalls:
+      m_Calls: []
+  abilityEnded:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &890357418226770071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 890357418586667384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d7998885e25cb94dabca7faebd51057, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Health>k__BackingField: 3
+  timeForShootAfterGetCaught: 0.5
+  invinsibilityAfterGetCaught: 2
+  GetCaughtEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  ReleasedCaughtEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  DamagedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  PlayerDiedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1342712539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 890357418586667384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12442cae6dcc2e245a9d5d582c5cc356, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dustParticlePrefab: {fileID: 3342279075827168431, guid: df9db75d667279e4b9bccf59ebdb37af, type: 3}
+  bounceDustDuration: 0.5
+  wallBounceDustDuration: 0.8
+  rocketJumpDustDuration: 1.5

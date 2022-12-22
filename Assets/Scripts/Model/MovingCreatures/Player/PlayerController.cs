@@ -9,8 +9,11 @@ using UnityEngine.Events;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour, ISlowable
 {
+    public static Vector2 PlayerPosition;
+
     [Header("Movement on ground")]
     public float walkTargetSpeed;
+    public float OriginalWalkSpeed { get; private set; }
     [Range(0, 1)] [SerializeField] private float acceleration;
     [Range(0, 1)] [SerializeField] private float deceleration;
 
@@ -55,10 +58,13 @@ public class PlayerController : MonoBehaviour, ISlowable
         _input = GetComponent<GameInputManager>();
         _rb = GetComponent<Rigidbody2D>();
         _collisionDetector = GetComponent<CollisionDetector>();
+        OriginalWalkSpeed = walkTargetSpeed;
     }
 
     private void Update()
     {
+        PlayerPosition = transform.position;
+
         if (_rb.velocity.y < 0)
         {
             IsJumping = false;
@@ -184,5 +190,10 @@ public class PlayerController : MonoBehaviour, ISlowable
     public void Slow(bool isSlow)
     {
         _inSpiderWeb = isSlow;
+    }
+
+    public void SetWalkSpeed(float value)
+    {
+        walkTargetSpeed = value;
     }
 }

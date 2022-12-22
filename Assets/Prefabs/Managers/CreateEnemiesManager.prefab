@@ -44,5 +44,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16688b3427538dd4a83a1eda96de027d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemiesPrefabs: []
-  creatingEnemies: []
+  spiderPrefab: {fileID: 6341571826258908204, guid: 19fd15163ca92154fb00fba3ae894495, type: 3}
+  cockroachSpawnerPrefab: {fileID: 0}
+  flySpawnerPrefab: {fileID: 0}
+  leftUpArenaCorner: {fileID: 0}
+  rightDownArenaCorner: {fileID: 0}
+  randomRayHitsCount: 0
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  spawnerLayer:
+    serializedVersion: 2
+    m_Bits: 0

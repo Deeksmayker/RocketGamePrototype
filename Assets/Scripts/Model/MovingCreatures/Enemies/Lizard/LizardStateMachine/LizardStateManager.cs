@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
 {
     [RequireComponent(typeof(LizardMoving))]
-    public class LizardStateManager : StateManager, ISpawnable, IDestructable
+    public class LizardStateManager : StateManager, ISpawnable, IReactToExplosion
     {
         private LizardMoving _lizardMoving;
 

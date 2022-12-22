@@ -32,7 +32,7 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
             _lizard = (LizardStateManager)manager;
         }
 
-        public void Update()
+        public void Update(float delta)
         {
             if (_lizard.Jumping())
             {
@@ -40,7 +40,7 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
                 _timeAfterSetDirection = 0;
                 return;
             }
-            _timeAfterJump += Time.deltaTime;
+            _timeAfterJump += delta;
 
             UpdateChaseVector();
             UpdateDirectionRayHits();
@@ -56,7 +56,7 @@ namespace Assets.Scripts.Model.MovingCreatures.Enemies.Lizard.LizardStateMachine
                 _timeAfterSetDirection = 0;
             }
 
-            _timeAfterSetDirection += Time.deltaTime;
+            _timeAfterSetDirection += delta;
         }
 
         private void UpdateChaseVector()
