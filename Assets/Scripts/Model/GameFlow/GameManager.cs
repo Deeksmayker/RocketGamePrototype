@@ -38,6 +38,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        Application.targetFrameRate = 500;
+
         if (enemiesSpawnInfo.Count != 0)
         {
             enemiesSpawnInfo.OrderBy(time => time.secondToSpawn);
