@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Assets.Scripts.Model;
 using Assets.Scripts.Model.MovingCreatures.Enemies;
 using DefaultNamespace.StateMachine;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Model.MovingCreatures.Enemies.Cockroach.CockroachStateMachine
 {
@@ -102,7 +104,7 @@ namespace Model.MovingCreatures.Enemies.Cockroach.CockroachStateMachine
 
         public void TakeDamage()
         {
-            Destroy(gameObject);
+            TakeDamageEvent.Invoke();
         }
     }
 }

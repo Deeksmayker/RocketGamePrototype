@@ -40,13 +40,13 @@ public class CockroachMoving : MonoBehaviour, IStopMoving
     private int _collisionsCount;
     private bool _canMove = true;
 
-    [HideInInspector] public UnityEvent OnJumpStarted = new();
-    [HideInInspector] public UnityEvent OnLandedAfterJump = new();
-    [HideInInspector] public UnityEvent OnLanded = new();
-    [HideInInspector] public UnityEvent OnWallJumped = new();
+    [NonSerialized] public UnityEvent OnJumpStarted = new();
+    [NonSerialized] public UnityEvent OnLandedAfterJump = new();
+    [NonSerialized] public UnityEvent OnLanded = new();
+    [NonSerialized] public UnityEvent OnWallJumped = new();
     
-    [HideInInspector] public UnityEvent OnStartKillFly = new();
-    [HideInInspector] public UnityEvent OnStopKillFly = new();
+    [NonSerialized] public UnityEvent OnStartKillFly = new();
+    [NonSerialized] public UnityEvent OnStopKillFly = new();
 
     private void Awake()
     {

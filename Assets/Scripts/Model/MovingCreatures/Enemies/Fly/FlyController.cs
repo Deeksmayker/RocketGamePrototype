@@ -1,8 +1,11 @@
 using Assets.Scripts.Model;
 using Assets.Scripts.Model.Interfaces;
 using Assets.Scripts.Model.MovingCreatures.Enemies;
+using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
+using Random = UnityEngine.Random;
 
 public class FlyController : MonoBehaviour, ISpawnable, IReactToExplosion, ISlowable, IGetCaught
 {
@@ -28,6 +31,8 @@ public class FlyController : MonoBehaviour, ISpawnable, IReactToExplosion, ISlow
     private bool _calculatingJerkDirection;
     private bool _jerking;
     private bool _getCaught;
+
+    [NonSerialized] public UnityEvent TakeDamageEvent = new();
 
     private void Awake()
     {
@@ -126,7 +131,7 @@ public class FlyController : MonoBehaviour, ISpawnable, IReactToExplosion, ISlow
 
     public void TakeDamage()
     {
-        Destroy(gameObject);
+        TakeDamageEvent.Invoke();
     }
 
     public void Slow(bool slow)

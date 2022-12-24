@@ -2,6 +2,7 @@ using Assets.Scripts.Model.Interfaces;
 using Player;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class Gem : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class Gem : MonoBehaviour
 
     [HideInInspector] public Rigidbody2D Rb;
 
+    public static ObjectPool<Gem> GemPool;
+
     private Vector2 _vectorToPlayer;
 
     private void Awake()
@@ -19,6 +22,20 @@ public class Gem : MonoBehaviour
         Rb = GetComponent<Rigidbody2D>();
 
         RocketLauncher.GlobalShootPreformed.AddListener(RepulseGem);
+
+        if (GemPool is default(ObjectPool<Gem>))
+        {
+            GemPool = new ObjectPool<Gem>
+                (
+                    () => Instantiate(this),
+                    (gem) => gem.gameObject.SetActive(true),
+                    (gem) => gem.gameObject.SetActive(false),
+                    (gem) => Destroy(gem.gameObject),
+                    true,
+                    30,
+                    50
+                ) ;
+        }
     }
 
     private void FixedUpdate()
@@ -48,6 +65,6 @@ public class Gem : MonoBehaviour
 
 
         possibleGemTaker.TakeGem();
-        Destroy(gameObject);
+        GemPool.Release(this);
     }
 }

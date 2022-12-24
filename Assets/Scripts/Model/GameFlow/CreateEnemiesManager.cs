@@ -1,9 +1,10 @@
 using DefaultNamespace.Enemies.Spider.SpiderStateMachine;
-using System.Collections;
+using Model.MovingCreatures.Enemies.Cockroach.CockroachStateMachine;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
+using UnityEngine.Pool;
 using Random = UnityEngine.Random;
 
 public class CreateEnemiesManager : MonoBehaviour
@@ -11,24 +12,110 @@ public class CreateEnemiesManager : MonoBehaviour
     [SerializeField] private SpiderStateManager spiderPrefab;
     [SerializeField] private IntervalSpawner cockroachSpawnerPrefab;
     [SerializeField] private IntervalSpawner flySpawnerPrefab;
+    [SerializeField] private CockroachStateManager cockroachPrefab;
+    [SerializeField] private FlyController flyPrefab;
 
-    [SerializeField] private Transform leftUpArenaCorner;
-    [SerializeField] private Transform rightDownArenaCorner;
+    public Transform leftUpArenaCorner;
+    public Transform rightDownArenaCorner;
 
     [SerializeField] private int randomRayHitsCount;
 
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask spawnerLayer;
 
+    [NonSerialized] public ObjectPool<SpiderStateManager> SpidersPool;
+    [NonSerialized] public ObjectPool<FlyController> FlyPool;
+    [NonSerialized] public ObjectPool<CockroachStateManager> CockroachesPool;
+    [NonSerialized] public ObjectPool<IntervalSpawner> CockroachSpawnersPool;
+    [NonSerialized] public ObjectPool<IntervalSpawner> FlySpawnersPool;
+
     private void Start()
     {
+        CockroachSpawnersPool = new ObjectPool<IntervalSpawner>
+            (
+                () =>
+                {
+                    var spawner = Instantiate(cockroachSpawnerPrefab);
+                    spawner.GetCreatureFromPool = new Func<GameObject>(() => CockroachesPool.Get().gameObject);
+                    spawner.TakeDamageEvent.AddListener(() => CockroachSpawnersPool.Release(spawner));
+                    return spawner;
+                },
+                (spawner) => spawner.gameObject.SetActive(true),
+                (spawner) => spawner.gameObject.SetActive(false),
+                (spawner) => Destroy(spawner),
+                true,
+                20,
+                50
+            );
 
+        FlySpawnersPool = new ObjectPool<IntervalSpawner>
+            (
+                () =>
+                {
+                    var spawner = Instantiate(flySpawnerPrefab);
+                    spawner.GetCreatureFromPool = new Func<GameObject>(() => FlyPool.Get().gameObject);
+                    spawner.TakeDamageEvent.AddListener(() => FlySpawnersPool.Release(spawner));
+                    return spawner;
+                },
+                (spawner) => spawner.gameObject.SetActive(true),
+                (spawner) => spawner.gameObject.SetActive(false),
+                (spawner) => Destroy(spawner),
+                true,
+                20,
+                50
+            );
+
+        SpidersPool = new ObjectPool<SpiderStateManager>
+            (
+                () =>
+                {
+                    var spider = Instantiate(spiderPrefab);
+                    spider.TakeDamageEvent.AddListener(() => SpidersPool.Release(spider));
+                    return spider;
+                },
+                (spider) => spider.gameObject.SetActive(true),
+                (spider) => spider.gameObject.SetActive(false),
+                (spider) => Destroy(spider),
+                true,
+                30,
+                100
+            );
+        CockroachesPool = new ObjectPool<CockroachStateManager>
+            (
+                () =>
+                {
+                    var cockroach = Instantiate(cockroachPrefab);
+                    cockroach.TakeDamageEvent.AddListener(() => CockroachesPool.Release(cockroach));
+                    return cockroach;
+                },
+                (cockroach) => cockroach.gameObject.SetActive(true),
+                (cockroach) => cockroach.gameObject.SetActive(false),
+                (cockroach) => Destroy(cockroach),
+                true,
+                30,
+                100
+            );
+        FlyPool = new ObjectPool<FlyController>
+            (
+                () =>
+                {
+                    var fly = Instantiate(flyPrefab);
+                    fly.TakeDamageEvent.AddListener(() => FlyPool.Release(fly));
+                    return fly;
+                },
+                (fly) => fly.gameObject.SetActive(true),
+                (fly) => fly.gameObject.SetActive(false),
+                (fly) => Destroy(fly),
+                true,
+                30,
+                100
+            );
     }
 
     public void SpawnSpider()
     {
         var rayHit = GetFarthestFromPlayerRayHit(new Vector2[] { Vector2.down, Vector2.right, Vector2.up, Vector2.left });
-        var spider = Instantiate(spiderPrefab);
+        var spider = SpidersPool.Get();
 
         spider.transform.position = rayHit.point + rayHit.normal;
         spider.transform.rotation = Quaternion.FromToRotation(transform.up, rayHit.normal) * transform.rotation;
@@ -38,7 +125,9 @@ public class CreateEnemiesManager : MonoBehaviour
     {
         var rayHit = GetFarthestFromSpawnerRayHit(new Vector2[] { Vector2.down });
 
-        var cockroachSpawner = Instantiate(cockroachSpawnerPrefab);
+        var cockroachSpawner = CockroachSpawnersPool.Get();
+
+
         cockroachSpawner.spawnDirection = Vector2.up;
         cockroachSpawner.transform.position = rayHit.point + rayHit.normal;
         cockroachSpawner.transform.rotation = Quaternion.FromToRotation(transform.up, rayHit.normal) * transform.rotation;
@@ -48,7 +137,7 @@ public class CreateEnemiesManager : MonoBehaviour
     {
         var rayHit = GetFarthestFromSpawnerRayHit(new Vector2[] { Vector2.down, Vector2.right, Vector2.up, Vector2.left });
 
-        var flySpawner = Instantiate(flySpawnerPrefab);
+        var flySpawner = FlySpawnersPool.Get();
         flySpawner.spawnDirection = rayHit.normal;
         flySpawner.transform.position = rayHit.point + rayHit.normal;
         flySpawner.transform.rotation = Quaternion.FromToRotation(transform.up, rayHit.normal) * transform.rotation;

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using UnityEngine.Events;
 
 namespace DefaultNamespace.StateMachine
 {
@@ -9,6 +11,8 @@ namespace DefaultNamespace.StateMachine
         [SerializeField] private int checksPerSecond = 20;
         private float _tickRate;
         private float _tickTimer;
+
+        [NonSerialized] public UnityEvent TakeDamageEvent = new();
 
         public void SetState(IState newState)
         {

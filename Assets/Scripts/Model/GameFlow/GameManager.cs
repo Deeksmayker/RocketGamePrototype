@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public static Vector2 LeftUpArenaPoint, RightDownArenaPoint;
+
     public float GameTime { get; private set; }
 
     [SerializeField] private List<EnemiesSpawnInfo> enemiesSpawnInfo = new();
@@ -38,6 +40,9 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        LeftUpArenaPoint = createEnemiesManager.leftUpArenaCorner.position;
+        RightDownArenaPoint = createEnemiesManager.rightDownArenaCorner.position;
+
         Application.targetFrameRate = 500;
 
         if (enemiesSpawnInfo.Count != 0)

@@ -100,7 +100,7 @@ public class AttackManager : MonoBehaviour, ICapture
         _stopMovingScript.ResumeMoving();
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         if (_capture)
         {

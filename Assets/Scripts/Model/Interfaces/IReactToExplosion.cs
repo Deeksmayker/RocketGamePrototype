@@ -1,4 +1,6 @@
-﻿namespace Assets.Scripts.Model
+﻿using UnityEngine.Events;
+
+namespace Assets.Scripts.Model
 {
     public interface IReactToExplosion
     {

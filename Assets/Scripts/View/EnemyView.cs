@@ -6,7 +6,7 @@ public class EnemyView : MonoBehaviour
 {
     [SerializeField] private ParticleSystem particlesOnDeath;
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         Instantiate(particlesOnDeath, transform.position, Quaternion.identity);
     }

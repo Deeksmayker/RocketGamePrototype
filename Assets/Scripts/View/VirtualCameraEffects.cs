@@ -1,15 +1,18 @@
 using Assets.Scripts.Model;
 using Cinemachine;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class VirtualCameraEffects : MonoBehaviour
 {
     [SerializeField] private float camSizeOnPlayerGetCaught;
     [SerializeField] private float camSizeOnRain;
     [SerializeField] private float zoomSpeed;
+
+    [SerializeField] private Volume volume;
+    private Vignette _vignette;
+    private float _startVignetteIntencity;
 
     private float _originalCamSize;
     private float _currentCamSizeToReturn;
@@ -27,8 +30,19 @@ public class VirtualCameraEffects : MonoBehaviour
         _originalCamSize = _vCam.m_Lens.OrthographicSize;
         _currentCamSizeToReturn = _originalCamSize;
 
-        _playerHealth.GetCaughtEvent.AddListener(() => _getCaught = true);
-        _playerHealth.ReleasedCaughtEvent.AddListener(() => _getCaught = false);
+        _playerHealth.GetCaughtEvent.AddListener(() =>
+        {
+            _getCaught = true;
+            _vignette.color.Override(Color.red);
+        });
+        _playerHealth.ReleasedCaughtEvent.AddListener(() =>
+        {
+            _getCaught = false;
+            _vignette.color.Override(Color.black);
+        });
+
+        volume.profile.TryGet(out _vignette);
+        _startVignetteIntencity = _vignette.intensity.GetValue<float>();
     }
 
     private void Update()
@@ -36,11 +50,15 @@ public class VirtualCameraEffects : MonoBehaviour
         if (_getCaught)
         {
             _vCam.m_Lens.OrthographicSize = Mathf.Lerp(_vCam.m_Lens.OrthographicSize, camSizeOnPlayerGetCaught, Mathf.Sqrt(zoomSpeed * Time.deltaTime));
+
+            _vignette.intensity.Override(Mathf.Lerp(_vignette.intensity.GetValue<float>(), 1, Mathf.Sqrt(zoomSpeed * Time.deltaTime)));
         }
 
         else if (!Utils.CompareNumsApproximately(_vCam.m_Lens.OrthographicSize, _currentCamSizeToReturn, 0.01f))
         {
             _vCam.m_Lens.OrthographicSize = Mathf.Lerp(_vCam.m_Lens.OrthographicSize, _currentCamSizeToReturn, Mathf.Sqrt(zoomSpeed * Time.deltaTime));
+
+            _vignette.intensity.Override(Mathf.Lerp(_vignette.intensity.GetValue<float>(), _startVignetteIntencity, Mathf.Sqrt(zoomSpeed * Time.deltaTime)));
         }
     }
 }

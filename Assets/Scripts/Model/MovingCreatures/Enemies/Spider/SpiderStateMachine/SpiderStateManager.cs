@@ -208,7 +208,10 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
 
         public void TakeDamage()
         {
-            Destroy(gameObject);
+            TakeDamageEvent.Invoke();
+
+            if (gameObject.activeSelf)
+                gameObject.SetActive(false);
         }
     }
 }

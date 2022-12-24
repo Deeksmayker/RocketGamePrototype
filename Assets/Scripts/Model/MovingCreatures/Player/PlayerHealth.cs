@@ -20,11 +20,21 @@ public class PlayerHealth : MonoBehaviour, IGetCaught
     [HideInInspector] public UnityEvent ReleasedCaughtEvent = new();
     [HideInInspector] public UnityEvent DamagedEvent = new();
     [HideInInspector] public UnityEvent PlayerDiedEvent = new();
+    [HideInInspector] public UnityEvent HealedEvent = new();
 
     private void Start()
     {
         _playerController = GetComponent<BouncePlayerController>();
         _rocketLauncher = GetComponent<RocketLauncher>();
+    }
+
+    public void Heal()
+    {
+        if (Health >= 3)
+            Debug.LogError("Heal object has appear when health is full");
+
+        Health++;
+        HealedEvent.Invoke();
     }
 
 

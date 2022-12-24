@@ -17,8 +17,8 @@ public class SpiderMoving : MonoBehaviour, IStopMoving
     [SerializeField] private float gravityMultuplier;
     [SerializeField] private float checkWallDistance;
     
-    [HideInInspector] public UnityEvent OnStartKillFly = new();
-    [HideInInspector] public UnityEvent OnStopKillFly = new();
+    [NonSerialized] public UnityEvent OnStartKillFly = new();
+    [NonSerialized] public UnityEvent OnStopKillFly = new();
 
     private int _moveDirection;
     public int MoveDirection

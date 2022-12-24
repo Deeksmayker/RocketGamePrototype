@@ -1,7 +1,9 @@
-using UnityEngine;
-using UnityEngine.UI;
 using System;
 using TMPro;
+using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -11,10 +13,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI healthText;
     [SerializeField] private GameObject diedPanel;
 
+
     private GameManager _gameManager;
     private PlayerAbilities _playerAbilities;
     private PlayerHealth _playerHealth;
-    private TimeSpan time;
 
     private void Start()
     {
@@ -25,6 +27,7 @@ public class UIManager : MonoBehaviour
         _playerAbilities.gemTaken.AddListener(() => OnGemTaken());
 
         _playerHealth.DamagedEvent.AddListener(OnPlayerDamaged);
+        _playerHealth.HealedEvent.AddListener(OnPlayerHealed);
         _playerHealth.PlayerDiedEvent.AddListener(() => diedPanel.SetActive(true));
     }
 
@@ -36,10 +39,6 @@ public class UIManager : MonoBehaviour
     public void ChangeTimerText()
     {
         timerText.text = _gameManager.GameTime.ToString("F3");
-        return;
-
-        time = TimeSpan.FromSeconds(_gameManager.GameTime);
-        timerText.text = time.ToString(@"s\.fff");
     }
 
     public void OnGemTaken()
@@ -48,6 +47,11 @@ public class UIManager : MonoBehaviour
     }
 
     public void OnPlayerDamaged()
+    {
+        healthText.text = _playerHealth.Health.ToString();
+    }
+
+    public void OnPlayerHealed()
     {
         healthText.text = _playerHealth.Health.ToString();
     }
