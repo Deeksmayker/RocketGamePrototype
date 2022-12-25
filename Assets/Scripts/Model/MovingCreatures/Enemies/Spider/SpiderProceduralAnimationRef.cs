@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Model.MovingCreatures.Enemies.Spider
@@ -24,6 +25,11 @@ namespace Model.MovingCreatures.Enemies.Spider
 
         private float velocityMultiplier = 7f;
         private bool isBlocked = false;
+
+        private void OnDisable()
+        {
+            StopAllCoroutines();
+        }
 
         public void BlockProceduralAnimation()
         {
