@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
 {
     public static Vector2 LeftUpArenaPoint, RightDownArenaPoint;
 
-    public float GameTime { get; private set; }
+    public static float GameTime { get; private set; }
 
     [SerializeField] private List<EnemiesSpawnInfo> enemiesSpawnInfo = new();
     [SerializeField] private CreateEnemiesManager createEnemiesManager;
@@ -30,6 +30,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private ParticleSystem rainParticles;
 
     //private Tilemap _currentTilemap;
+
+    private void OnEnable()
+    {
+        GameTime = 0;
+    }
 
     private enum Enemies
     {

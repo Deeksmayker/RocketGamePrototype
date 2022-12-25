@@ -33,7 +33,7 @@ namespace Model.MovingCreatures.Enemies.Cockroach.CockroachStateMachine
 
         public SpawnEgg cockroachEgg;
 
-        private void Awake()
+        private void OnEnable()
         {
             _cockroachMoving = GetComponent<CockroachMoving>();
             SetJumpForce(jumpForce);

@@ -17,7 +17,7 @@ public class Gem : MonoBehaviour
 
     private Vector2 _vectorToPlayer;
 
-    private void Awake()
+    private void OnEnable()
     {
         Rb = GetComponent<Rigidbody2D>();
 
@@ -40,6 +40,11 @@ public class Gem : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (GameManager.GameTime < 1)
+        {
+            GemPool.Release(this);
+        }
+
         _vectorToPlayer = (BouncePlayerController.PlayerPosition - (Vector2)transform.position);
         if (_vectorToPlayer.x is float.NaN)
             return;

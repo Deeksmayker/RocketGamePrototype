@@ -26,7 +26,7 @@ public class AttackManager : MonoBehaviour, ICapture
     public UnityEvent enemyKilled = new();
     public UnityEvent enemyCaptured = new();
 
-    private void Start()
+    private void OnEnable()
     {
         _tickRate = 1f / checksPerSecond;
         _tickTimer = _tickRate;

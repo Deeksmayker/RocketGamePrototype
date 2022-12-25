@@ -38,7 +38,7 @@ public class UIManager : MonoBehaviour
 
     public void ChangeTimerText()
     {
-        timerText.text = _gameManager.GameTime.ToString("F3");
+        timerText.text = GameManager.GameTime.ToString("F3");
     }
 
     public void OnGemTaken()

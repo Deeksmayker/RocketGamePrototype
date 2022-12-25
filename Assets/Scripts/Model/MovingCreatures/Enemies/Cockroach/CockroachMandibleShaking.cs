@@ -12,7 +12,7 @@ namespace Model.MovingCreatures.Enemies.Cockroach
         private CockroachMoving cockroachMoving;
         private bool isCaptured;
 
-        private void Start()
+        private void OnEnable()
         {
             cockroachMoving = transform.parent.GetComponentInParent<CockroachMoving>();
             cockroachMoving.OnStartKillFly.AddListener(StartShakeMandible);

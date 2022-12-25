@@ -44,7 +44,7 @@ namespace DefaultNamespace.Enemies.Spider.SpiderStateMachine
         private bool _canMakeWeb = true;
         private bool _flyCapturedInWeb;
 
-        private void Start()
+        private void OnEnable()
         {
             _spiderMoving = GetComponent<SpiderMoving>();
             _spiderWebManager = GetComponent<SpiderWebManager>();

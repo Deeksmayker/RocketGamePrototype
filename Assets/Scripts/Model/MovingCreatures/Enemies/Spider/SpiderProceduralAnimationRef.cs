@@ -31,6 +31,25 @@ namespace Model.MovingCreatures.Enemies.Spider
             StopAllCoroutines();
         }
 
+        private void OnEnable()
+        {
+            lastBodyUp = transform.up;
+
+            countLegs = legTargets.Length;
+            defaultLegPositions = new Vector2[countLegs];
+            lastLegPositions = new Vector2[countLegs];
+            legMoving = new bool[countLegs];
+            for (int i = 0; i < countLegs; ++i)
+            {
+                defaultLegPositions[i] = legTargets[i].localPosition;
+                lastLegPositions[i] = legTargets[i].position;
+                legMoving[i] = false;
+            }
+            lastBodyPos = transform.position;
+
+            InvokeRepeating(nameof(CalculateAndPerformMove), 0, 0.05f);
+        }
+
         public void BlockProceduralAnimation()
         {
             isBlocked = true;
@@ -92,19 +111,7 @@ namespace Model.MovingCreatures.Enemies.Spider
 
         void Start()
         {
-            lastBodyUp = transform.up;
             
-            countLegs = legTargets.Length;
-            defaultLegPositions = new Vector2[countLegs];
-            lastLegPositions = new Vector2[countLegs];
-            legMoving = new bool[countLegs];
-            for (int i = 0; i < countLegs; ++i)
-            {
-                defaultLegPositions[i] = legTargets[i].localPosition;
-                lastLegPositions[i] = legTargets[i].position;
-                legMoving[i] = false;
-            }
-            lastBodyPos = transform.position;
         }
 
         IEnumerator PerformStep(int index, Vector3 targetPoint)
@@ -121,11 +128,16 @@ namespace Model.MovingCreatures.Enemies.Spider
             legMoving[0] = false;
         }
         
-        void FixedUpdate()
+        /*void FixedUpdate()
+        {
+            
+        }*/
+
+        private void CalculateAndPerformMove()
         {
             if (isBlocked)
                 return;
-            
+
             velocity = (Vector2)transform.position - lastBodyPos;
             velocity = (velocity + smoothness * lastVelocity) / (smoothness + 1f);
 
@@ -133,7 +145,7 @@ namespace Model.MovingCreatures.Enemies.Spider
                 velocity = lastVelocity;
             else
                 lastVelocity = velocity;
-            
+
             Vector2[] desiredPositions = new Vector2[countLegs];
             int indexToMove = -1;
             float maxDistance = stepSize;
@@ -156,15 +168,17 @@ namespace Model.MovingCreatures.Enemies.Spider
             {
                 Vector2 targetPoint = desiredPositions[indexToMove];
 
-                Vector2[] positionAndNormalFwd = MatchToSurfaceFromAbove(targetPoint + velocity * velocityMultiplier, raycastRange, 
+                Vector2[] positionAndNormalFwd = MatchToSurfaceFromAbove(targetPoint + velocity * velocityMultiplier, raycastRange,
                     ((Vector2)transform.parent.up - velocity * 10).normalized);
 
-                Vector2[] positionAndNormalBwd = MatchToSurfaceFromAbove(targetPoint + velocity * velocityMultiplier, raycastRange*(1f + velocity.magnitude), 
+                Vector2[] positionAndNormalBwd = MatchToSurfaceFromAbove(targetPoint + velocity * velocityMultiplier, raycastRange * (1f + velocity.magnitude),
                     ((Vector2)transform.parent.up + velocity * 10).normalized);
-            
+
                 legMoving[0] = true;
-            
-                
+
+                if (!gameObject.activeInHierarchy)
+                    return;
+
                 if (positionAndNormalFwd[1] == Vector2.zero)
                 {
                     StartCoroutine(PerformStep(indexToMove, positionAndNormalBwd[0]));
@@ -179,7 +193,7 @@ namespace Model.MovingCreatures.Enemies.Spider
             if (countLegs > 1 && bodyOrientation)
             {
                 Vector2 v1 = (legTargets[1].position - legTargets[0].position).normalized;
-            
+
                 Vector2 v2 = Vector3.back;
                 Vector2 normal = Vector3.Cross(v1, v2).normalized;
                 Vector2 up = Vector3.Lerp(lastBodyUp, normal, 1f / (float)(smoothness + 1));

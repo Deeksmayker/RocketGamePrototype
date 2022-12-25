@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Model.MovingCreatures.Player
@@ -14,20 +12,30 @@ namespace Model.MovingCreatures.Player
 
         private float timeBetweenSpawns;
 
+        private bool _needToMakeEcho;
+
         private void OnEnable()
         {
             timeBetweenSpawns = TimeBetweenSpawns;
         }
 
+        public void SetEchoStatus(bool status)
+        {
+            _needToMakeEcho = status;
+        }
+
         private void Update()
         {
+            if (!_needToMakeEcho)
+                return;
+
             if (timeBetweenSpawns <= 0)
             {
                 CreateEchoWithAimRotating();
                 timeBetweenSpawns = TimeBetweenSpawns;
             }
             else
-                timeBetweenSpawns -= Time.deltaTime;
+                timeBetweenSpawns -= Time.unscaledDeltaTime;
         }
 
         private void CreateEchoWithAimRotating()

@@ -18,7 +18,7 @@ public class CockroachWingsMoving : MonoBehaviour
 
     private bool wingsStoped;
 
-    private void Start()
+    private void OnEnable()
     {
         cockroachMoving = GetComponentInParent<CockroachMoving>();
 
@@ -114,5 +114,10 @@ public class CockroachWingsMoving : MonoBehaviour
             t.Rotate(0, 0, deltaAngle / smoothness);
             yield return new WaitForSeconds(0.05f);
         }
+    }
+
+    private void OnDisable()
+    {
+        StopAllCoroutines();
     }
 }
