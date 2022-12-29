@@ -3,8 +3,16 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class HealerObject : MonoBehaviour
 {
-    [SerializeField] private float moveAmplitude;
-    [SerializeField] private float moveSpeed;
+    [SerializeField] private AnimationCurve verticalMoving;
+    [SerializeField] private float moveCycleTime;
+
+    private Vector2 _startPosition;
+    private float _timer;
+
+    private void OnEnable()
+    {
+        _startPosition = transform.position;
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -13,5 +21,14 @@ public class HealerObject : MonoBehaviour
             health.Heal();
             Destroy(gameObject);
         }
+    }
+
+    private void Update()
+    {
+        transform.position = new Vector2(_startPosition.x, _startPosition.y + verticalMoving.Evaluate(_timer/moveCycleTime));
+        _timer += Time.deltaTime;
+
+        if (_timer > moveCycleTime)
+            _timer = 0;
     }
 }

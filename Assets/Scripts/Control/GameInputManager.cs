@@ -12,6 +12,7 @@ namespace Player
         public bool firstAbility;
         public bool secondAbility;
         public bool thirdAbility;
+        public bool pause;
 
         public void OnMove(InputValue value)
         {
@@ -46,6 +47,11 @@ namespace Player
         public void OnThirdAbility(InputValue value)
         {
             ThirdAbilityInput(value.isPressed);
+        }
+
+        public void OnPause(InputValue value)
+        {
+            pause = value.isPressed;
         }
         
         public void MoveInput(Vector2 newMoveDirection)

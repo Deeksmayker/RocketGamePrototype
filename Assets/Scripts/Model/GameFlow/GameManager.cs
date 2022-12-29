@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -27,13 +28,19 @@ public class GameManager : MonoBehaviour
     private int _currentCycle;
     private float _lastTimeCycleSpawnedEnemies;
 
-    [SerializeField] private ParticleSystem rainParticles;
+    private bool _gameOver;
+
+    public UnityEvent NewRecordEvent = new();
+
+    //[SerializeField] private ParticleSystem rainParticles;
 
     //private Tilemap _currentTilemap;
 
     private void OnEnable()
     {
         GameTime = 0;
+
+        PlayerHealth.PlayerDiedEvent.AddListener(OnGameOver);
     }
 
     private enum Enemies
@@ -60,7 +67,8 @@ public class GameManager : MonoBehaviour
     {
         UpdateGameTime();
 
-        var isCycleTimePassed = (GameTime - _lastTimeCycleSpawnedEnemies) >= startCycleInterval - (_currentCycle * perCycleIntervalReduction);
+        var isCycleTimePassed = (GameTime - _lastTimeCycleSpawnedEnemies)
+            >= Mathf.Clamp(startCycleInterval - (_currentCycle * perCycleIntervalReduction), 5, startCycleInterval);
         if (_currentCycle == 0 || isCycleTimePassed)
             CheckEnemiesSpawn();
     }
@@ -104,12 +112,31 @@ public class GameManager : MonoBehaviour
 
     private void UpdateGameTime()
     {
+        if (_gameOver)
+            return;
+
         GameTime += Time.deltaTime;
+    }
+
+    public void OnGameOver()
+    {
+        _gameOver = true;
+
+        if (!PlayerPrefs.HasKey("Record"))
+            PlayerPrefs.SetFloat("Record", 0);
+
+        if (PlayerPrefs.GetFloat("Record") < GameTime)
+        {
+            PlayerPrefs.SetFloat("Record", GameTime);
+            NewRecordEvent.Invoke();
+        }
+
+        PlayerPrefs.Save();
     }
 
 
     public void ReloadLevel()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
     }
 }

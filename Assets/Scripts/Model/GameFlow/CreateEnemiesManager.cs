@@ -40,10 +40,14 @@ public class CreateEnemiesManager : MonoBehaviour
                     spawner.TakeDamageEvent.AddListener(() => CockroachSpawnersPool.Release(spawner));
                     return spawner;
                 },
-                (spawner) => spawner.gameObject.SetActive(true),
+                (spawner) =>
+                {
+                    spawner.gameObject.SetActive(true);
+
+                },
                 (spawner) => spawner.gameObject.SetActive(false),
                 (spawner) => Destroy(spawner),
-                true,
+                false,
                 20,
                 50
             );
@@ -57,10 +61,14 @@ public class CreateEnemiesManager : MonoBehaviour
                     spawner.TakeDamageEvent.AddListener(() => FlySpawnersPool.Release(spawner));
                     return spawner;
                 },
-                (spawner) => spawner.gameObject.SetActive(true),
+                (spawner) =>
+                {
+                    spawner.gameObject.SetActive(true);
+
+                },
                 (spawner) => spawner.gameObject.SetActive(false),
                 (spawner) => Destroy(spawner),
-                true,
+                false,
                 20,
                 50
             );
@@ -73,7 +81,11 @@ public class CreateEnemiesManager : MonoBehaviour
                     spider.TakeDamageEvent.AddListener(() => SpidersPool.Release(spider));
                     return spider;
                 },
-                (spider) => spider.gameObject.SetActive(true),
+                (spider) =>
+                {
+                    spider.gameObject.SetActive(true);
+
+                },
                 (spider) => spider.gameObject.SetActive(false),
                 (spider) => Destroy(spider),
                 true,
@@ -88,7 +100,11 @@ public class CreateEnemiesManager : MonoBehaviour
                     cockroach.TakeDamageEvent.AddListener(() => CockroachesPool.Release(cockroach));
                     return cockroach;
                 },
-                (cockroach) => cockroach.gameObject.SetActive(true),
+                (cockroach) =>
+                {
+                    cockroach.gameObject.SetActive(true);
+
+                },
                 (cockroach) => cockroach.gameObject.SetActive(false),
                 (cockroach) => Destroy(cockroach),
                 true,
@@ -103,7 +119,10 @@ public class CreateEnemiesManager : MonoBehaviour
                     fly.TakeDamageEvent.AddListener(() => FlyPool.Release(fly));
                     return fly;
                 },
-                (fly) => fly.gameObject.SetActive(true),
+                (fly) =>
+                {
+                    fly.gameObject.SetActive(true);
+                },
                 (fly) => fly.gameObject.SetActive(false),
                 (fly) => Destroy(fly),
                 true,

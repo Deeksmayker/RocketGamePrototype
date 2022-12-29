@@ -21,7 +21,7 @@ public class SlowTimeAbility : Ability
         abilityCasted.Invoke();
 
         var lerpMultiplier = 0f;
-        while (!Utils.CompareNumsApproximately(slowTimeScale, Time.timeScale, 0.01f))
+        while (!Utils.CompareNumsApproximately(_playerController.GetWalkSpeed(), _playerController.OriginalWalkSpeed * speedMultiplier, 0.01f))
         {
             lerpMultiplier += Time.unscaledDeltaTime / slowingTimeDuration;
             _playerController.SetWalkSpeed(
@@ -34,7 +34,7 @@ public class SlowTimeAbility : Ability
         yield return new WaitForSeconds(duration);
 
         lerpMultiplier = 0f;
-        while (!Utils.CompareNumsApproximately(1, Time.timeScale, 0.001f))
+        while (!Utils.CompareNumsApproximately(_playerController.OriginalWalkSpeed, _playerController.GetWalkSpeed(), 0.001f))
         {
             lerpMultiplier += Time.unscaledDeltaTime / slowingTimeDuration;
             _playerController.SetWalkSpeed(

@@ -104,7 +104,13 @@ namespace Model.MovingCreatures.Enemies.Cockroach.CockroachStateMachine
 
         public void TakeDamage()
         {
+            if (!gameObject.activeSelf)
+                return;
+
             TakeDamageEvent.Invoke();
+
+            if (gameObject.activeSelf)
+                Destroy(gameObject);
         }
     }
 }

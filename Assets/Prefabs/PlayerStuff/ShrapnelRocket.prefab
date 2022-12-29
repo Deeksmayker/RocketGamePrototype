@@ -45,5 +45,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shrapnelPrefab: {fileID: -3887016535587828271, guid: d63fbe38d19e25d4a98cdfb8766b1e2a, type: 3}
-  shrapnelCount: 80
+  shrapnelCount: 60
   shrapnelSpeed: 80

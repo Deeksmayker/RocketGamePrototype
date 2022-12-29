@@ -1,6 +1,5 @@
 using Assets.Scripts.Model;
 using Cinemachine;
-using Codice.Client.Common.GameUI;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;

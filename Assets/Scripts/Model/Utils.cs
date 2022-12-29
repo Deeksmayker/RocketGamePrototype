@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Model
@@ -39,6 +40,14 @@ namespace Assets.Scripts.Model
                 return false;
 
             return true;
+        }
+
+
+        public static IEnumerator StopTime(float time)
+        {
+            Time.timeScale = 0;
+            yield return new WaitForSecondsRealtime(time);
+            Time.timeScale = 1;
         }
     }
 }

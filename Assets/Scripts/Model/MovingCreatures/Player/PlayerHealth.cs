@@ -12,6 +12,7 @@ public class PlayerHealth : MonoBehaviour, IGetCaught
 
     private bool _getCaught;
     private bool _invinsible;
+    private bool _canTakeDamage = true;
 
     private BouncePlayerController _playerController;
     private RocketLauncher _rocketLauncher;
@@ -19,7 +20,7 @@ public class PlayerHealth : MonoBehaviour, IGetCaught
     [HideInInspector] public UnityEvent GetCaughtEvent = new();
     [HideInInspector] public UnityEvent ReleasedCaughtEvent = new();
     [HideInInspector] public UnityEvent DamagedEvent = new();
-    [HideInInspector] public UnityEvent PlayerDiedEvent = new();
+    public static UnityEvent PlayerDiedEvent = new();
     [HideInInspector] public UnityEvent HealedEvent = new();
 
     private void Start()
@@ -75,7 +76,13 @@ public class PlayerHealth : MonoBehaviour, IGetCaught
 
     public void TakeDamageOnRelease()
     {
+        if (!_canTakeDamage)
+            return;
         Health--;
+
+        _canTakeDamage = false;
+        Invoke(nameof(SetCanTakeDamage), 0.5f);
+
         DamagedEvent.Invoke();
 
         if (Health <= 0)
@@ -90,6 +97,11 @@ public class PlayerHealth : MonoBehaviour, IGetCaught
         if (!_getCaught)
             return;
         _rocketLauncher.SetCaught(true);
+    }
+
+    private void SetCanTakeDamage()
+    {
+        _canTakeDamage = true;
     }
 
     private void RemoveInvinsibility()

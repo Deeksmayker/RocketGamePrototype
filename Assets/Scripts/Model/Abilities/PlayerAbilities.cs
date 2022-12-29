@@ -13,6 +13,7 @@ public class PlayerAbilities : MonoBehaviour, ITakeGem
     private GameInputManager _input;
 
     public UnityEvent gemTaken = new();
+    public UnityEvent anyAbilityUsed = new();
 
     private void Start()
     {
@@ -28,8 +29,6 @@ public class PlayerAbilities : MonoBehaviour, ITakeGem
         CheckAndCastAbility(_input.secondAbility, _secondAbility);
         CheckAndCastAbility(_input.thirdAbility, _thirdAbility);
 
-
-
         _input.firstAbility = false;
         _input.secondAbility = false;
         _input.thirdAbility = false;
@@ -37,9 +36,11 @@ public class PlayerAbilities : MonoBehaviour, ITakeGem
 
     private void CheckAndCastAbility(bool input, Ability ability)
     {
-        if (input && !ability.IsActive)
+        if (input && !ability.IsActive && GemCount >= ability.GemCost)
         {
             StartCoroutine(ability.CastAbility());
+            GemCount -= ability.GemCost;
+            anyAbilityUsed.Invoke();
         }
     }
 

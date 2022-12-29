@@ -28,7 +28,7 @@ public class HealSpawner : MonoBehaviour
 
     private void SpawnHealObjectInBestPosition()
     {
-        Instantiate(healerObject, ChooseHealPosition(), Quaternion.identity);
+        Instantiate(healerObject, ChooseHealPosition(), Quaternion.Euler(0, 0, 45f));
     }
 
     private Vector2 ChooseHealPosition()

@@ -163,7 +163,7 @@ public class BouncePlayerController : MonoBehaviour, ISlowable
     {
         if (Mathf.Abs(_velocity.x) > maxWalkSpeed && (Mathf.Sign(_input.move.x) == Mathf.Sign(_velocity.x) && _input.move.x != 0))
             return;
-        
+
         var targetSpeed = _input.move.x * maxWalkSpeed;
 
         if (Mathf.Abs(_rb.velocity.x) > 3 && Mathf.Sign(_velocity.x) != Mathf.Sign(targetSpeed))
@@ -180,7 +180,7 @@ public class BouncePlayerController : MonoBehaviour, ISlowable
         {
             accelRate /= 3;
         }
-        
+
         var horizontalVelocity = Mathf.Lerp(_velocity.x, targetSpeed, Mathf.Sqrt(accelRate * Time.fixedDeltaTime));
 
         _velocity.x = horizontalVelocity;
@@ -191,7 +191,7 @@ public class BouncePlayerController : MonoBehaviour, ISlowable
         AirState = AirStates.Jumping;
         var expiredTime = 0f;
         var progress = 0f;
-        
+
         while (progress < 1)
         {
             if (AirState != AirStates.Jumping)
@@ -252,7 +252,12 @@ public class BouncePlayerController : MonoBehaviour, ISlowable
         StartCoroutine(Jump(minMagnitudeForWallBounce + additionalMagnitude));
     }
 
-    public void InvokeRocketJump(Vector2 direction) => StartCoroutine(MakeRocketJump(direction));
+    public void InvokeRocketJump(Vector2 direction)
+    {
+        StartCoroutine(MakeRocketJump(direction));
+        StartCoroutine(Utils.StopTime(0.05f));
+    }
+
     private IEnumerator MakeRocketJump(Vector2 direction)
     {
         AirState = AirStates.RocketJumping;
@@ -359,6 +364,8 @@ public class BouncePlayerController : MonoBehaviour, ISlowable
     {
         maxWalkSpeed = value;
     }
+
+    public float GetWalkSpeed() => maxWalkSpeed;
 
     public void Slow(bool slow)
     {

@@ -28,8 +28,6 @@ public class ParticlesPool : MonoBehaviour
 
         void OnGet(ParticleSystem particle)
         {
-            if (particle == null) return;
-
             particle.gameObject.SetActive(true);
             particle.Play();
         }
@@ -41,6 +39,7 @@ public class ParticlesPool : MonoBehaviour
 
         void OnDestroy(ParticleSystem particle)
         {
+            Destroy(particle);
         }
     }
 }

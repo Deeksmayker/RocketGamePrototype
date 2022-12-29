@@ -144,6 +144,7 @@ namespace Player
                 if (script is IReactToExplosion destructable)
                 {
                     destructable.TakeDamage();
+                    //StartCoroutine(Utils.StopTime(0.05f));
                 }
             }
         }

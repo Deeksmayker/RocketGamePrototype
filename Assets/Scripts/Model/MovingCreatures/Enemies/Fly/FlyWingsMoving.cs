@@ -9,9 +9,14 @@ namespace Model.MovingCreatures.Enemies.Fly
         [SerializeField] private Transform[] wings;
         [Range(30, 80)] [SerializeField] private float speedOfShake = 20f;
     
-        private void Start()
+        private void OnEnable()
         {
             StartCoroutine(WingShake());
+        }
+
+        private void OnDisable()
+        {
+            StopAllCoroutines();
         }
 
         private IEnumerator WingShake()
