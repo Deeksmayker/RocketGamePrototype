@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
 
     public static float GameTime { get; private set; }
 
+    [SerializeField] private ToxicCloud cloudPrefab;
+
     [SerializeField] private List<EnemiesSpawnInfo> enemiesSpawnInfo = new();
     [SerializeField] private CreateEnemiesManager createEnemiesManager;
     [SerializeField] private Material blinkMaterial;
@@ -61,6 +63,8 @@ public class GameManager : MonoBehaviour
         {
             enemiesSpawnInfo.OrderBy(time => time.secondToSpawn);
         }
+        
+        Invoke(nameof(SpawnToxicCloud), 50);
     }
 
     private void Update()
@@ -134,6 +138,11 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
+    private void SpawnToxicCloud()
+    {
+        Debug.Log("Spawned toxic cloud");
+        Instantiate(cloudPrefab, Vector2.zero, Quaternion.identity);
+    }
 
     public void ReloadLevel()
     {

@@ -10,7 +10,12 @@ public class ToxicCloudView : MonoBehaviour
         StartCoroutine(VirtualCameraEffects.Instance.SmoothChangeVignetteColor(Color.black, Color.red, 0.5f));
         CameraShaking.Instance.SetShake(true);
     }
-    
+
+    private void OnTriggerStay(Collider other)
+    {
+        CameraShaking.Instance.SetShake(true);
+    }
+
     private void OnTriggerExit2D(Collider2D col)
     {
         StartCoroutine(VirtualCameraEffects.Instance.SmoothChangeVignetteColor(Color.red, Color.black, 0.5f));
