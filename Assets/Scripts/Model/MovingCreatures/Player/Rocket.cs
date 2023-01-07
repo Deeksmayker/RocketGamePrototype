@@ -22,6 +22,8 @@ namespace Player
         [SerializeField] private float explodePower;
         public float explodeRadius;
 
+        [SerializeField] private LayerMask playerLayer;
+        
         private ObjectPool<Rocket> _pool;
 
         public static UnityEvent OnRocketExplosion = new();
@@ -97,10 +99,18 @@ namespace Player
 
         protected void MakeExplosion()
         {
+            var pos = transform.position;
             OnRocketExplosion.Invoke();
-            var collidersInArea = Physics2D.OverlapCircleAll(transform.position, explodeRadius);
+            var collidersInArea = Physics2D.OverlapCircleAll(pos, explodeRadius);
 
             PushObjectsInExplosionRange(collidersInArea);
+
+            var playerInArea = Physics2D.OverlapCircle(pos, explodeRadius + 1, playerLayer);
+
+            if (playerInArea)
+            {
+                playerInArea.GetComponent<BouncePlayerController>().InvokeRocketJump(((playerInArea.transform.position - pos).normalized));
+            }
 
             rocketMakedExplosion.Invoke();
         }
@@ -119,11 +129,7 @@ namespace Player
 
                 var direction = (body.transform.position - transform.position).normalized;
 
-                if (body.TryGetComponent<BouncePlayerController>(out var player))
-                {
-                    player.InvokeRocketJump(direction);
-                    continue;
-                }
+                
 
                 /*if (body.GetComponent<PlayerController>() != null)
                 {

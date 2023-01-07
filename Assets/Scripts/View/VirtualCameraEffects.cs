@@ -7,8 +7,9 @@ using UnityEngine.Rendering.Universal;
 
 public class VirtualCameraEffects : MonoBehaviour
 {
+    public static VirtualCameraEffects Instance;
+    
     [SerializeField] private float camSizeOnPlayerGetCaught;
-    [SerializeField] private float camSizeOnRain;
     [SerializeField] private float zoomSpeed;
 
     [SerializeField] private Volume volume;
@@ -26,6 +27,8 @@ public class VirtualCameraEffects : MonoBehaviour
 
     private void Start()
     {
+        Instance = this;
+        
         _vCam = GetComponent<CinemachineVirtualCamera>();
         _playerHealth = FindObjectOfType<PlayerHealth>();
 
@@ -35,6 +38,9 @@ public class VirtualCameraEffects : MonoBehaviour
 
         _originalCamSize = _vCam.m_Lens.OrthographicSize;
         _currentCamSizeToReturn = _originalCamSize;
+        
+        volume.profile.TryGet(out _vignette);
+        _startVignetteIntencity = _vignette.intensity.GetValue<float>();
 
         _playerHealth.GetCaughtEvent.AddListener(() =>
         {
@@ -45,6 +51,11 @@ public class VirtualCameraEffects : MonoBehaviour
         {
             _getCaught = false;
             _vignette.color.Override(Color.black);
+        });
+        _playerHealth.DamagedEvent.AddListener(() =>
+        {
+            StartCoroutine(SmoothChangeVignetteIntensity(_startVignetteIntencity, 1 ,0.5f, true));
+            StartCoroutine(SmoothChangeVignetteColor(Color.black, Color.red, 0.5f, true));
         });
 
         volume.profile.TryGet(out _vignette);
@@ -79,7 +90,7 @@ public class VirtualCameraEffects : MonoBehaviour
         StartCoroutine(SmoothChangeVignetteColor(Color.blue, Color.black, 0.3f));
     }
 
-    private IEnumerator SmoothChangeVignetteColor(Color startColor, Color needColor, float timeToChange)
+    public IEnumerator SmoothChangeVignetteColor(Color startColor, Color needColor, float timeToChange, bool needToReturnColor = false, float timeToReturn = 0)
     {
         var t = 0f;
 
@@ -89,6 +100,30 @@ public class VirtualCameraEffects : MonoBehaviour
 
             _vignette.color.Override(Color.Lerp(startColor, needColor, t));
             yield return null;
+        }
+
+        if (needToReturnColor)
+        {
+            yield return new WaitForSeconds(timeToReturn);
+            StartCoroutine(SmoothChangeVignetteColor(needColor, startColor, timeToChange));
+        }
+    }
+    
+    public IEnumerator SmoothChangeVignetteIntensity(float startValue, float endValue, float timeToChange, bool needToReturn)
+    {
+        var t = 0f;
+
+        while (t < 1)
+        {
+            t += Time.deltaTime / timeToChange;
+
+            _vignette.intensity.Override(Mathf.Lerp(startValue, endValue, Mathf.Sqrt(t)));
+            yield return null;
+        }
+
+        if (needToReturn)
+        {
+            StartCoroutine(SmoothChangeVignetteIntensity(endValue, startValue, timeToChange, false));
         }
     }
 }

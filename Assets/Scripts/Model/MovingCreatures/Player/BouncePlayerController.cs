@@ -31,6 +31,7 @@ public class BouncePlayerController : MonoBehaviour, ISlowable
         {
             LastAirState = AirState;
             _currentAirState = value;
+            _timeSinceChangeState = 0;
 
             switch (AirState)
             {
@@ -96,6 +97,8 @@ public class BouncePlayerController : MonoBehaviour, ISlowable
     public Vector2 LastFrameVelocity { get; private set; }
     private Vector2 _velocity;
 
+    private float _timeSinceChangeState;
+
     [HideInInspector] public UnityEvent Jumped = new();
     [HideInInspector] public UnityEvent Bounced = new();
     [HideInInspector] public UnityEvent WallBounced = new();
@@ -114,6 +117,7 @@ public class BouncePlayerController : MonoBehaviour, ISlowable
     private void Update()
     {
         PlayerPosition = transform.position;
+        _timeSinceChangeState += Time.deltaTime;
 
         if (AirState == AirStates.Grounded)
         {
@@ -127,7 +131,7 @@ public class BouncePlayerController : MonoBehaviour, ISlowable
         {
             AirState = AirStates.Falling;
         }
-
+        
         _input.jump = false;
     }
 
@@ -174,7 +178,7 @@ public class BouncePlayerController : MonoBehaviour, ISlowable
 
         var accelRate = Mathf.Sign(_velocity.x) == Mathf.Sign(targetSpeed) && targetSpeed != 0
             ? walkAcceleration
-            : (AirState == AirStates.Grounded ? walkDeceleration : walkDeceleration / 4);
+            : (AirState == AirStates.Grounded ? walkDeceleration : walkDeceleration / 2);
 
         if (AirState == AirStates.RocketJumping && targetSpeed == 0)
         {
@@ -318,7 +322,7 @@ public class BouncePlayerController : MonoBehaviour, ISlowable
 
             if (Utils.CompareVectors(collision.GetContact(i).normal, Vector2.right) || Utils.CompareVectors(collision.GetContact(i).normal, Vector2.left))
             {
-                if (AirState == AirStates.WallBouncing || _input.move.x == 0 || _input.move.y < -0.4f)
+                if (AirState == AirStates.WallBouncing || _input.move.x == 0 || _input.move.y < -0.4f || _timeSinceChangeState <= 0.05f)
                     return;
                 
                 AirState = AirStates.WallBouncing;

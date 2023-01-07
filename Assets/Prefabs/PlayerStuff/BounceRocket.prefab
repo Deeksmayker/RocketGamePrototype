@@ -156,6 +156,9 @@ MonoBehaviour:
   maxLifeTime: 5
   explodePower: 50
   explodeRadius: 4
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 8
   rocketMakedExplosion:
     m_PersistentCalls:
       m_Calls: []
