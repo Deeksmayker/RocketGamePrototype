@@ -16,7 +16,7 @@ public class PlayerAbilities : MonoBehaviour, ITakeGem
     public UnityEvent gemTaken = new();
     public UnityEvent anyAbilityUsed = new();
 
-    private void Start()
+    private void Awake()
     {
         _input = GetComponent<GameInputManager>();
         FirstAbility = GetComponent<SlowTimeAbility>();

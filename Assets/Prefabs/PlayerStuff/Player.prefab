@@ -10614,7 +10614,7 @@ MonoBehaviour:
   abilityEnded:
     m_PersistentCalls:
       m_Calls: []
-  perUseCostIncrease: 5
+  perUseCostIncrease: 10
   particles: {fileID: 2042664917}
 --- !u!114 &890357418226770071
 MonoBehaviour:
@@ -10686,7 +10686,7 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   m_ShapePathHash: 0
   m_Mesh: {fileID: 0}
-  m_InstanceId: -2288
+  m_InstanceId: 44768
 --- !u!114 &890357418226770074
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10724,7 +10724,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   explosionRadiusMultiplier: 3
-  perUseCostIncrease: 5
+  perUseCostIncrease: 10
   particles: {fileID: 1286582429}
 --- !u!1 &1125015012933657869
 GameObject:
@@ -11153,4 +11153,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2097d25a87a24c5478132616aca44532, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TiltSpeed: 0.1
+  TiltSpeed: 25

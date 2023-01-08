@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class HealSpawner : MonoBehaviour
 {
+    [SerializeField] private float perSpawnIntervalIncrease;
     [SerializeField] private LayerMask enemyLayers;
     [SerializeField] private LayerMask healObjectLayer;
     [SerializeField] private HealerObject healerObject;
@@ -13,6 +14,8 @@ public class HealSpawner : MonoBehaviour
     private Collider2D[] enemiesInRange = new Collider2D[30];
     private readonly float _enemiesCheckRange = 40f;
 
+    private int _spawnsCount;
+
     private void Start()
     {
         _playerHealth = FindObjectOfType<PlayerHealth>();
@@ -23,7 +26,12 @@ public class HealSpawner : MonoBehaviour
             Destroy(gameObject);
         }
 
-        _playerHealth.DamagedEvent.AddListener(() => Invoke(nameof(SpawnHealObjectInBestPosition), timeToSpawnHealAfterDamaged));
+        _playerHealth.DamagedEvent.AddListener(() =>
+        {
+            Invoke(nameof(SpawnHealObjectInBestPosition),
+                timeToSpawnHealAfterDamaged + perSpawnIntervalIncrease * _spawnsCount);
+            _spawnsCount++;
+        });
     }
 
     private void SpawnHealObjectInBestPosition()

@@ -153,7 +153,7 @@ MonoBehaviour:
   timeForMaxSpeed: 0.4
   ySlowingMultiplier: 0.5
   xSlowingMultiplier: 0.2
-  maxLifeTime: 5
+  maxLifeTime: 8
   explodePower: 50
   explodeRadius: 4
   playerLayer:

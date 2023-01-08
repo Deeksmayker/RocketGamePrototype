@@ -5,7 +5,7 @@ namespace Model.MovingCreatures.Player
 {
     public class TiltСontroller : MonoBehaviour
     {
-        [Range(0.1f, 1f)] 
+   
         [SerializeField] private float TiltSpeed = 0.1f;
         
         private Rigidbody2D rigidbody;
@@ -22,7 +22,7 @@ namespace Model.MovingCreatures.Player
             if (bouncePlayerController.AirState is Grounded or Bouncing)
                 transform.rotation = Quaternion.Euler(0, 0, -rigidbody.velocity.x);
             else
-                transform.Rotate(new Vector3(0,0, -rigidbody.velocity.x * TiltSpeed));
+                transform.Rotate(new Vector3(0,0, -rigidbody.velocity.x * TiltSpeed * Time.deltaTime));
         }
     }
 }

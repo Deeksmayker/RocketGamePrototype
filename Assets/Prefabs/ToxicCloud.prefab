@@ -4924,9 +4924,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeToTakeDamage: 3
-  minSpeedDistance: 300
+  minSpeedDistance: 150
   maxSpeedDistance: 60
-  minSpeed: 5
+  minSpeed: 10
   maxSpeed: 20
 --- !u!50 &7227116468208722711
 Rigidbody2D:

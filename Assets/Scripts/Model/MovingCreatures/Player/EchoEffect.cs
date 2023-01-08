@@ -9,6 +9,7 @@ namespace Model.MovingCreatures.Player
         [SerializeField] private float TimeBetweenDestroy = 1f;
         [SerializeField] private Transform PlayerAimTransform;
         [SerializeField] private PlayerEcho EchoPrefab;
+        [SerializeField] private PlayerAbilities abilities;
 
         private float timeBetweenSpawns;
 
@@ -17,6 +18,14 @@ namespace Model.MovingCreatures.Player
         private void OnEnable()
         {
             timeBetweenSpawns = TimeBetweenSpawns;
+
+            Invoke(nameof(SetEvents), 1f);
+        }
+
+        private void SetEvents()
+        {
+            abilities.FirstAbility.abilityCasted.AddListener(() => SetEchoStatus(true));
+            abilities.FirstAbility.abilityEnded.AddListener(() => SetEchoStatus(false));
         }
 
         public void SetEchoStatus(bool status)
@@ -41,7 +50,7 @@ namespace Model.MovingCreatures.Player
         private void CreateEchoWithAimRotating()
         {
             var echo = Instantiate(EchoPrefab, transform.position, Quaternion.identity);
-            
+
             if (PlayerAimTransform)
                 echo.SetAimRotation(PlayerAimTransform.rotation);
             
