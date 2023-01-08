@@ -4924,8 +4924,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeToTakeDamage: 3
-  minSpeedDistance: 150
-  maxSpeedDistance: 50
+  minSpeedDistance: 300
+  maxSpeedDistance: 60
   minSpeed: 5
   maxSpeed: 20
 --- !u!50 &7227116468208722711

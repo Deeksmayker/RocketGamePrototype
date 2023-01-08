@@ -8,6 +8,7 @@ public class SlowTimeAbility : Ability
     [SerializeField] private float slowTimeScale;
     [SerializeField] private float slowingTimeDuration;
     [SerializeField] private float speedMultiplier;
+    [SerializeField] private int perUseCostIncrease = 2;
 
     private BouncePlayerController _playerController;
 
@@ -18,6 +19,7 @@ public class SlowTimeAbility : Ability
 
     public override IEnumerator CastAbility()
     {
+        GemCost += perUseCostIncrease;
         abilityCasted.Invoke();
 
         var lerpMultiplier = 0f;

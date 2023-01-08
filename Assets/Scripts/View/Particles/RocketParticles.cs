@@ -33,12 +33,14 @@ public class RocketParticles : MonoBehaviour
 
     public void Explode()
     {
-        Instantiate(explosionAudio, transform.position, Quaternion.identity);
+        if (explosionAudio != null)
+            Instantiate(explosionAudio, transform.position, Quaternion.identity);
+        explosionAudio = null;
         for (var i = 0; i < explosionParticles.Length; i++)
         {
             var a = Instantiate(explosionParticles[i], transform.position, Quaternion.identity);
-            var b = a.shape;
-            b.radius = _rocket.explodeRadius - 1;
+            var shape = a.shape;
+            shape.radius = _rocket.explodeRadius - 1;
         }
     }
 }

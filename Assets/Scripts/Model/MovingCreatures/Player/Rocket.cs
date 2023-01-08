@@ -12,7 +12,7 @@ namespace Player
     {
         private bool _slowing;
 
-        [SerializeField] private float maxSpeed;
+        [SerializeField] protected float maxSpeed;
         [SerializeField] private float timeForMaxSpeed;
         [SerializeField][Range(0, 1)] private float ySlowingMultiplier;
         [SerializeField][Range(0, 1)] private float xSlowingMultiplier;

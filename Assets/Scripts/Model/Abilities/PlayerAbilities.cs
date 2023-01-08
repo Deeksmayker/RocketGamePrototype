@@ -1,3 +1,4 @@
+using System;
 using Assets.Scripts.Model.Interfaces;
 using Player;
 using UnityEngine;
@@ -8,7 +9,7 @@ public class PlayerAbilities : MonoBehaviour, ITakeGem
 {
     [field: SerializeField] public int GemCount { get; private set; }
 
-    private Ability _firstAbility, _secondAbility, _thirdAbility;
+    [NonSerialized] public Ability FirstAbility, SecondAbility, ThirdAbility;
 
     private GameInputManager _input;
 
@@ -18,16 +19,16 @@ public class PlayerAbilities : MonoBehaviour, ITakeGem
     private void Start()
     {
         _input = GetComponent<GameInputManager>();
-        _firstAbility = GetComponent<SlowTimeAbility>();
-        _secondAbility = GetComponent<BounceRocketsAbility>();
-        _thirdAbility = GetComponent<ShrapnelAbility>();
+        FirstAbility = GetComponent<SlowTimeAbility>();
+        SecondAbility = GetComponent<BounceRocketsAbility>();
+        ThirdAbility = GetComponent<ExplosionRadiusAbility>();
     }
 
     private void Update()
     {
-        CheckAndCastAbility(_input.firstAbility, _firstAbility);
-        CheckAndCastAbility(_input.secondAbility, _secondAbility);
-        CheckAndCastAbility(_input.thirdAbility, _thirdAbility);
+        CheckAndCastAbility(_input.firstAbility, FirstAbility);
+        CheckAndCastAbility(_input.secondAbility, SecondAbility);
+        CheckAndCastAbility(_input.thirdAbility, ThirdAbility);
 
         _input.firstAbility = false;
         _input.secondAbility = false;
@@ -38,8 +39,8 @@ public class PlayerAbilities : MonoBehaviour, ITakeGem
     {
         if (input && !ability.IsActive && GemCount >= ability.GemCost)
         {
-            StartCoroutine(ability.CastAbility());
             GemCount -= ability.GemCost;
+            StartCoroutine(ability.CastAbility());
             anyAbilityUsed.Invoke();
         }
     }

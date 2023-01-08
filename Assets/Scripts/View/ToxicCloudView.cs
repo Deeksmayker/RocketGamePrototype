@@ -11,7 +11,7 @@ public class ToxicCloudView : MonoBehaviour
         CameraShaking.Instance.SetShake(true);
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerStay2D(Collider2D col)
     {
         CameraShaking.Instance.SetShake(true);
     }

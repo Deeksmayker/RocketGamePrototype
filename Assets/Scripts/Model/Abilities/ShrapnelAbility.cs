@@ -6,6 +6,8 @@ public class ShrapnelAbility : Ability
 {
     private RocketLauncher _rocketLauncher;
 
+    [SerializeField] private int perUseCostIncrease;
+
     private void Start()
     {
         _rocketLauncher = GetComponent<RocketLauncher>();
@@ -17,6 +19,7 @@ public class ShrapnelAbility : Ability
 
     public override IEnumerator CastAbility()
     {
+        GemCost += perUseCostIncrease;
         abilityCasted.Invoke();
         _rocketLauncher.MakeNextRocketShrapnel();
 

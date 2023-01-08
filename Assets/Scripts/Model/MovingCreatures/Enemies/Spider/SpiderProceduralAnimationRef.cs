@@ -28,11 +28,13 @@ namespace Model.MovingCreatures.Enemies.Spider
 
         private void OnDisable()
         {
+            isBlocked = true;
             StopAllCoroutines();
         }
-
+        
         private void OnEnable()
         {
+            isBlocked = false;
             lastBodyUp = transform.up;
 
             countLegs = legTargets.Length;

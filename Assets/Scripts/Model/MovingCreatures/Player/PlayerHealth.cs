@@ -1,3 +1,4 @@
+using System;
 using Assets.Scripts.Model.Interfaces;
 using Player;
 using UnityEngine;
@@ -9,10 +10,12 @@ public class PlayerHealth : MonoBehaviour, IGetCaught
 
     [SerializeField] private float timeForShootAfterGetCaught;
     [SerializeField] private float invinsibilityAfterGetCaught;
+    [SerializeField] private float immuneToCloudTime = 3;
 
     private bool _getCaught;
     private bool _invinsible;
     private bool _canTakeDamage = true;
+    private bool _canTakeDamageByCloud = true;
 
     private BouncePlayerController _playerController;
     private RocketLauncher _rocketLauncher;
@@ -27,6 +30,14 @@ public class PlayerHealth : MonoBehaviour, IGetCaught
     {
         _playerController = GetComponent<BouncePlayerController>();
         _rocketLauncher = GetComponent<RocketLauncher>();
+    }
+
+    private void Update()
+    {
+        if (Health <= 0)
+        {
+            Die();
+        }
     }
 
     public void Heal()
@@ -80,16 +91,31 @@ public class PlayerHealth : MonoBehaviour, IGetCaught
             return;
         Health--;
 
+        _canTakeDamageByCloud = false;
         _canTakeDamage = false;
         Invoke(nameof(SetCanTakeDamage), 0.5f);
+        Invoke(nameof(SetCanTakeDamageByCloud), immuneToCloudTime);
 
         DamagedEvent.Invoke();
 
         if (Health <= 0)
         {
-            PlayerDiedEvent.Invoke();
-            Destroy(gameObject);
+            Die();
         }
+    }
+
+    public void TakeDamageByCloud()
+    {
+        if (!_canTakeDamageByCloud)
+            return;
+
+        TakeDamageOnRelease();
+    }
+
+    public void Die()
+    {
+        PlayerDiedEvent.Invoke();
+        Destroy(gameObject);
     }
 
     private void DisableShooting()
@@ -102,6 +128,11 @@ public class PlayerHealth : MonoBehaviour, IGetCaught
     private void SetCanTakeDamage()
     {
         _canTakeDamage = true;
+    }
+
+    private void SetCanTakeDamageByCloud()
+    {
+        _canTakeDamageByCloud = true;
     }
 
     private void RemoveInvinsibility()

@@ -32,7 +32,7 @@ public class ToxicCloud : MonoBehaviour
 
         if (_damageTimer >= timeToTakeDamage)
         {
-            _playerHealth.TakeDamageOnRelease();
+            _playerHealth.TakeDamageByCloud();
             _damageTimer = 0;
         }
     }

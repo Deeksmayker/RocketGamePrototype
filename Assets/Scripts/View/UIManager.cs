@@ -21,7 +21,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button firstAbilityButton;
     [SerializeField] private Button secondAbilityButton;
     [SerializeField] private Button thirdAbilityButton;
-    [SerializeField] private float firstCost, secondCost, thirdCost;
 
     private GameManager _gameManager;
     private PlayerAbilities _playerAbilities;
@@ -83,32 +82,24 @@ public class UIManager : MonoBehaviour
 
     public void UpdateAbilityButtons()
     {
-        if (_playerAbilities.GemCount < firstCost)
+        SetAbilityInteraction(_playerAbilities.FirstAbility, firstAbilityButton);
+        SetAbilityInteraction(_playerAbilities.SecondAbility, secondAbilityButton);
+        SetAbilityInteraction(_playerAbilities.ThirdAbility, thirdAbilityButton);
+
+        firstAbilityButton.GetComponentInChildren<TextMeshProUGUI>().text = "Z \n" + _playerAbilities.FirstAbility.GemCost.ToString();
+        secondAbilityButton.GetComponentInChildren<TextMeshProUGUI>().text = "X \n" + _playerAbilities.SecondAbility.GemCost.ToString();
+        thirdAbilityButton.GetComponentInChildren<TextMeshProUGUI>().text = "C \n" + _playerAbilities.ThirdAbility.GemCost.ToString();
+    }
+
+    public void SetAbilityInteraction(Ability ability, Button abilityButton)
+    {
+        if (_playerAbilities.GemCount < ability.GemCost)
         {
-            firstAbilityButton.interactable = false;
-            secondAbilityButton.interactable = false;
-            thirdAbilityButton.interactable = false;
+            abilityButton.interactable = false;
         }
         else
         {
-            firstAbilityButton.interactable = true;
-        }
-        if (_playerAbilities.GemCount < secondCost)
-        {
-            secondAbilityButton.interactable = false;
-            thirdAbilityButton.interactable = false;
-        }
-        else
-        {
-            secondAbilityButton.interactable = true;
-        }
-        if (_playerAbilities.GemCount < thirdCost)
-        {
-            thirdAbilityButton.interactable = false;
-        }
-        else
-        {
-            thirdAbilityButton.interactable = true;
+            abilityButton.interactable = true;
         }
     }
 
@@ -124,6 +115,7 @@ public class UIManager : MonoBehaviour
 
     public void OnNewRecord()
     {
+        Debug.Log("New record ui");
         newRecordText.gameObject.SetActive(true);
         newRecordSound.Play();
     }

@@ -15,6 +15,7 @@ namespace Player
         [SerializeField] private float shootCooldown;
 
         private float _currentCooldown;
+        private float _radiusMultiplier = 1;
 
         private bool _canShoot;
         private bool _isNextRocketShrapnel;
@@ -76,6 +77,7 @@ namespace Player
         {
             var newRocket = Instantiate(_currentRocket, rocketStartPoint.position, Quaternion.identity);
             newRocket.SetDirection(_currentAimDirection);
+            newRocket.explodeRadius *= _radiusMultiplier;
 
             if (_isNextRocketShrapnel)
             {
@@ -100,6 +102,11 @@ namespace Player
         public void SetCaught(bool isGetCaught)
         {
             _getCaught = isGetCaught;
+        }
+
+        public void SetRadiusMultiplier(float multiplier)
+        {
+            _radiusMultiplier = multiplier;
         }
 
         public void MakeNextRocketShrapnel()
