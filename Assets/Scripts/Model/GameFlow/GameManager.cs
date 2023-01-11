@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Player;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -8,8 +9,12 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static Vector2 LeftUpArenaPoint, RightDownArenaPoint;
+    public static int DiedCount;
 
     public static float GameTime { get; private set; }
+
+    [SerializeField] private BouncePlayerController playerOnScene;
+    [SerializeField] private Rocket rocketPrefab;
 
     [SerializeField] private ToxicCloud cloudPrefab;
 
@@ -34,14 +39,19 @@ public class GameManager : MonoBehaviour
 
     public UnityEvent NewRecordEvent = new();
 
+    public static UnityEvent PlayerRevived = new();
+
     //[SerializeField] private ParticleSystem rainParticles;
 
     //private Tilemap _currentTilemap;
 
-    private void OnEnable()
+    private void Awake()
     {
         GameTime = 0;
-
+    }
+    
+    private void OnEnable()
+    {
         PlayerHealth.PlayerDiedEvent.AddListener(OnGameOver);
     }
 
@@ -54,6 +64,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        DiedCount = 0;
         LeftUpArenaPoint = createEnemiesManager.leftUpArenaCorner.position;
         RightDownArenaPoint = createEnemiesManager.rightDownArenaCorner.position;
 
@@ -147,5 +158,18 @@ public class GameManager : MonoBehaviour
     public void ReloadLevel()
     {
         SceneManager.LoadScene(1);
+    }
+
+    public void RevivePlayer()
+    {
+        _gameOver = false;
+        //OnEnable();
+        playerOnScene.gameObject.SetActive(true);
+        playerOnScene.GetComponent<PlayerHealth>().Health = 1;
+
+        var rocket = Instantiate(rocketPrefab, BouncePlayerController.PlayerPosition, Quaternion.identity);
+        rocket.SetDirection(Vector2.down);
+        rocket.explodeRadius *= 5;
+        PlayerRevived.Invoke();
     }
 }

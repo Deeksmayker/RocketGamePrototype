@@ -1,3 +1,4 @@
+using System;
 using Player;
 using System.Collections;
 using TMPro;
@@ -12,6 +13,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI healthText;
     [SerializeField] private GameObject diedPanel;
+    [SerializeField] private Button reviveButton;
     [SerializeField] private GameObject pausePanel;
 
     [SerializeField] private TextMeshProUGUI newRecordText;
@@ -39,11 +41,16 @@ public class UIManager : MonoBehaviour
 
         _playerHealth.DamagedEvent.AddListener(OnPlayerDamaged);
         _playerHealth.HealedEvent.AddListener(OnPlayerHealed);
-        PlayerHealth.PlayerDiedEvent.AddListener(() => diedPanel.SetActive(true));
-
+        
         _gameManager.NewRecordEvent.AddListener(OnNewRecord);
 
         OnGemTaken();
+    }
+
+    private void OnEnable()
+    {
+        GameManager.PlayerRevived.AddListener(OnPlayerRevive);
+        PlayerHealth.PlayerDiedEvent.AddListener(OnPlayerDied);
     }
 
     private void Update()
@@ -62,6 +69,22 @@ public class UIManager : MonoBehaviour
             }
             _input.pause = false;
         }
+    }
+
+    public void OnPlayerRevive()
+    {
+        OnPlayerDamaged();
+        diedPanel.SetActive(false);
+    }
+
+    public void OnPlayerDied()
+    {
+        diedPanel.SetActive(true);
+        
+        if (GameManager.DiedCount <= 1)
+            reviveButton.gameObject.SetActive(true);
+        else
+            reviveButton.gameObject.SetActive(false);
     }
 
     public void OpenPausePanel()
@@ -89,6 +112,8 @@ public class UIManager : MonoBehaviour
         firstAbilityButton.GetComponentInChildren<TextMeshProUGUI>().text = "Z \n" + _playerAbilities.FirstAbility.GemCost.ToString();
         secondAbilityButton.GetComponentInChildren<TextMeshProUGUI>().text = "X \n" + _playerAbilities.SecondAbility.GemCost.ToString();
         thirdAbilityButton.GetComponentInChildren<TextMeshProUGUI>().text = "C \n" + _playerAbilities.ThirdAbility.GemCost.ToString();
+        
+        GameManager.PlayerRevived.AddListener(() => OnPlayerDamaged());
     }
 
     public void SetAbilityInteraction(Ability ability, Button abilityButton)

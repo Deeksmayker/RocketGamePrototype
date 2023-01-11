@@ -10248,8 +10248,8 @@ GameObject:
   - component: {fileID: 890357418226770071}
   - component: {fileID: 1342712539}
   - component: {fileID: 890357418226770073}
-  - component: {fileID: 890357418226770074}
   - component: {fileID: 4727992094214435187}
+  - component: {fileID: 890357418226770074}
   m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
@@ -10686,23 +10686,7 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   m_ShapePathHash: 0
   m_Mesh: {fileID: 0}
-  m_InstanceId: 44768
---- !u!114 &890357418226770074
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 890357418586667384}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa02bb44f948ca14db8157387c4f2630, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TimeBetweenSpawns: 0.1
-  TimeBetweenDestroy: 1
-  PlayerAimTransform: {fileID: 890357418188273164}
-  EchoPrefab: {fileID: 2930274885075129484, guid: 2aafc664d2ea7834c84effc6a26da68c, type: 3}
+  m_InstanceId: -80136
 --- !u!114 &4727992094214435187
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10726,6 +10710,23 @@ MonoBehaviour:
   explosionRadiusMultiplier: 3
   perUseCostIncrease: 10
   particles: {fileID: 1286582429}
+--- !u!114 &890357418226770074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 890357418586667384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa02bb44f948ca14db8157387c4f2630, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TimeBetweenSpawns: 0.1
+  TimeBetweenDestroy: 1
+  PlayerAimTransform: {fileID: 890357418188273164}
+  EchoPrefab: {fileID: 2930274885075129484, guid: 2aafc664d2ea7834c84effc6a26da68c, type: 3}
+  abilities: {fileID: 890357418226770067}
 --- !u!1 &1125015012933657869
 GameObject:
   m_ObjectHideFlags: 0

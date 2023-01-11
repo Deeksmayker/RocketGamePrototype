@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 public class PlayerHealth : MonoBehaviour, IGetCaught
 {
-    [field: SerializeField] public int Health { get; private set; }
+    [field: SerializeField] public int Health { get; set; }
 
     [SerializeField] private float timeForShootAfterGetCaught;
     [SerializeField] private float invinsibilityAfterGetCaught;
@@ -114,8 +114,9 @@ public class PlayerHealth : MonoBehaviour, IGetCaught
 
     public void Die()
     {
+        GameManager.DiedCount++;
         PlayerDiedEvent.Invoke();
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
     private void DisableShooting()
