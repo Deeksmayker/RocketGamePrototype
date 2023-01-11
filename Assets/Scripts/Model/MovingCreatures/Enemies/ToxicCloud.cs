@@ -28,6 +28,12 @@ public class ToxicCloud : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D other)
     {
+        if (!_playerHealth.CanTakeDamageByCloud)
+        {
+            _damageTimer = 0;
+            return;
+        }
+        
         _damageTimer += Time.deltaTime;
 
         if (_damageTimer >= timeToTakeDamage)

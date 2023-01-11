@@ -15,7 +15,7 @@ public class PlayerHealth : MonoBehaviour, IGetCaught
     private bool _getCaught;
     private bool _invinsible;
     private bool _canTakeDamage = true;
-    private bool _canTakeDamageByCloud = true;
+    public bool CanTakeDamageByCloud { get; private set; }= true;
 
     private BouncePlayerController _playerController;
     private RocketLauncher _rocketLauncher;
@@ -30,6 +30,11 @@ public class PlayerHealth : MonoBehaviour, IGetCaught
     {
         _playerController = GetComponent<BouncePlayerController>();
         _rocketLauncher = GetComponent<RocketLauncher>();
+    }
+
+    private void OnEnable()
+    {
+        GameManager.PlayerRevived.AddListener(OnPlayerRevive);
     }
 
     private void Update()
@@ -53,6 +58,7 @@ public class PlayerHealth : MonoBehaviour, IGetCaught
     public void GetCaught()
     {
         _getCaught = true;
+        CanTakeDamageByCloud = false;
         GetCaughtEvent.Invoke();
 
         if (_playerController != null)
@@ -83,6 +89,7 @@ public class PlayerHealth : MonoBehaviour, IGetCaught
 
         _invinsible = true;
         Invoke(nameof(RemoveInvinsibility), invinsibilityAfterGetCaught);
+        Invoke(nameof(SetCanTakeDamageByCloud), immuneToCloudTime);
     }
 
     public void TakeDamageOnRelease()
@@ -91,7 +98,7 @@ public class PlayerHealth : MonoBehaviour, IGetCaught
             return;
         Health--;
 
-        _canTakeDamageByCloud = false;
+        CanTakeDamageByCloud = false;
         _canTakeDamage = false;
         Invoke(nameof(SetCanTakeDamage), 0.5f);
         Invoke(nameof(SetCanTakeDamageByCloud), immuneToCloudTime);
@@ -106,10 +113,19 @@ public class PlayerHealth : MonoBehaviour, IGetCaught
 
     public void TakeDamageByCloud()
     {
-        if (!_canTakeDamageByCloud)
+        if (!CanTakeDamageByCloud)
             return;
 
         TakeDamageOnRelease();
+    }
+
+    public void OnPlayerRevive()
+    {
+        CanTakeDamageByCloud = false;
+        _canTakeDamage = false;
+        
+        Invoke(nameof(SetCanTakeDamageByCloud), 3);
+        Invoke(nameof(SetCanTakeDamage), 3);
     }
 
     public void Die()
@@ -133,7 +149,7 @@ public class PlayerHealth : MonoBehaviour, IGetCaught
 
     private void SetCanTakeDamageByCloud()
     {
-        _canTakeDamageByCloud = true;
+        CanTakeDamageByCloud = true;
     }
 
     private void RemoveInvinsibility()

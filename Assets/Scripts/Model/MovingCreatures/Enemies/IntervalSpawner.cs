@@ -18,9 +18,21 @@ public class IntervalSpawner : MonoBehaviour, IReactToExplosion
     [NonSerialized] public Func<GameObject> GetCreatureFromPool;
 
     [NonSerialized] public UnityEvent TakeDamageEvent = new();
+    
+    public float pulseSpeed = 1f;
+    public float pulseAmount = 0.1f;
+
+    private Vector3 originalScale;
+
+    private void Start()
+    {
+        originalScale = transform.localScale;
+    }
 
     private void Update()
     {
+        MakePulsation();
+        
         _timeFromLastSpawn += Time.deltaTime;
 
         if (_timeFromLastSpawn >= spawnInterval)
@@ -30,6 +42,21 @@ public class IntervalSpawner : MonoBehaviour, IReactToExplosion
             creature.GetComponent<ISpawnable>().Spawn(startSpeed, spawnDirection);
             _timeFromLastSpawn = 0;
         }
+    }
+
+    private void MakePulsation()
+    {
+        var speedMultiplier = 1;
+        var amountMultiplier = 1;
+
+        if (spawnInterval - _timeFromLastSpawn <= 3)
+        {
+            speedMultiplier = 10;
+            amountMultiplier = 5;
+        }
+        float scale = Mathf.Sin(Time.time * pulseSpeed * speedMultiplier) * pulseAmount * amountMultiplier;
+        
+        transform.localScale = new Vector2(originalScale.x + scale, originalScale.y + scale);
     }
 
     /*public void SetTakeDamageEventForCreature(UnityAction action)

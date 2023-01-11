@@ -95,6 +95,11 @@ public class UIManager : MonoBehaviour
             YandexGame.SaveProgress();
             GameManager.NewRecordEvent.Invoke();
             YandexGame.NewLBScoreTimeConvert("Record", GameManager.GameTime);
+
+            if (GameManager.GameTime > 150)
+            {
+                YandexGame.ReviewShow(true);
+            }
         }
         
         if (GameManager.DiedCount <= 1)
@@ -163,11 +168,27 @@ public class UIManager : MonoBehaviour
 
     public void ToMainMenu()
     {
+        YandexGame.FullscreenShow();
         SceneManager.LoadScene(0);
+    }
+
+    public void ReloadLevel()
+    {
+        if (GameManager.GameTime > 150)
+            YandexGame.FullscreenShow();
+        SceneManager.LoadScene(1);
     }
 
     public void UpdateLanguage()
     {
         
     }
+
+    [SerializeField] private Slider soundSlider;
+
+    public void ManageSound()
+    {
+        AudioListener.volume = soundSlider.value;
+    }
+    
 }
