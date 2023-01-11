@@ -1,6 +1,8 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using YG;
 
 public class MainMenuUI : MonoBehaviour
 {
@@ -9,9 +11,22 @@ public class MainMenuUI : MonoBehaviour
 
     private void Start()
     {
-        UpdateLanguage();
+        if (YandexGame.SDKEnabled)
+        {
+            UpdateLanguage();
+        }
         
         Localization.LanguageChanged.AddListener(() => UpdateLanguage());
+    }
+
+    private void OnEnable()
+    {
+        YandexGame.GetDataEvent += UpdateLanguage;
+    }
+
+    private void OnDisable()
+    {
+        YandexGame.GetDataEvent -= UpdateLanguage;
     }
 
     public void OnPlay()
@@ -32,7 +47,7 @@ public class MainMenuUI : MonoBehaviour
 
     public void UpdateLanguage()
     {
-        var record = PlayerPrefs.HasKey("Record") ? PlayerPrefs.GetFloat("Record") : 0;
+        var record = YandexGame.savesData.record;
         var languageText = LanguageInfo.Language == LanguageInfo.Languages.Russian ? "Ваш рекорд" : "Your Record";
         recordText.text = $"{languageText} - {record}";
         

@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
 
     private bool _gameOver;
 
-    public UnityEvent NewRecordEvent = new();
+    public static UnityEvent NewRecordEvent = new();
 
     public static UnityEvent PlayerRevived = new();
 
@@ -136,22 +136,10 @@ public class GameManager : MonoBehaviour
     public void OnGameOver()
     {
         _gameOver = true;
-
-        if (!PlayerPrefs.HasKey("Record"))
-            PlayerPrefs.SetFloat("Record", 0);
-
-        if (PlayerPrefs.GetFloat("Record") < GameTime)
-        {
-            PlayerPrefs.SetFloat("Record", GameTime);
-            NewRecordEvent.Invoke();
-        }
-
-        PlayerPrefs.Save();
     }
 
     private void SpawnToxicCloud()
     {
-        Debug.Log("Spawned toxic cloud");
         Instantiate(cloudPrefab, Vector2.zero, Quaternion.identity);
     }
 

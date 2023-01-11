@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using YG;
 
 public class UIManager : MonoBehaviour
 {
@@ -42,7 +43,7 @@ public class UIManager : MonoBehaviour
         _playerHealth.DamagedEvent.AddListener(OnPlayerDamaged);
         _playerHealth.HealedEvent.AddListener(OnPlayerHealed);
         
-        _gameManager.NewRecordEvent.AddListener(OnNewRecord);
+        GameManager.NewRecordEvent.AddListener(OnNewRecord);
 
         OnGemTaken();
     }
@@ -71,6 +72,11 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void OpenRewardAd()
+    {
+        YandexGame.RewVideoShow(1);
+    }
+
     public void OnPlayerRevive()
     {
         OnPlayerDamaged();
@@ -80,6 +86,16 @@ public class UIManager : MonoBehaviour
     public void OnPlayerDied()
     {
         diedPanel.SetActive(true);
+
+        if (YandexGame.savesData.record < GameManager.GameTime)
+        {
+            YandexGame.savesData.record = GameManager.GameTime;
+            //YandexGame.SaveCloud();
+            //YandexGame.SaveLocal();
+            YandexGame.SaveProgress();
+            GameManager.NewRecordEvent.Invoke();
+            YandexGame.NewLBScoreTimeConvert("Record", GameManager.GameTime);
+        }
         
         if (GameManager.DiedCount <= 1)
             reviveButton.gameObject.SetActive(true);
