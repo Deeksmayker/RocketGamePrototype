@@ -5,11 +5,13 @@ using UnityEngine.SceneManagement;
 public class MainMenuUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI recordText;
+    [SerializeField] private TextMeshProUGUI playText, exitText, resetText;
 
     private void Start()
     {
-        var record = PlayerPrefs.HasKey("Record") ? PlayerPrefs.GetFloat("Record") : 0;
-        recordText.text = $"Your Record - {record}";
+        UpdateLanguage();
+        
+        Localization.LanguageChanged.AddListener(() => UpdateLanguage());
     }
 
     public void OnPlay()
@@ -20,5 +22,22 @@ public class MainMenuUI : MonoBehaviour
     public void OnExit()
     {
         Application.Quit();
+    }
+    
+    public void ResetRecord()
+    {
+        PlayerPrefs.DeleteAll();
+        Start();
+    }
+
+    public void UpdateLanguage()
+    {
+        var record = PlayerPrefs.HasKey("Record") ? PlayerPrefs.GetFloat("Record") : 0;
+        var languageText = LanguageInfo.Language == LanguageInfo.Languages.Russian ? "Ваш рекорд" : "Your Record";
+        recordText.text = $"{languageText} - {record}";
+        
+        playText.text = LanguageInfo.Language == LanguageInfo.Languages.Russian ? "Играть" : "Play";
+        exitText.text = LanguageInfo.Language == LanguageInfo.Languages.Russian ? "Выйти" : "Exit";
+        resetText.text = LanguageInfo.Language == LanguageInfo.Languages.Russian ? "Сбросить рекорд" : "Reset record";
     }
 }
