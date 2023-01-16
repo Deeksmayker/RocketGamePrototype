@@ -11,6 +11,8 @@ public class MainMenuUI : MonoBehaviour
 
     private void Start()
     {
+        Time.timeScale = 1;
+        
         if (YandexGame.SDKEnabled)
         {
             UpdateLanguage();

@@ -57,16 +57,18 @@ public class UIManager : MonoBehaviour
     private void Update()
     {
         ChangeTimerText();
-
+        
         if (_input.pause)
         {
             if (pausePanel.activeSelf)
             {
                 pausePanel.SetActive(false);
+                RocketLauncher.InMenu = false;
             }
             else
             {
                 OpenPausePanel();
+                RocketLauncher.InMenu = true;
             }
             _input.pause = false;
         }

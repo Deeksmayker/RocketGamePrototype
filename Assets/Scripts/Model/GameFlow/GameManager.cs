@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        Time.timeScale = 1;
         GameTime = 0;
     }
     
@@ -64,6 +65,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        Time.timeScale = 1;
         DiedCount = 0;
         LeftUpArenaPoint = createEnemiesManager.leftUpArenaCorner.position;
         RightDownArenaPoint = createEnemiesManager.rightDownArenaCorner.position;
@@ -80,6 +82,9 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (GameTime < 1)
+            Time.timeScale = 1;
+        
         UpdateGameTime();
 
         var isCycleTimePassed = (GameTime - _lastTimeCycleSpawnedEnemies)

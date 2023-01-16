@@ -6,6 +6,8 @@ namespace Player
 {
     public class RocketLauncher : MonoBehaviour
     {
+        public static bool InMenu;
+        
         [SerializeField] private Rocket rocket;
         [SerializeField] private BounceHomingRocket bounceRocket;
         [SerializeField] private ShrapnelRocket shrapnelRocketPrefab;
@@ -34,6 +36,8 @@ namespace Player
             _currentCooldown = shootCooldown;
             _input = GetComponent<GameInputManager>();
             _currentRocket = rocket;
+
+            InMenu = false;
         }
 
         private void Update()
@@ -56,7 +60,7 @@ namespace Player
                 }
             }
 
-            if (_input.shoot && _canShoot)
+            if (_input.shoot && _canShoot && !InMenu)
             {
                 Shoot();
                 _canShoot = false;
