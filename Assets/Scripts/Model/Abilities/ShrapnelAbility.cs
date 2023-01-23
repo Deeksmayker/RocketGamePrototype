@@ -42,4 +42,11 @@ public class ShrapnelAbility : Ability
 
         abilityEnded.Invoke();
     }
+
+    public override void DisableAbility()
+    {
+        abilityEnded.Invoke();
+        _shootPerformed = false;
+        _rocketLauncher.RemoveShrapnelFromNextRocket();
+    }
 }

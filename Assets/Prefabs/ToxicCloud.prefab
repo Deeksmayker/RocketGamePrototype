@@ -4926,8 +4926,8 @@ MonoBehaviour:
   timeToTakeDamage: 3
   minSpeedDistance: 150
   maxSpeedDistance: 60
-  minSpeed: 10
-  maxSpeed: 20
+  minSpeed: 7
+  maxSpeed: 15
 --- !u!50 &7227116468208722711
 Rigidbody2D:
   serializedVersion: 4

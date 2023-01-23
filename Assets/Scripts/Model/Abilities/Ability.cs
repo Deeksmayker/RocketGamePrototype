@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
@@ -18,4 +19,10 @@ public abstract class Ability : MonoBehaviour
     public UnityEvent abilityEnded = new();
 
     public abstract IEnumerator CastAbility();
+    public abstract void DisableAbility();
+
+    protected virtual void OnDisable()
+    {
+        DisableAbility();
+    }
 }

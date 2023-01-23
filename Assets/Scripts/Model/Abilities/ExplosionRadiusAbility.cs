@@ -28,4 +28,11 @@ public class ExplosionRadiusAbility : Ability
         abilityEnded.Invoke();
         particles.Stop();
     }
+
+    public override void DisableAbility()
+    {
+        _rocketLauncher.SetRadiusMultiplier(1);
+        abilityEnded.Invoke();
+        particles.Stop();
+    }
 }

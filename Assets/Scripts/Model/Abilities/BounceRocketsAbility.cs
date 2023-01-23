@@ -31,18 +31,21 @@ public class BounceRocketsAbility : Ability
         {
             if (_shootPerformed)
             {
-                abilityEnded.Invoke();
-                _shootPerformed = false;
-                _rocketLauncher.SetRocketToDefault();
-                particles.Stop();
+                DisableAbility();
                 yield break;
             }
             timer -= Time.deltaTime;
             yield return null;
         }
 
+        DisableAbility();
+    }
+
+    public override void DisableAbility()
+    {
+        _shootPerformed = false;
         _rocketLauncher.SetRocketToDefault();
-        abilityEnded.Invoke();
         particles.Stop();
+        abilityEnded.Invoke();
     }
 }

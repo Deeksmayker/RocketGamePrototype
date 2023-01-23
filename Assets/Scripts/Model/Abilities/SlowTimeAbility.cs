@@ -33,7 +33,13 @@ public class SlowTimeAbility : Ability
             yield return null;
         }
 
-        yield return new WaitForSeconds(duration);
+        var timer = duration;
+        while (timer > 0)
+        {
+            Time.timeScale = slowTimeScale;
+            timer -= Time.unscaledDeltaTime;
+            yield return null;
+        }
 
         lerpMultiplier = 0f;
         while (!Utils.CompareNumsApproximately(_playerController.OriginalWalkSpeed, _playerController.GetWalkSpeed(), 0.001f))
@@ -47,5 +53,10 @@ public class SlowTimeAbility : Ability
         }
 
         abilityEnded.Invoke();
+    }
+
+    public override void DisableAbility()
+    {
+        Time.timeScale = 1;
     }
 }
