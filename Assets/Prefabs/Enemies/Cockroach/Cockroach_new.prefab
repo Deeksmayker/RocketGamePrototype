@@ -890,6 +890,7 @@ GameObject:
   - component: {fileID: 6002032491539718672}
   - component: {fileID: 6588067924321409436}
   - component: {fileID: 4044350193069340716}
+  - component: {fileID: -7989475742448991365}
   m_Layer: 8
   m_Name: Cockroach_new
   m_TagString: Untagged
@@ -1013,24 +1014,6 @@ MonoBehaviour:
   fallMultiplier: 5
   accelRate: 0.3
   JumpForce: 20
-  OnJumpStarted:
-    m_PersistentCalls:
-      m_Calls: []
-  OnLandedAfterJump:
-    m_PersistentCalls:
-      m_Calls: []
-  OnLanded:
-    m_PersistentCalls:
-      m_Calls: []
-  OnWallJumped:
-    m_PersistentCalls:
-      m_Calls: []
-  OnStartKillFly:
-    m_PersistentCalls:
-      m_Calls: []
-  OnStopKillFly:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &3637058042915326560
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1099,6 +1082,21 @@ MonoBehaviour:
   upPosToTeleport: 90
   delta: 1
   maxTimeToBeBelow: 10
+--- !u!114 &-7989475742448991365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 273867459368678798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18262baf93476f446aa9b682785909ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinPrefab: {fileID: 4944506133651822365, guid: c28a75a6804752e49a1047afba99d2dd, type: 3}
+  particles: {fileID: 1902245689468726929, guid: 192ae01609dea9147b3768fec57c7381, type: 3}
+  coinCount: 5
 --- !u!1 &273867459370573159
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2147311408140433424}
   - component: {fileID: 2147311408140433427}
   - component: {fileID: 8762752505618271147}
+  - component: {fileID: 5677125057450217429}
   m_Layer: 13
   m_Name: FlySpawner
   m_TagString: Untagged
@@ -165,3 +166,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gemPrefab: {fileID: 6404256094005438249, guid: d0b19647d8b65a64a958b60fcebe851c, type: 3}
+--- !u!114 &5677125057450217429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2147311408140433426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18262baf93476f446aa9b682785909ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinPrefab: {fileID: 4944506133651822365, guid: c28a75a6804752e49a1047afba99d2dd, type: 3}
+  particles: {fileID: 1902245689468726929, guid: 192ae01609dea9147b3768fec57c7381, type: 3}
+  coinCount: 5

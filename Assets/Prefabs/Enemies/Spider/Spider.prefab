@@ -272,6 +272,7 @@ GameObject:
   - component: {fileID: -2703300341387447037}
   - component: {fileID: 3539154443248174962}
   - component: {fileID: -2860197587894845972}
+  - component: {fileID: -1259976983818210966}
   m_Layer: 8
   m_Name: Spider
   m_TagString: Untagged
@@ -409,12 +410,6 @@ MonoBehaviour:
   rotationSpeed: 250
   gravityMultuplier: 4
   checkWallDistance: 2
-  OnStartKillFly:
-    m_PersistentCalls:
-      m_Calls: []
-  OnStopKillFly:
-    m_PersistentCalls:
-      m_Calls: []
   spiderJumped:
     m_PersistentCalls:
       m_Calls: []
@@ -509,6 +504,21 @@ MonoBehaviour:
   upPosToTeleport: 90
   delta: 1
   maxTimeToBeBelow: 10
+--- !u!114 &-1259976983818210966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6793332223282650832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18262baf93476f446aa9b682785909ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinPrefab: {fileID: 4944506133651822365, guid: c28a75a6804752e49a1047afba99d2dd, type: 3}
+  particles: {fileID: 1902245689468726929, guid: 192ae01609dea9147b3768fec57c7381, type: 3}
+  coinCount: 5
 --- !u!1 &6793332223319399112
 GameObject:
   m_ObjectHideFlags: 0
