@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.Model;
 using Player;
 using UnityEngine;
 using UnityEngine.Events;
@@ -48,7 +49,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         Time.timeScale = 1;
-        GameTime = 0;
+        GameTime = SavesManager.GetStartTimeValue();
     }
     
     private void OnEnable()

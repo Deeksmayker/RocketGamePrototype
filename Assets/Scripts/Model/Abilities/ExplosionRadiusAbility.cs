@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts.Model;
 using Player;
 using UnityEngine;
 
@@ -27,6 +28,11 @@ public class ExplosionRadiusAbility : Ability
         
         abilityEnded.Invoke();
         particles.Stop();
+    }
+
+    public override void LoadUpgradedValue()
+    {
+        explosionRadiusMultiplier = SavesManager.GetRadiusValue();
     }
 
     public override void DisableAbility()

@@ -55,6 +55,11 @@ public class SlowTimeAbility : Ability
         abilityEnded.Invoke();
     }
 
+    public override void LoadUpgradedValue()
+    {
+        duration = SavesManager.GetSlowTimeDuration();
+    }
+
     public override void DisableAbility()
     {
         Time.timeScale = 1;

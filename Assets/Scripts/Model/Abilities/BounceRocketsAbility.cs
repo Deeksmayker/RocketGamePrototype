@@ -1,5 +1,6 @@
 using Player;
 using System.Collections;
+using Assets.Scripts.Model;
 using UnityEngine;
 
 public class BounceRocketsAbility : Ability
@@ -39,6 +40,11 @@ public class BounceRocketsAbility : Ability
         }
 
         DisableAbility();
+    }
+
+    public override void LoadUpgradedValue()
+    {
+        duration = SavesManager.GetBounceDuration();
     }
 
     public override void DisableAbility()

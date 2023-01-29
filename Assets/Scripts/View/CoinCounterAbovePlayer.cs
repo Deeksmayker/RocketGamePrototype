@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Assets.Scripts.Model;
 using TMPro;
 using UnityEngine;
@@ -23,12 +20,12 @@ public class CoinCounterAbovePlayer : MonoBehaviour
 
     private void OnEnable()
     {
-        SavesManager.OnCoinPickup.AddListener(UpdateCoinCount);
+        SavesManager.OnCoinValueChanged.AddListener(UpdateCoinCount);
     }
 
     private void OnDisable()
     {
-        SavesManager.OnCoinPickup.RemoveListener(UpdateCoinCount);
+        SavesManager.OnCoinValueChanged.RemoveListener(UpdateCoinCount);
     }
 
     private void Update()
@@ -50,7 +47,7 @@ public class CoinCounterAbovePlayer : MonoBehaviour
 
     private void UpdateCoinCount()
     {
-        _pulsationSpeed *= 4;
+        _pulsationSpeed = 20;
         _currentCount++;
         _coinText.text = "+" + _currentCount;
         _timer = 0;

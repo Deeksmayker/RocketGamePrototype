@@ -1,4 +1,6 @@
 ﻿
+using UnityEngine;
+
 namespace YG
 {
     [System.Serializable]
@@ -12,6 +14,9 @@ namespace YG
 
        
         public float record = 0;
+        public int coins;
+        public Sprite skin;
+        public string[] skinCosts;
 
         // Ваши сохранения
 

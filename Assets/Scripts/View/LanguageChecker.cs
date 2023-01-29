@@ -10,6 +10,13 @@ public class LanguageChecker : MonoBehaviour
 
     private void Start()
     {
+        UpdateLanguage();
+        
+        Localization.LanguageChanged.AddListener(UpdateLanguage);
+    }
+
+    public void UpdateLanguage()
+    {
         GetComponent<TextMeshProUGUI>().text =
             LanguageInfo.Language == LanguageInfo.Languages.Russian ? russianText : englishText;
     }

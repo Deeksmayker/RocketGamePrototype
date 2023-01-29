@@ -15,11 +15,18 @@ public abstract class Ability : MonoBehaviour
         abilityEnded.AddListener(() => IsActive = false);
     }
 
+    protected void OnEnable()
+    {
+        LoadUpgradedValue();
+    }
+
     public UnityEvent abilityCasted = new();
     public UnityEvent abilityEnded = new();
 
     public abstract IEnumerator CastAbility();
     public abstract void DisableAbility();
+
+    public abstract void LoadUpgradedValue();
 
     protected virtual void OnDisable()
     {

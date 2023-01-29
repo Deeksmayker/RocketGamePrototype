@@ -1,6 +1,7 @@
 using System;
 using Player;
 using System.Collections;
+using Assets.Scripts.Model;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -25,6 +26,13 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button secondAbilityButton;
     [SerializeField] private Button thirdAbilityButton;
 
+    [Header("Upgrades And Coins")]
+    [SerializeField] private TextMeshProUGUI coinCounterText;
+    [SerializeField] private TextMeshProUGUI additionalCoinCounterText;
+    
+    private int _coinCountOnStart;
+    private int _earnedCoins;
+
     private GameManager _gameManager;
     private PlayerAbilities _playerAbilities;
     private PlayerHealth _playerHealth;
@@ -45,6 +53,8 @@ public class UIManager : MonoBehaviour
         
         GameManager.NewRecordEvent.AddListener(OnNewRecord);
 
+        _coinCountOnStart = SavesManager.Coins;
+
         OnGemTaken();
     }
 
@@ -52,6 +62,8 @@ public class UIManager : MonoBehaviour
     {
         GameManager.PlayerRevived.AddListener(OnPlayerRevive);
         PlayerHealth.PlayerDiedEvent.AddListener(OnPlayerDied);
+        SavesManager.OnCoinValueChanged.AddListener(() => _earnedCoins++);
+        
     }
 
     private void Update()
@@ -83,15 +95,20 @@ public class UIManager : MonoBehaviour
     {
         OnPlayerDamaged();
         diedPanel.SetActive(false);
+
+        _coinCountOnStart = SavesManager.Coins;
     }
 
     public void OnPlayerDied()
     {
         diedPanel.SetActive(true);
 
+        StartCoroutine(SetCoinCounters());
+        
         if (YandexGame.savesData.record < GameManager.GameTime)
         {
             YandexGame.savesData.record = GameManager.GameTime;
+            YandexGame.savesData.coins = SavesManager.Coins;
             //YandexGame.SaveCloud();
             //YandexGame.SaveLocal();
             YandexGame.SaveProgress();
@@ -192,5 +209,24 @@ public class UIManager : MonoBehaviour
     {
         AudioListener.volume = soundSlider.value;
     }
-    
+
+    private IEnumerator SetCoinCounters()
+    {
+        coinCounterText.text = _coinCountOnStart.ToString();
+        additionalCoinCounterText.text = "+" + _earnedCoins.ToString();
+
+        yield return new WaitForSeconds(1);
+
+        while (_earnedCoins > 0)
+        {
+            _earnedCoins--;
+            _coinCountOnStart++;
+            
+            coinCounterText.text = _coinCountOnStart.ToString();
+            additionalCoinCounterText.text = "+" + _earnedCoins.ToString();
+            yield return new WaitForSeconds(0.005f);
+        }
+
+        additionalCoinCounterText.text = "";
+    }
 }

@@ -43,6 +43,11 @@ public class ShrapnelAbility : Ability
         abilityEnded.Invoke();
     }
 
+    public override void LoadUpgradedValue()
+    {
+        Debug.LogError("No word in shrapnel");
+    }
+
     public override void DisableAbility()
     {
         abilityEnded.Invoke();
