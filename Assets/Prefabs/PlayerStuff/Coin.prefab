@@ -325,6 +325,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 80
+  coinClip: {fileID: 6507790560000983706, guid: 2d254670214313b498933e64c564dc0c, type: 3}
   rb: {fileID: 0}
 --- !u!50 &4944506133651822366
 Rigidbody2D:

@@ -32,6 +32,9 @@ public class IntervalSpawner : MonoBehaviour, IReactToExplosion
     private void Update()
     {
         MakePulsation();
+
+        if (GameManager.GameOver)
+            return;
         
         _timeFromLastSpawn += Time.deltaTime;
 

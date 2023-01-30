@@ -40,7 +40,7 @@ public class Gem : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (GameManager.GameTime < 1)
+        if (GameManager.TimeSinceStart < 1)
         {
             GemPool.Release(this);
         }

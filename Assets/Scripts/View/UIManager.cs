@@ -221,6 +221,7 @@ public class UIManager : MonoBehaviour
         {
             _earnedCoins--;
             _coinCountOnStart++;
+            Coin.CoinSoundPool.Get();
             
             coinCounterText.text = _coinCountOnStart.ToString();
             additionalCoinCounterText.text = "+" + _earnedCoins.ToString();

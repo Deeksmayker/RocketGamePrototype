@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public static int DiedCount;
 
     public static float GameTime { get; private set; }
+    public static float TimeSinceStart;
 
     [SerializeField] private BouncePlayerController playerOnScene;
     [SerializeField] private Rocket rocketPrefab;
@@ -36,7 +37,7 @@ public class GameManager : MonoBehaviour
     private int _currentCycle;
     private float _lastTimeCycleSpawnedEnemies;
 
-    private bool _gameOver;
+    public static bool GameOver;
 
     public static UnityEvent NewRecordEvent = new();
 
@@ -50,6 +51,8 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1;
         GameTime = SavesManager.GetStartTimeValue();
+        TimeSinceStart = 0;
+        GameOver = false;
     }
     
     private void OnEnable()
@@ -83,13 +86,13 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (GameTime < 1)
+        if (TimeSinceStart < 1)
             Time.timeScale = 1;
-        
+
         UpdateGameTime();
 
         var isCycleTimePassed = (GameTime - _lastTimeCycleSpawnedEnemies)
-            >= Mathf.Clamp(startCycleInterval - (_currentCycle * perCycleIntervalReduction), 5, startCycleInterval);
+            >= Mathf.Clamp(startCycleInterval - (_currentCycle * perCycleIntervalReduction), 3, startCycleInterval);
         if (_currentCycle == 0 || isCycleTimePassed)
             CheckEnemiesSpawn();
     }
@@ -133,15 +136,15 @@ public class GameManager : MonoBehaviour
 
     private void UpdateGameTime()
     {
-        if (_gameOver)
+        if (GameOver)
             return;
-
+        TimeSinceStart += Time.deltaTime;
         GameTime += Time.deltaTime;
     }
 
     public void OnGameOver()
     {
-        _gameOver = true;
+        GameOver = true;
     }
 
     private void SpawnToxicCloud()
@@ -156,7 +159,7 @@ public class GameManager : MonoBehaviour
 
     public void RevivePlayer()
     {
-        _gameOver = false;
+        GameOver = false;
         //OnEnable();
         playerOnScene.gameObject.SetActive(true);
         playerOnScene.GetComponent<PlayerHealth>().Health = 1;

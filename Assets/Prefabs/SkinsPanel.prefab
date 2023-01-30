@@ -418,7 +418,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59596bf44ceeebd46bc1ff2ccfbe9c76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  russianText: "\u0414\u043E\u0436\u0434\u044C"
+  russianText: "\u0434\u043E\u0436\u0434\u044C..."
   englishText: Rain
 --- !u!1 &254411439
 GameObject:
@@ -1123,7 +1123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59596bf44ceeebd46bc1ff2ccfbe9c76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  russianText: "\u0421\u0438\u043D\u0438\u0439 \u0410\u043A\u0432\u0430"
+  russianText: "\u0421\u0438\u043D\u0438\u0439 \u0430\u043A\u0432\u0430"
   englishText: Blue Aqua
 --- !u!1 &374581203
 GameObject:
@@ -1543,7 +1543,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59596bf44ceeebd46bc1ff2ccfbe9c76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  russianText: "\u0424\u0438\u043E\u043B\u0435\u0442\u043E\u0432\u044B\u0439"
+  russianText: "\u0421\u0438\u0440\u0435\u043D\u0435\u0432\u044B\u0439"
   englishText: Purple
 --- !u!1 &432748623
 GameObject:
@@ -3478,7 +3478,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59596bf44ceeebd46bc1ff2ccfbe9c76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  russianText: "\u0411\u0435\u043B\u0430\u044F-\u041B\u0438\u043D\u0438\u044F"
+  russianText: "\u0431\u0435\u043B\u0430\u044F-\u043B\u0438\u043D\u0438\u044F"
   englishText: White-Line
 --- !u!1 &913127187
 GameObject:
@@ -3765,7 +3765,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59596bf44ceeebd46bc1ff2ccfbe9c76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  russianText: "\u0411\u0435\u043B\u043E-\u0427\u0451\u0440\u043D\u044B\u0439"
+  russianText: "\u0431\u0435\u043B\u043E-\u0427\u0451\u0440\u043D\u044B\u0439"
   englishText: White-Black
 --- !u!1 &946657914
 GameObject:
@@ -4350,7 +4350,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59596bf44ceeebd46bc1ff2ccfbe9c76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  russianText: "\u0420\u043E\u0437\u043E\u0432\u044B\u0439 \u0410\u043A\u0432\u0430"
+  russianText: "\u0420\u043E\u0437\u043E\u0432\u044B\u0439 \u0430\u043A\u0432\u0430"
   englishText: Pink Aqua
 --- !u!1 &1231112670
 GameObject:
@@ -5325,7 +5325,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59596bf44ceeebd46bc1ff2ccfbe9c76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  russianText: "\u0411\u0438\u0440\u044E\u0437\u043E\u0432\u044B\u0439"
+  russianText: "\u0431\u0438\u0440\u044E\u0437\u043E\u0432\u044B\u0439"
   englishText: Cyan
 --- !u!1 &1449347313
 GameObject:
@@ -5610,7 +5610,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59596bf44ceeebd46bc1ff2ccfbe9c76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  russianText: "\u041A\u0440\u0430\u0441\u043D\u044B\u0439"
+  russianText: "\u043A\u0440\u0430\u0441\u043D\u044B\u0439"
   englishText: Red
 --- !u!1 &1465252399
 GameObject:
@@ -5910,7 +5910,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59596bf44ceeebd46bc1ff2ccfbe9c76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  russianText: "\u0411\u0438\u0440\u044E\u0437\u043E\u0432\u044B\u0439-\u041B\u0438\u043D\u0438\u044F"
+  russianText: "\u0431\u0438\u0440\u044E\u0437\u043E\u0432\u044B\u0439-\u043B\u0438\u043D\u0438\u044F"
   englishText: Cyan-line
 --- !u!1 &1545733713
 GameObject:
@@ -6735,7 +6735,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59596bf44ceeebd46bc1ff2ccfbe9c76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  russianText: "\u0417\u0435\u043B\u0451\u043D\u044B\u0439 \u0410\u043A\u0432\u0430"
+  russianText: "\u0417\u0435\u043B\u0451\u043D\u044B\u0439 \u0430\u043A\u0432\u0430"
   englishText: Green Aqua
 --- !u!1 &1719529178
 GameObject:
@@ -7830,7 +7830,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59596bf44ceeebd46bc1ff2ccfbe9c76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  russianText: "\u041E\u0440\u0430\u043D\u0436\u0435\u0432\u044B\u0439 \u0410\u043A\u0432\u0430"
+  russianText: "\u041E\u0440\u0430\u043D\u0436\u0435\u0432\u044B\u0439 \u0430\u043A\u0432\u0430"
   englishText: Orange Aqua
 --- !u!1 &2125728788
 GameObject:
@@ -7980,7 +7980,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59596bf44ceeebd46bc1ff2ccfbe9c76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  russianText: "\u0427\u0451\u0440\u043D\u044B\u0439 \u0410\u043A\u0432\u0430"
+  russianText: "\u0427\u0451\u0440\u043D\u044B\u0439 \u0430\u043A\u0432\u0430"
   englishText: Black Aqua
 --- !u!1 &3848438800674875860
 GameObject:

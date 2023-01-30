@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Pool;
 using Random = UnityEngine.Random;
@@ -20,7 +21,7 @@ public class CoinDropper : MonoBehaviour
                 coin => coin.gameObject.SetActive(true),
                 coin => coin.gameObject.SetActive(false),
                 coin => Destroy(coin.gameObject),
-                true,
+                false,
                 100,
                 300);
         }
