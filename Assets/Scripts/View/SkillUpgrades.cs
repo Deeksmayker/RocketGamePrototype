@@ -5,6 +5,7 @@ using Assets.Scripts.Model;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using YG;
 
 public class SkillUpgrades : MonoBehaviour
 {
@@ -22,10 +23,23 @@ public class SkillUpgrades : MonoBehaviour
     [SerializeField] private TextMeshProUGUI startTimeCostText;
     [SerializeField] private TextMeshProUGUI startTimeValueText;
 
+    [SerializeField] private TextMeshProUGUI coinText;
+
+    private void Awake()
+    {
+        SavesManager.SlowTimeUpgradeLevel = YandexGame.savesData.SlowTimeUpgradeLevel;
+        SavesManager.BounceUpgradeLevel = YandexGame.savesData.BounceUpgradeLevel;
+        SavesManager.RadiusUpgradeLevel = YandexGame.savesData.RadiusUpgradeLevel;
+        SavesManager.StartTimeUpgradeLevel = YandexGame.savesData.StartTimeUpgradeLevel;
+    }
+    
     private void OnEnable()
     {
         LoadCostsAndValues();
         UpdateInteractableForButtons();
+        YandexGame.SaveProgress();
+
+        coinText.text = YandexGame.savesData.coins.ToString();
     }
 
     public void LoadCostsAndValues()
@@ -53,6 +67,8 @@ public class SkillUpgrades : MonoBehaviour
     {
         SavesManager.Coins -= SavesManager.GetUpgradeCost(SavesManager.SlowTimeUpgradeLevel);
         SavesManager.SlowTimeUpgradeLevel++;
+        YandexGame.savesData.coins = SavesManager.Coins;
+        YandexGame.savesData.SlowTimeUpgradeLevel = SavesManager.SlowTimeUpgradeLevel;
         OnEnable();
     }
     
@@ -60,6 +76,8 @@ public class SkillUpgrades : MonoBehaviour
     {
         SavesManager.Coins -= SavesManager.GetUpgradeCost(SavesManager.BounceUpgradeLevel);
         SavesManager.BounceUpgradeLevel++;
+        YandexGame.savesData.coins = SavesManager.Coins;
+        YandexGame.savesData.BounceUpgradeLevel = SavesManager.BounceUpgradeLevel;
         OnEnable();
     }
     
@@ -67,6 +85,9 @@ public class SkillUpgrades : MonoBehaviour
     {
         SavesManager.Coins -= SavesManager.GetUpgradeCost(SavesManager.RadiusUpgradeLevel);
         SavesManager.RadiusUpgradeLevel++;
+        YandexGame.savesData.coins = SavesManager.Coins;
+        YandexGame.savesData.RadiusUpgradeLevel = SavesManager.RadiusUpgradeLevel;
+        
         OnEnable();
     }
 
@@ -74,6 +95,8 @@ public class SkillUpgrades : MonoBehaviour
     {
         SavesManager.Coins -= SavesManager.GetUpgradeCost(SavesManager.StartTimeUpgradeLevel);
         SavesManager.StartTimeUpgradeLevel++;
+        YandexGame.savesData.coins = SavesManager.Coins;
+        YandexGame.savesData.StartTimeUpgradeLevel = SavesManager.StartTimeUpgradeLevel;
         OnEnable();
     }
 

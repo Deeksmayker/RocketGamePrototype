@@ -11,7 +11,7 @@ namespace Assets.Scripts.Model
 
         public static float Record;
 
-        private static int _coins = 10000000;
+        private static int _coins = 0;
         public static int Coins
         {
             get => _coins;

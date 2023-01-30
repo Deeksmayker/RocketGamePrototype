@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Assets.Scripts.Model;
 using TMPro;
@@ -11,8 +12,15 @@ public class Skins : MonoBehaviour
     [SerializeField] private Button[] buyButtons;
     [SerializeField] private TextMeshProUGUI[] costTexts;
 
+    [SerializeField] private TextMeshProUGUI coinText;
+
     private void OnEnable()
     {
+        if (SavesManager.SkinCosts == null || SavesManager.SkinCosts.Length == 0)
+            SavesManager.SkinCosts = new string[costTexts.Length];
+        if (YandexGame.savesData.skinCosts == null || YandexGame.savesData.skinCosts.Length == 0)
+            YandexGame.savesData.skinCosts = new string[costTexts.Length];
+        
         LoadSkinCosts();
         LoadChosenMarkPosition();
         UpdateInteractableForButtons();
@@ -20,6 +28,8 @@ public class Skins : MonoBehaviour
 
     private void UpdateInteractableForButtons()
     {
+        coinText.text = YandexGame.savesData.coins.ToString();
+        
         for (var i = 0; i < buyButtons.Length; i++)
         {
             if (int.Parse(costTexts[i].text) <= SavesManager.Coins)
@@ -39,9 +49,11 @@ public class Skins : MonoBehaviour
         var cost = int.Parse(costTexts[index].text);
         SavesManager.Coins -= cost;
         SavesManager.Skin = buyButtons[index].GetComponent<Image>().sprite;
-        /*YandexGame.savesData.coins = SavesManager.Coins;
-        YandexGame.savesData.skin = SavesManager.Skin;
-        YandexGame.SaveProgress();*/
+        YandexGame.savesData.coins = SavesManager.Coins;
+        SavesManager.SkinCosts[index] = "0";
+        YandexGame.savesData.skinCosts[index] = "0";
+        //YandexGame.savesData.skin = SavesManager.Skin;
+        YandexGame.SaveProgress();
 
         costTexts[index].text = "0";
         chosenMark.transform.position = buyButtons[index].transform.position + Vector3.up * 3;
@@ -57,7 +69,8 @@ public class Skins : MonoBehaviour
 
         for (var i = 0; i < costTexts.Length; i++)
         {
-            costTexts[i].text = SavesManager.SkinCosts[i];
+            if (YandexGame.savesData.skinCosts[i] != null)
+                costTexts[i].text = YandexGame.savesData.skinCosts[i];
         }
     }
 
@@ -76,7 +89,8 @@ public class Skins : MonoBehaviour
 
     public void SaveSkinCosts()
     {
-        SavesManager.SkinCosts = costTexts.Select((t) => t.text).ToArray();
-        //YandexGame.savesData.skinCosts = costTexts.Select((t) => t.text).ToArray();
+        /*SavesManager.SkinCosts = costTexts.Select((t) => t.text).ToArray();
+        YandexGame.savesData.skinCosts = costTexts.Select((t) => t.text).ToArray();
+        YandexGame.SaveProgress();*/
     }
 }

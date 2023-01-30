@@ -15,7 +15,11 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI healthText;
     [SerializeField] private GameObject diedPanel;
+    
     [SerializeField] private Button reviveButton;
+    [SerializeField] private Button doubleCoinButton;
+    [SerializeField] private Slider doubleCoinSlider;
+    
     [SerializeField] private GameObject pausePanel;
 
     [SerializeField] private TextMeshProUGUI newRecordText;
@@ -32,6 +36,8 @@ public class UIManager : MonoBehaviour
     
     private int _coinCountOnStart;
     private int _earnedCoins;
+
+    private bool _needToSetCoinCounters;
 
     private GameManager _gameManager;
     private PlayerAbilities _playerAbilities;
@@ -63,7 +69,12 @@ public class UIManager : MonoBehaviour
         GameManager.PlayerRevived.AddListener(OnPlayerRevive);
         PlayerHealth.PlayerDiedEvent.AddListener(OnPlayerDied);
         SavesManager.OnCoinValueChanged.AddListener(() => _earnedCoins++);
-        
+        YandexGame.RewardVideoEvent += HandleReward;
+    }
+
+    private void OnDisable()
+    {
+        YandexGame.RewardVideoEvent -= HandleReward;
     }
 
     private void Update()
@@ -86,9 +97,27 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void OpenRewardAd()
+    public void OpenRewardAd(int id)
     {
-        YandexGame.RewVideoShow(1);
+        YandexGame.RewVideoShow(id);
+    }
+
+    public void HandleReward(int id)
+    {
+        if (id == 1)
+        {
+            _gameManager.RevivePlayer();
+        }
+
+        if (id == 2)
+        {
+            SavesManager.Coins += _earnedCoins;
+            YandexGame.savesData.coins = SavesManager.Coins;
+
+            _earnedCoins *= 2;
+            additionalCoinCounterText.text = "+" + _earnedCoins.ToString();
+            _needToSetCoinCounters = true;
+        }
     }
 
     public void OnPlayerRevive()
@@ -103,15 +132,24 @@ public class UIManager : MonoBehaviour
     {
         diedPanel.SetActive(true);
 
-        StartCoroutine(SetCoinCounters());
+        coinCounterText.text = _coinCountOnStart.ToString();
+        additionalCoinCounterText.text = "+" + _earnedCoins.ToString();
         
+        if (GameManager.DiedCount <= 1)
+            reviveButton.gameObject.SetActive(true);
+        else
+        {
+            reviveButton.gameObject.SetActive(false);
+            doubleCoinButton.gameObject.SetActive(true);
+            StartCoroutine(SetCoinCounters());
+        }
+
         if (YandexGame.savesData.record < GameManager.GameTime)
         {
             YandexGame.savesData.record = GameManager.GameTime;
             YandexGame.savesData.coins = SavesManager.Coins;
             //YandexGame.SaveCloud();
             //YandexGame.SaveLocal();
-            YandexGame.SaveProgress();
             GameManager.NewRecordEvent.Invoke();
             YandexGame.NewLBScoreTimeConvert("Record", GameManager.GameTime);
 
@@ -120,11 +158,9 @@ public class UIManager : MonoBehaviour
                 YandexGame.ReviewShow(true);
             }
         }
-        
-        if (GameManager.DiedCount <= 1)
-            reviveButton.gameObject.SetActive(true);
-        else
-            reviveButton.gameObject.SetActive(false);
+
+        YandexGame.savesData.coins = SavesManager.Coins;
+        YandexGame.SaveProgress();
     }
 
     public void OpenPausePanel()
@@ -180,7 +216,7 @@ public class UIManager : MonoBehaviour
 
     public void OnNewRecord()
     {
-        Debug.Log("New record ui");
+        //Debug.Log("New record ui");
         newRecordText.gameObject.SetActive(true);
         newRecordSound.Play();
     }
@@ -212,9 +248,17 @@ public class UIManager : MonoBehaviour
 
     private IEnumerator SetCoinCounters()
     {
-        coinCounterText.text = _coinCountOnStart.ToString();
-        additionalCoinCounterText.text = "+" + _earnedCoins.ToString();
+        var timer = 1f;
 
+        while (timer > 0 && !_needToSetCoinCounters)
+        {
+            timer -= Time.deltaTime / 5;
+            doubleCoinSlider.value = timer;
+            yield return null;
+        }
+        
+        doubleCoinButton.gameObject.SetActive(false);
+        
         yield return new WaitForSeconds(1);
 
         while (_earnedCoins > 0)

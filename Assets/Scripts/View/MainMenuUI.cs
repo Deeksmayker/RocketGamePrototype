@@ -16,8 +16,17 @@ public class MainMenuUI : MonoBehaviour
         Time.timeScale = 1;
         
         if (YandexGame.SDKEnabled)
-        {
+        {   
             UpdateLanguage();
+
+            SavesManager.Coins = YandexGame.savesData.coins;
+            SavesManager.Record = YandexGame.savesData.record;
+            //SavesManager.Skin = YandexGame.savesData.skin;
+            SavesManager.SkinCosts = YandexGame.savesData.skinCosts;
+            SavesManager.SlowTimeUpgradeLevel = YandexGame.savesData.SlowTimeUpgradeLevel;
+            SavesManager.BounceUpgradeLevel = YandexGame.savesData.BounceUpgradeLevel;
+            SavesManager.RadiusUpgradeLevel = YandexGame.savesData.RadiusUpgradeLevel;
+            SavesManager.StartTimeUpgradeLevel = YandexGame.savesData.StartTimeUpgradeLevel;
         }
         
         Localization.LanguageChanged.AddListener(() => UpdateLanguage());
@@ -64,7 +73,9 @@ public class MainMenuUI : MonoBehaviour
     {
         var record = YandexGame.savesData.record;
         var languageText = LanguageInfo.Language == LanguageInfo.Languages.Russian ? "Ваш рекорд" : "Your Record";
+        
         recordText.text = $"{languageText} - {record}";
+        coinValueText.text = YandexGame.savesData.coins.ToString();
         
         playText.text = LanguageInfo.Language == LanguageInfo.Languages.Russian ? "Начать" : "Play";
         exitText.text = LanguageInfo.Language == LanguageInfo.Languages.Russian ? "Выйти" : "Exit";

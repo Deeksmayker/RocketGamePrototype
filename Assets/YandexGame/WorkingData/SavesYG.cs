@@ -15,8 +15,13 @@ namespace YG
        
         public float record = 0;
         public int coins;
-        public Sprite skin;
+        //public Sprite skin;
         public string[] skinCosts;
+        
+        public int SlowTimeUpgradeLevel = 1;
+        public int BounceUpgradeLevel = 1;
+        public int RadiusUpgradeLevel = 1;
+        public int StartTimeUpgradeLevel = 1;
 
         // Ваши сохранения
 
