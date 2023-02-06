@@ -53,6 +53,21 @@ public class GameManager : MonoBehaviour
         GameTime = SavesManager.GetStartTimeValue();
         TimeSinceStart = 0;
         GameOver = false;
+
+        if (CoinDropper.CoinPool != null)
+        {
+            //Debug.Log("Clearing Coins");
+            CoinDropper.CoinPool.Clear();
+        }
+
+        if (Gem.GemPool != null)
+        {
+            //Debug.Log("Clearing Gems");
+            Gem.GemPool.Clear();
+        }
+
+        CoinDropper.CreatedCoinPool = false;
+        Gem.CreatedGemPool = false;
     }
     
     private void OnEnable()
@@ -74,7 +89,7 @@ public class GameManager : MonoBehaviour
         LeftUpArenaPoint = createEnemiesManager.leftUpArenaCorner.position;
         RightDownArenaPoint = createEnemiesManager.rightDownArenaCorner.position;
 
-        Application.targetFrameRate = 500;
+        GameOver = false;
 
         if (enemiesSpawnInfo.Count != 0)
         {
@@ -87,7 +102,10 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         if (TimeSinceStart < 1)
+        {
             Time.timeScale = 1;
+            GameOver = false;
+        }
 
         UpdateGameTime();
 

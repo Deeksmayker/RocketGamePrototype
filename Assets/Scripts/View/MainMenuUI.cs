@@ -15,24 +15,28 @@ public class MainMenuUI : MonoBehaviour
     {
         Time.timeScale = 1;
         
-        if (YandexGame.SDKEnabled)
-        {   
-            UpdateLanguage();
+        
+        UpdateLanguage();
+        
+        Invoke(nameof(LoadStuff), 1);
+    }
 
-            SavesManager.Coins = YandexGame.savesData.coins;
-            SavesManager.Record = YandexGame.savesData.record;
-            //SavesManager.Skin = YandexGame.savesData.skin;
-            SavesManager.SkinCosts = YandexGame.savesData.skinCosts;
-            SavesManager.SlowTimeUpgradeLevel = YandexGame.savesData.SlowTimeUpgradeLevel;
-            SavesManager.BounceUpgradeLevel = YandexGame.savesData.BounceUpgradeLevel;
-            SavesManager.RadiusUpgradeLevel = YandexGame.savesData.RadiusUpgradeLevel;
-            SavesManager.StartTimeUpgradeLevel = YandexGame.savesData.StartTimeUpgradeLevel;
-        }
+    private void LoadStuff()
+    {
+        SavesManager.Coins = YandexGame.savesData.coins;
+        SavesManager.Record = YandexGame.savesData.record;
+        //SavesManager.Skin = YandexGame.savesData.skin;
+        SavesManager.SkinCosts = YandexGame.savesData.skinCosts;
+        SavesManager.SlowTimeUpgradeLevel = YandexGame.savesData.SlowTimeUpgradeLevel;
+        SavesManager.BounceUpgradeLevel = YandexGame.savesData.BounceUpgradeLevel;
+        SavesManager.RadiusUpgradeLevel = YandexGame.savesData.RadiusUpgradeLevel;
+        SavesManager.StartTimeUpgradeLevel = YandexGame.savesData.StartTimeUpgradeLevel;
+        //Debug.Log(SavesManager.StartTimeUpgradeLevel);
+        //Debug.Log(SavesManager.Coins);
         
         Localization.LanguageChanged.AddListener(() => UpdateLanguage());
         
         UpdateCoinValue();
-        
     }
 
     private void OnEnable()
@@ -66,7 +70,7 @@ public class MainMenuUI : MonoBehaviour
 
     public void UpdateCoinValue()
     {
-        coinValueText.text = SavesManager.Coins.ToString();
+        coinValueText.text = YandexGame.savesData.coins.ToString();
     }
 
     public void UpdateLanguage()
@@ -80,5 +84,12 @@ public class MainMenuUI : MonoBehaviour
         playText.text = LanguageInfo.Language == LanguageInfo.Languages.Russian ? "Начать" : "Play";
         exitText.text = LanguageInfo.Language == LanguageInfo.Languages.Russian ? "Выйти" : "Exit";
         resetText.text = LanguageInfo.Language == LanguageInfo.Languages.Russian ? "Сбросить рекорд" : "Reset record";
+    }
+
+    public void ResetSaves()
+    {
+        YandexGame.ResetSaveProgress();
+        YandexGame.SaveProgress();
+        Start();
     }
 }

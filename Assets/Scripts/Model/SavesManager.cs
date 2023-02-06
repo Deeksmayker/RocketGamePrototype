@@ -5,8 +5,10 @@ namespace Assets.Scripts.Model
 {
     public static class SavesManager
     {
-        public static readonly string PlatformName = "PC"; 
+        public static readonly string[] BaseSkinCosts = new[] {"0", "100", "200", "200", "300", "300", "500", "1500", "3000", "5000", "500", "1000", "2000", "5000", "10000", "100000", "50000", "50000", "7000", "100000", "50000"};
         
+        public static readonly string PlatformName = "PC";
+
         public static UnityEvent OnCoinValueChanged = new();
 
         public static float Record;

@@ -60,8 +60,11 @@ public class UIManager : MonoBehaviour
         GameManager.NewRecordEvent.AddListener(OnNewRecord);
 
         _coinCountOnStart = SavesManager.Coins;
+        //Debug.Log(_coinCountOnStart);
 
         OnGemTaken();
+
+        _gameManager.enabled = true;
     }
 
     private void OnEnable()
@@ -113,6 +116,7 @@ public class UIManager : MonoBehaviour
         {
             SavesManager.Coins += _earnedCoins;
             YandexGame.savesData.coins = SavesManager.Coins;
+            YandexGame.SaveProgress();
 
             _earnedCoins *= 2;
             additionalCoinCounterText.text = "+" + _earnedCoins.ToString();

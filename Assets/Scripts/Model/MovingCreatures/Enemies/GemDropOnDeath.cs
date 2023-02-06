@@ -12,10 +12,15 @@ public class GemDropOnDeath : MonoBehaviour
             Gem.GemPool = new ObjectPool<Gem>
                 (
                     () => Instantiate(gemPrefab),
-                    (gem) => gem.gameObject.SetActive(true),
+                    (gem) =>
+                    {
+                        if (gem == null)
+                            gem = Instantiate(gemPrefab);
+                        gem.gameObject.SetActive(true);
+                    },
                     (gem) => gem.gameObject.SetActive(false),
                     (gem) => Destroy(gem.gameObject),
-                    true,
+                    false,
                     30,
                     50
                 );

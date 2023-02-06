@@ -12,9 +12,11 @@ public class CoinDropper : MonoBehaviour
     
     public static ObjectPool<Coin> CoinPool;
 
+    public static bool CreatedCoinPool;
+    
     private void Awake()
     {
-        if (CoinPool == null)
+        if (CoinPool == null || !CreatedCoinPool)
         {
             CoinPool = new ObjectPool<Coin>(
                 () => Instantiate(coinPrefab),
@@ -24,6 +26,7 @@ public class CoinDropper : MonoBehaviour
                 false,
                 100,
                 300);
+            CreatedCoinPool = false;
         }
     }
 

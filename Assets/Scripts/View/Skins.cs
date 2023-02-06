@@ -16,10 +16,10 @@ public class Skins : MonoBehaviour
 
     private void OnEnable()
     {
-        if (SavesManager.SkinCosts == null || SavesManager.SkinCosts.Length == 0)
-            SavesManager.SkinCosts = new string[costTexts.Length];
-        if (YandexGame.savesData.skinCosts == null || YandexGame.savesData.skinCosts.Length == 0)
-            YandexGame.savesData.skinCosts = new string[costTexts.Length];
+        if (SavesManager.SkinCosts == null || SavesManager.SkinCosts.Length == 0 || SavesManager.SkinCosts[0] == null)
+            SavesManager.SkinCosts = SavesManager.BaseSkinCosts;
+        if (YandexGame.savesData.skinCosts == null || YandexGame.savesData.skinCosts.Length == 0 || YandexGame.savesData.skinCosts[0] == null)
+            YandexGame.savesData.skinCosts = SavesManager.BaseSkinCosts;
         
         LoadSkinCosts();
         LoadChosenMarkPosition();
@@ -64,13 +64,9 @@ public class Skins : MonoBehaviour
 
     public void LoadSkinCosts()
     {
-        if (SavesManager.SkinCosts == null || SavesManager.SkinCosts.Length < 1)
-            return;
-
         for (var i = 0; i < costTexts.Length; i++)
         {
-            if (YandexGame.savesData.skinCosts[i] != null)
-                costTexts[i].text = YandexGame.savesData.skinCosts[i];
+            costTexts[i].text = YandexGame.savesData.skinCosts[i];
         }
     }
 

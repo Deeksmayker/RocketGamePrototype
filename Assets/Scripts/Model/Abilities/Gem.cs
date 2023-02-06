@@ -14,8 +14,11 @@ public class Gem : MonoBehaviour
     [HideInInspector] public Rigidbody2D Rb;
 
     public static ObjectPool<Gem> GemPool;
-
+    public static bool CreatedGemPool;
+    
     private Vector2 _vectorToPlayer;
+    
+    
 
     private void OnEnable()
     {
@@ -23,18 +26,24 @@ public class Gem : MonoBehaviour
 
         RocketLauncher.GlobalShootPreformed.AddListener(RepulseGem);
 
-        if (GemPool is default(ObjectPool<Gem>))
+        if (GemPool is default(ObjectPool<Gem>) || !CreatedGemPool)
         {
             GemPool = new ObjectPool<Gem>
                 (
                     () => Instantiate(this),
-                    (gem) => gem.gameObject.SetActive(true),
+                    (gem) =>
+                    {
+                        if (gem == null)
+                            gem = Instantiate(this);
+                        gem.gameObject.SetActive(true);
+                    },
                     (gem) => gem.gameObject.SetActive(false),
                     (gem) => Destroy(gem.gameObject),
-                    true,
+                    false,
                     30,
                     50
                 ) ;
+            CreatedGemPool = true;
         }
     }
 

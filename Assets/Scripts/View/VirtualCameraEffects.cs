@@ -60,6 +60,8 @@ public class VirtualCameraEffects : MonoBehaviour
 
         volume.profile.TryGet(out _vignette);
         _startVignetteIntencity = _vignette.intensity.GetValue<float>();
+        
+        _getCaught = false;
     }
 
     private void Update()

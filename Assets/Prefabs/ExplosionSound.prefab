@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4226991408013458554}
   - component: {fileID: 7120705218203720395}
+  - component: {fileID: 4246283058391472290}
   m_Layer: 12
   m_Name: ExplosionSound
   m_TagString: Untagged
@@ -128,3 +129,16 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &4246283058391472290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 244837411477444002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ad9f8412c6028a4499e99c839be119d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  seconds: 0.5
